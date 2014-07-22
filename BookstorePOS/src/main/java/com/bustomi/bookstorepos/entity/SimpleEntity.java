@@ -7,11 +7,8 @@
 package com.bustomi.bookstorepos.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  *
@@ -19,20 +16,12 @@ import javax.persistence.TemporalType;
  * @param <T>
  */
 @MappedSuperclass
-public abstract class Entity<T> implements Serializable {
+public abstract class SimpleEntity<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     @Column (name = "name", nullable = false, length = 140)
     private String nama;
-
-    @Column(name = "waktu_dibuat", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date waktuDibuat;
-
-    @Column(name = "terakhir_dirubah", nullable = true)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date terakhirDirubah;
 
     @Column(name = "info", nullable = true, length = 255)
     private String info;
@@ -57,26 +46,6 @@ public abstract class Entity<T> implements Serializable {
         this.info = info;
     }
 
-    @SuppressWarnings("ReturnOfDateField")
-    public Date getTerakhirDirubah() {
-        return terakhirDirubah;
-    }
-
-    @SuppressWarnings("AssignmentToDateFieldFromParameter")
-    public void setTerakhirDirubah(Date terakhirDirubah) {
-        this.terakhirDirubah = terakhirDirubah;
-    }
-
-    @SuppressWarnings("ReturnOfDateField")
-    public Date getWaktuDibuat() {
-        return waktuDibuat;
-    }
-
-    @SuppressWarnings("AssignmentToDateFieldFromParameter")
-    public void setWaktuDibuat(Date waktuDibuat) {
-        this.waktuDibuat = waktuDibuat;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -86,7 +55,7 @@ public abstract class Entity<T> implements Serializable {
             return false;
         }
         @SuppressWarnings("unchecked")
-        final Entity<T> other = (Entity<T>) obj;
+        final SimpleEntity<T> other = (SimpleEntity<T>) obj;
         if (this.getId() != other.getId() && (this.getId() == null
                 || !this.getId().equals(other.getId()))) {
             return false;

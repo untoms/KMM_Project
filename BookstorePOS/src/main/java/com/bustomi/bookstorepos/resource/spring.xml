@@ -36,24 +36,23 @@
         </property>
         <property name="annotatedClasses">
             <util:list>
-                <value>com.bustomi.bookstorepos.entity.master.Jabatan</value>
-                <value>com.bustomi.bookstorepos.entity.master.Karyawan</value>
-                <value>com.bustomi.bookstorepos.entity.master.Kategori</value>
+                <value>com.bustomi.bookstorepos.entity.master.KategoriBuku</value>
+                <value>com.bustomi.bookstorepos.entity.master.Pengarang</value>
+                <value>com.bustomi.bookstorepos.entity.master.Penerbit</value>
+                <value>com.bustomi.bookstorepos.entity.master.Buku</value>
+                <value>com.bustomi.bookstorepos.entity.master.KategoriBarang</value>
                 <value>com.bustomi.bookstorepos.entity.master.Pelanggan</value>
                 <value>com.bustomi.bookstorepos.entity.master.Pemasok</value>
-                <value>com.bustomi.bookstorepos.entity.master.Penjual</value>
                 <value>com.bustomi.bookstorepos.entity.master.Satuan</value>
                 <value>com.bustomi.bookstorepos.entity.master.Barang</value>
-                <value>com.bustomi.bookstorepos.entity.master.DetailBarang</value>
+                <value>com.bustomi.bookstorepos.entity.master.Item</value>
                 <value>com.bustomi.bookstorepos.entity.user.Grup</value>
                 <value>com.bustomi.bookstorepos.entity.user.HakAkses</value>
-                <value>com.bustomi.bookstorepos.entity.user.Pengguna</value>
+                <value>com.bustomi.bookstorepos.entity.user.User</value>
                 <value>com.bustomi.bookstorepos.entity.transaction.Penjualan</value>
                 <value>com.bustomi.bookstorepos.entity.transaction.Pembelian</value>
                 <value>com.bustomi.bookstorepos.entity.transaction.DetailPenjualan</value>
                 <value>com.bustomi.bookstorepos.entity.transaction.DetailPembelian</value>
-                <value>com.bustomi.bookstorepos.entity.transaction.Pemasukkan</value>
-                <value>com.bustomi.bookstorepos.entity.transaction.Pengeluaran</value>
                 <value>com.bustomi.bookstorepos.entity.Pengaturan</value>
                 <value>com.bustomi.bookstorepos.entity.report.Jurnal</value>
             </util:list>

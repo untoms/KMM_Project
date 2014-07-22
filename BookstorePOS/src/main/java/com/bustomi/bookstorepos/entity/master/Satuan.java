@@ -7,6 +7,7 @@
 package com.bustomi.bookstorepos.entity.master;
 
 import com.bustomi.bookstorepos.entity.AutoIncreamentEntity;
+import com.bustomi.bookstorepos.entity.SimpleEntity;
 import java.util.Collections;
 import java.util.List;
 import javax.persistence.Column;
@@ -23,15 +24,12 @@ import javax.persistence.Table;
  */
 @Entity
 @Table (name = "Satuan")
-public class Satuan extends AutoIncreamentEntity{
+public class Satuan extends SimpleEntity<Long>{
 
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
     @Column (name = "id")
     private Long id;
-    
-    @Column (name = "nama")
-    private String nama;
     
     @OneToMany (mappedBy = "satuan")
     private List<Barang> daftarBarang;
@@ -46,25 +44,12 @@ public class Satuan extends AutoIncreamentEntity{
         this.id = id;
     }
 
-    public String getNama() {
-        return nama;
-    }
-
-    public void setNama(String nama) {
-        this.nama = nama;
-    }
-
     public List<Barang> getDaftarBarang() {
         return Collections.unmodifiableList(daftarBarang);
     }
 
     public void setDaftarBarang(List<Barang> daftarBarang) {
         this.daftarBarang = daftarBarang;
-    }
-
-    @Override
-    public String toString() {
-        return getNama();
     }
        
 }
