@@ -7,7 +7,6 @@
 package com.bustomi.bookstorepos.entity.master;
 
 import com.bustomi.bookstorepos.entity.Entity;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -22,12 +21,15 @@ import javax.persistence.Table;
 @Table (name = "Item")
 public class Item extends Entity<String>{
     @Id
-    @Column (name = "id")
+    @Column (name = "id", nullable = false, length = 140)
     private String id;
+    
     @Column (name= "harga_beli",nullable = false)
     private BigDecimal harga_beli;
+    
     @Column (name= "harga_jual",nullable = false)
     private BigDecimal harga_jual;
+    
     @Column (name = "stok",nullable = false)
     private Integer stok;
     

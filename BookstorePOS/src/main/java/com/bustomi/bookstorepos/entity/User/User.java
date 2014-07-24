@@ -7,6 +7,7 @@
 package com.bustomi.bookstorepos.entity.User;
 
 import com.bustomi.bookstorepos.entity.Person;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -25,11 +26,11 @@ public class User extends Person{
     
     @Temporal (TemporalType.TIMESTAMP)
     @Column (name = "terakhir_login")
-    private String Terakhir_login;
+    private Date Terakhir_login;
     
     @Temporal (TemporalType.TIMESTAMP)
     @Column (name = "terakhir_logout")
-    private String Terakhir_logout;
+    private Date Terakhir_logout;
     
     @Column (name = "password",nullable = false, length = 255)
     private String password;
@@ -38,22 +39,23 @@ public class User extends Person{
     @JoinColumn (name = "Grup_Id")
     private Grup grup;
 
-    public String getTerakhir_login() {
+    public Date getTerakhir_login() {
         return Terakhir_login;
     }
 
-    public void setTerakhir_login(String Terakhir_login) {
+    public void setTerakhir_login(Date Terakhir_login) {
         this.Terakhir_login = Terakhir_login;
     }
 
-    public String getTerakhir_logout() {
+    public Date getTerakhir_logout() {
         return Terakhir_logout;
     }
 
-    public void setTerakhir_logout(String Terakhir_logout) {
+    public void setTerakhir_logout(Date Terakhir_logout) {
         this.Terakhir_logout = Terakhir_logout;
     }
 
+       
     public String getPassword() {
         return password;
     }

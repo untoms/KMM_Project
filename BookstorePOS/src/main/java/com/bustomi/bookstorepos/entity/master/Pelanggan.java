@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @javax.persistence.Entity
 @Table (name = "Pelanggan")
 public class Pelanggan extends Person{
-            
+               
     @OneToMany(mappedBy = "pelanggan")
     private List<Penjualan> daftarPenjualan;
    

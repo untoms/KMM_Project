@@ -16,7 +16,7 @@ import javax.persistence.MappedSuperclass;
     
 @MappedSuperclass
 public abstract class AutoIncreamentEntity implements Serializable {
-
+    
     public abstract Long getId();
 
     public abstract void setId(Long id);

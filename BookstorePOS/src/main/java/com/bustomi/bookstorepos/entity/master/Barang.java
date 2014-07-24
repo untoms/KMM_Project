@@ -46,7 +46,7 @@ public class Barang extends com.bustomi.bookstorepos.entity.Entity<Integer>{
     public void setId(Integer id) {
         this.id = id;
     }
-
+    
     public Item getItem() {
         return item;
     }
@@ -54,11 +54,11 @@ public class Barang extends com.bustomi.bookstorepos.entity.Entity<Integer>{
     public void setItem(Item item) {
         this.item = item;
     }
-
+    
     public KategoriBarang getKategoriBarang() {
         return kategoriBarang;
     }
-
+    
     public void setKategoriBarang(KategoriBarang kategoriBarang) {
         this.kategoriBarang = kategoriBarang;
     }

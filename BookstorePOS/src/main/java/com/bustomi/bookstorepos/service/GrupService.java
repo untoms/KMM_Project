@@ -12,6 +12,7 @@ import com.bustomi.bookstorepos.entity.User.Grup;
  *
  * @author PacuL
  */
-public interface GrupService extends InterfaceService<Grup, Integer>{
+public interface GrupService extends SimpleInterfaceService<Grup, Integer>{
+    
     
 }

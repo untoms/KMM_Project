@@ -64,7 +64,7 @@ public abstract class SimpleAbstractService<T extends SimpleEntity<?>, Id extend
     public T find(Id id) {
         return (T) currentSession().get(clazz, id);
     }
-
+    
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
     @Override

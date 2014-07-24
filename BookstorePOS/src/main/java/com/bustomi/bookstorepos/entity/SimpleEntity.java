@@ -20,7 +20,7 @@ public abstract class SimpleEntity<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    @Column (name = "name", nullable = false, length = 140)
+    @Column (name = "nama", nullable = false, length = 140, unique = true)
     private String nama;
 
     @Column(name = "info", nullable = true, length = 255)
@@ -33,7 +33,7 @@ public abstract class SimpleEntity<T> implements Serializable {
     public String getNama() {
         return nama;
     }
-
+    
     public void setNama(String nama) {
         this.nama = nama;
     }

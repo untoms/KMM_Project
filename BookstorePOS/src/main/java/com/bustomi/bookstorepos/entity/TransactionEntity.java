@@ -37,7 +37,7 @@ public abstract class TransactionEntity extends AutoIncreamentEntity {
     public void setTerakhir_diubah(Date terakhir_diubah) {
         this.terakhir_diubah = terakhir_diubah;
     }
-
+    
     public Date getWaktu_transaksi() {
         return waktu_transaksi;
     }

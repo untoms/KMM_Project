@@ -10,12 +10,14 @@ import com.bustomi.bookstorepos.entity.Saldo;
 import com.bustomi.bookstorepos.service.SaldoService;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author PacuL
  */
+@Service
 public class SaldoServiceImpl implements SaldoService{
     
     @Autowired

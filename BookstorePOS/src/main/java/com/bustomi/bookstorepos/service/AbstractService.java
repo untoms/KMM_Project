@@ -42,6 +42,7 @@ public abstract class AbstractService<T extends Entity<?>, Id extends Serializab
     }
 
     @Transactional
+    @Override
     public void save(T entity) {
         currentSession().saveOrUpdate(entity);
     }

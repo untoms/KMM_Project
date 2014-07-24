@@ -39,15 +39,15 @@ public class Pembelian extends TransactionEntity{
     @ManyToOne
     @JoinColumn(name = "User_Id")
     private User user;
-
+    
     @ManyToOne
     @JoinColumn(name = "Pemasok_Id")
     private Pemasok pemasok;
-
+    
     @OneToMany(mappedBy = "pembelian", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetailPembelian> daftarPembelian = new ArrayList<>();
 
-    @Column(name = "Total")
+    @Column(name = "Total", nullable = false)
     private BigDecimal total;
     
     public void tambahDetailPembelian(DetailPembelian detailPembelian) {

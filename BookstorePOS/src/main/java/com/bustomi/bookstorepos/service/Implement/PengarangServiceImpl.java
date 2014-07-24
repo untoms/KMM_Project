@@ -10,6 +10,7 @@ import com.bustomi.bookstorepos.entity.master.Pengarang;
 import com.bustomi.bookstorepos.service.PengarangService;
 import com.bustomi.bookstorepos.service.SimpleAbstractService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -20,6 +21,13 @@ public class PengarangServiceImpl extends SimpleAbstractService<Pengarang, Integ
 
     public PengarangServiceImpl() {
         super(Pengarang.class);
+    }
+    
+    @Transactional(readOnly = true)
+    @Override
+    public Pengarang find(String nama) {
+        return (Pengarang) currentSession().createQuery("From Pengarang p where p.nama= :t_nama").
+                setParameter("t_nama", nama).uniqueResult();        
     }
         
 }

@@ -32,10 +32,10 @@ public class Penerbit extends SimpleEntity<Integer>{
     @Column (name = "alamat", nullable = true, length = 255)
     private String alamat;
     
-    @Column (name = "email", nullable = true, length = 45)
+    @Column (name = "email", nullable = true, length = 50)
     private String email;
     
-    @Column (name = "telepon", nullable = true, length = 45)
+    @Column (name = "telepon", nullable = true, length = 25)
     private String telepon;
     
     @OneToMany (mappedBy = "penerbit")

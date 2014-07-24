@@ -6,7 +6,6 @@
 
 package com.bustomi.bookstorepos.entity.master;
 
-import com.bustomi.bookstorepos.entity.AutoIncreamentEntity;
 import com.bustomi.bookstorepos.entity.SimpleEntity;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +24,7 @@ import javax.persistence.Table;
 @Entity
 @Table (name = "Kategori_Barang")
 public class KategoriBarang extends SimpleEntity<Integer>{
-
+    
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
     @Column (name = "id")

@@ -23,7 +23,7 @@ public abstract class Entity<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    @Column (name = "name", nullable = false, length = 140)
+    @Column (name = "nama", nullable = false, length = 140)
     private String nama;
 
     @Column(name = "waktu_dibuat", nullable = false)
@@ -40,7 +40,7 @@ public abstract class Entity<T> implements Serializable {
     public abstract T getId();
 
     public abstract void setId(T id);
-
+    
     public String getNama() {
         return nama;
     }
@@ -66,7 +66,7 @@ public abstract class Entity<T> implements Serializable {
     public void setTerakhirDirubah(Date terakhirDirubah) {
         this.terakhirDirubah = terakhirDirubah;
     }
-
+    
     @SuppressWarnings("ReturnOfDateField")
     public Date getWaktuDibuat() {
         return waktuDibuat;

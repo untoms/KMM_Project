@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -34,15 +36,13 @@ import org.hibernate.annotations.FetchMode;
 public class Buku extends Entity<Integer>{
     
     @Id
-    @Column (name = "id",nullable = false, length = 35)
+    @GeneratedValue (strategy = GenerationType.AUTO)
+    @Column (name = "id",nullable = false)
     private Integer id;
     
     @Column (name = "ISBN",nullable = false, length = 45)
     private String ISBN;
-    
-    @Column (name = "judul",nullable = false, length = 140)
-    private String judul;
-    
+        
     @Temporal(TemporalType.DATE)
     @Column(name = "tahun_terbit")
     private Date tahun_terbit;
@@ -66,28 +66,27 @@ public class Buku extends Entity<Integer>{
     @JoinColumn(name = "Pengarang_Id", nullable = false))
     private List<Pengarang> daftarPengarang = new ArrayList<>(0);
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
-
+    
+    @Override
+    public String getNama() {
+        return super.getNama(); //To change body of generated methods, choose Tools | Templates.
+    }
+   
     public String getISBN() {
         return ISBN;
     }
 
     public void setISBN(String ISBN) {
         this.ISBN = ISBN;
-    }
-
-    public String getJudul() {
-        return judul;
-    }
-
-    public void setJudul(String judul) {
-        this.judul = judul;
     }
 
     public Date getTahun_terbit() {

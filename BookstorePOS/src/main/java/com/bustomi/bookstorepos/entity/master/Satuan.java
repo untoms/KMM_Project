@@ -6,7 +6,6 @@
 
 package com.bustomi.bookstorepos.entity.master;
 
-import com.bustomi.bookstorepos.entity.AutoIncreamentEntity;
 import com.bustomi.bookstorepos.entity.SimpleEntity;
 import java.util.Collections;
 import java.util.List;

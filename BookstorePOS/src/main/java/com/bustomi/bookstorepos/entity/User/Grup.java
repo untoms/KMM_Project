@@ -7,7 +7,9 @@
 package com.bustomi.bookstorepos.entity.User;
 
 import com.bustomi.bookstorepos.entity.Entity;
+import com.bustomi.bookstorepos.entity.SimpleEntity;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -27,7 +29,7 @@ import org.hibernate.annotations.FetchMode;
  */
 @javax.persistence.Entity
 @Table (name = "Grup")
-public class Grup extends Entity<Integer>{
+public class Grup extends SimpleEntity<Integer>{
     
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
@@ -35,10 +37,10 @@ public class Grup extends Entity<Integer>{
     
     @Fetch(FetchMode.SELECT)
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "tabel_join_grup_dan_hak_akses", joinColumns =
-    @JoinColumn(name = "id_grup", nullable = false), inverseJoinColumns =
-    @JoinColumn(name = "id_hak_akses", nullable = false))
-    private List<HakAkses> daftarHakAkses = new ArrayList<>(0);
+    @JoinTable(name = "grup_has_hak_akses", joinColumns =
+    @JoinColumn(name = "group_id", nullable = false), inverseJoinColumns =
+    @JoinColumn(name = "hak_akses_id", nullable = false))
+    private final List<HakAkses> daftarHakAkses = new ArrayList<>(0);
 
     @OneToMany(mappedBy = "grup")
     private List<User> daftarUser;
@@ -53,22 +55,41 @@ public class Grup extends Entity<Integer>{
         this.id = id;
     }
 
-    public List<HakAkses> getDaftarHakAkses() {
-        return daftarHakAkses;
-    }
-
-    public void setDaftarHakAkses(List<HakAkses> daftarHakAkses) {
-        this.daftarHakAkses = daftarHakAkses;
-    }
-
     public List<User> getDaftarUser() {
-        return daftarUser;
+        return Collections.unmodifiableList(daftarUser);
     }
 
     public void setDaftarUser(List<User> daftarUser) {
         this.daftarUser = daftarUser;
     }
+
+    public void tambahHakAkses(HakAkses hakAkses) {
+        if (!daftarHakAkses.contains(hakAkses)) {
+            daftarHakAkses.add(hakAkses);
+        }
+    }
+
+    public void hapusHakAkses(HakAkses hakAkses) {
+        if (daftarHakAkses.contains(hakAkses)) {
+            daftarHakAkses.remove(hakAkses);
+        }
+    }
+
+    public boolean mengandungHakAkses(Role constant) {
+        for (HakAkses akses : daftarHakAkses) {
+            if (akses.getId().equals(constant.toString())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void hapusSemuaHakAkses() {
+        daftarHakAkses.clear();
+    }
     
-    
-    
+    public List<HakAkses> getDaftarHakAkses() {
+        return Collections.unmodifiableList(daftarHakAkses);
+    }
+          
 }

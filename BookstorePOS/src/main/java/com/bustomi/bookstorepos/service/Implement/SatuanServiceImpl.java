@@ -10,6 +10,7 @@ import com.bustomi.bookstorepos.entity.master.Satuan;
 import com.bustomi.bookstorepos.service.SatuanService;
 import com.bustomi.bookstorepos.service.SimpleAbstractService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -20,6 +21,13 @@ public class SatuanServiceImpl extends SimpleAbstractService<Satuan, Integer>imp
 
     public SatuanServiceImpl() {
         super(Satuan.class);
+    }
+    
+    @Transactional(readOnly = true)
+    @Override
+    public Satuan find(String nama) {
+        return (Satuan) currentSession().createQuery("From Satuan s where s.nama= :t_nama").
+                setParameter("t_nama", nama).uniqueResult();        
     }
         
 }

@@ -19,6 +19,7 @@ public abstract class AbstractValidator<T> implements Validator<T>{
         throw new ValidatorException(message);
     }
 
+    @Override
     public void validate(T data) throws ValidatorException {
 
         doValidate(data);
@@ -27,7 +28,8 @@ public abstract class AbstractValidator<T> implements Validator<T>{
             Entity<?> entity = (Entity<?>) data;
             validateEntity(entity);
         }else if(data instanceof SimpleEntity){
-            validate(data);
+            SimpleEntity<?> entity=(SimpleEntity<?>) data;
+            validateEntity(entity);
         }
     }
 
@@ -35,12 +37,16 @@ public abstract class AbstractValidator<T> implements Validator<T>{
         if (entity.getId() == null) {
             throwValidatorException("Kode tidak boleh null");
         }else if (entity.getNama() == null) {
-            throwValidatorException("Nama tidak boleh null");
+            throwValidatorException("Nama atau judul tidak boleh null");
         } else if (entity.getNama().trim().isEmpty()) {
-            throwValidatorException("Nama tidak boleh kosong");
+            throwValidatorException("Nama atau judul tidak boleh kosong");
         } else if (entity.getWaktuDibuat() == null) {
-            throwValidatorException("Waktu dirubah tidak boleh null");
-        } 
+            throwValidatorException("Waktu dibuat tidak boleh null");
+        } else if(entity.getNama().length() > 140){
+            throwValidatorException("Karakter nama atau judul terlalu panjang");
+        } else if (entity.getInfo().length() > 255){
+            throwValidatorException("Karakter info terlalu panjang");
+        }
     }
     
     protected void validateEntity(SimpleEntity<?> entity) throws ValidatorException {
@@ -50,7 +56,11 @@ public abstract class AbstractValidator<T> implements Validator<T>{
             throwValidatorException("Nama tidak boleh null");
         } else if (entity.getNama().trim().isEmpty()) {
             throwValidatorException("Nama tidak boleh kosong");
-        } 
+        } else if(entity.getNama().length() > 140){
+            throwValidatorException("Karakter nama terlalu panjang");
+        } else if (entity.getInfo().length() > 255){
+            throwValidatorException("Karakter info terlalu panjang");
+        }
     }
 
     protected abstract void doValidate(T data) throws ValidatorException;

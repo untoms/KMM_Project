@@ -31,10 +31,10 @@ public class DetailPembelian extends AutoIncreamentEntity{
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
-
+    
     @Column(name = "jumlah", nullable = false)
     private Integer jumlah;
-
+    
     @Column(name = "harga", nullable = false)
     private BigDecimal harga;
 

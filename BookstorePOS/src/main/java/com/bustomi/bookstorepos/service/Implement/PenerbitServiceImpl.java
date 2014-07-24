@@ -10,6 +10,7 @@ import com.bustomi.bookstorepos.entity.master.Penerbit;
 import com.bustomi.bookstorepos.service.PenerbitService;
 import com.bustomi.bookstorepos.service.SimpleAbstractService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -20,6 +21,13 @@ public class PenerbitServiceImpl extends SimpleAbstractService<Penerbit, Integer
 
     public PenerbitServiceImpl() {
         super(Penerbit.class);
+    }
+    
+    @Transactional(readOnly = true)
+    @Override
+    public Penerbit find(String nama) {
+        return (Penerbit) currentSession().createQuery("From Penerbit p where p.nama= :t_nama").
+                setParameter("t_nama", nama).uniqueResult();        
     }
         
 }

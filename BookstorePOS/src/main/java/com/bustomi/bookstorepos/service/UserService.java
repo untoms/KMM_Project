@@ -14,4 +14,6 @@ import com.bustomi.bookstorepos.entity.User.User;
  */
 public interface UserService extends InterfaceService<User, String>{
     
+    boolean contains(String id, String kataSandi);
+    
 }

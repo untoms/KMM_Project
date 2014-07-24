@@ -13,7 +13,6 @@ import com.bustomi.bookstorepos.entity.transaksi.DetailPenjualan;
 import com.bustomi.bookstorepos.entity.transaksi.Penjualan;
 import com.bustomi.bookstorepos.service.JurnalService;
 import com.bustomi.bookstorepos.service.PenjualanService;
-import com.bustomi.bookstorepos.service.PenjualanService;
 import com.bustomi.bookstorepos.service.SaldoService;
 import java.math.BigDecimal;
 import java.util.Date;

@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
  */
 @MappedSuperclass
 public class Person extends Entity<String>{
-    
+        
     @Id
     @Column (name = "id", nullable = false, length = 35)
     private String id;
@@ -52,7 +52,7 @@ public class Person extends Entity<String>{
     public void setId(String id) {
         this.id = id;
     }
-
+    
     public String getKota() {
         return kota;
     }
@@ -60,7 +60,7 @@ public class Person extends Entity<String>{
     public void setKota(String kota) {
         this.kota = kota;
     }
-
+    
     public String getAlamat() {
         return alamat;
     }
@@ -68,7 +68,7 @@ public class Person extends Entity<String>{
     public void setAlamat(String alamat) {
         this.alamat = alamat;
     }
-
+    
     public String getTelepon() {
         return telepon;
     }
@@ -76,7 +76,7 @@ public class Person extends Entity<String>{
     public void setTelepon(String telepon) {
         this.telepon = telepon;
     }
-
+    
     public String getEmail() {
         return email;
     }
@@ -84,13 +84,21 @@ public class Person extends Entity<String>{
     public void setEmail(String email) {
         this.email = email;
     }
-
+    
     public String getKodepos() {
         return kodepos;
     }
 
     public void setKodepos(String kodepos) {
         this.kodepos = kodepos;
+    }
+    
+    public Date getTgl_lahir() {
+        return tgl_lahir;
+    }
+
+    public void setTgl_lahir(Date tgl_lahir) {
+        this.tgl_lahir = tgl_lahir;
     }
         
 }

@@ -22,6 +22,7 @@ public interface SimpleInterfaceService <T extends SimpleEntity<?>, Id extends S
     void update(T entity);
     void delete(T entity);
     T find(Id kode);
+    T find(String nama);
     List<T> findAll();
     
 }
