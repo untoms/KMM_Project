@@ -22,8 +22,6 @@ public class PenerbitValidator extends AbstractValidator<Penerbit>{
     protected void doValidate(Penerbit data) throws ValidatorException {
         if (data == null) {
             throwValidatorException("Penerbit tidak boleh null");
-        } else if (data.getId() == null) {
-            throwValidatorException("Kode Penerbit tidak boleh null");
         } else if (data.getAlamat() == null){
             throwValidatorException("Alamat tidak boleh null");
         } else if (data.getAlamat().trim().isEmpty()){

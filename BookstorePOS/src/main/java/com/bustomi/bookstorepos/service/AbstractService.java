@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,6 +72,14 @@ public abstract class AbstractService<T extends Entity<?>, Id extends Serializab
     @Override
     public List<T> findAll() {
         return currentSession().createCriteria(clazz).list();
+    }
+    
+    @Transactional(readOnly = true)
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<T> findAll(String nama) {
+        return currentSession().createCriteria(clazz).add(
+                Restrictions.like("nama", "%"+nama+"%")).list();
     }
     
 }

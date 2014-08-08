@@ -9,6 +9,7 @@ package com.bustomi.bookstorepos.validator.implement;
 import com.bustomi.bookstorepos.entity.master.Buku;
 import com.bustomi.bookstorepos.validator.AbstractValidator;
 import com.bustomi.bookstorepos.validator.ValidatorException;
+import java.util.Calendar;
 import org.springframework.stereotype.Component;
 
 /**
@@ -30,6 +31,8 @@ public class BukuValidator extends AbstractValidator<Buku>{
             throwValidatorException("ISBN tidak boleh kosong");
         } else if (data.getTahun_terbit() == null){
             throwValidatorException("Tahun terbit tidak boleh kosong");
+        } else if (data.getTahun_terbit() > Calendar.getInstance().get(Calendar.YEAR)){
+            throwValidatorException("Tahun terbit valid");
         } else if (data.getItem() == null){
             throwValidatorException("Item tidak boleh null");
         } else if (data.getKategoriBuku() == null){

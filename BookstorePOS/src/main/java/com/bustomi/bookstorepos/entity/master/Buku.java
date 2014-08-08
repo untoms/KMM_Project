@@ -9,7 +9,6 @@ package com.bustomi.bookstorepos.entity.master;
 import com.bustomi.bookstorepos.entity.Entity;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -22,8 +21,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -43,9 +40,8 @@ public class Buku extends Entity<Integer>{
     @Column (name = "ISBN",nullable = false, length = 45)
     private String ISBN;
         
-    @Temporal(TemporalType.DATE)
-    @Column(name = "tahun_terbit")
-    private Date tahun_terbit;
+    @Column(name = "tahun_terbit", length = 4)
+    private Integer tahun_terbit;
     
     @OneToOne
     @JoinColumn (name = "Item_Id",nullable = false)
@@ -64,7 +60,7 @@ public class Buku extends Entity<Integer>{
     @JoinTable(name = "Buku_has_Pengarang", joinColumns =
     @JoinColumn(name = "Buku_I", nullable = false), inverseJoinColumns =
     @JoinColumn(name = "Pengarang_Id", nullable = false))
-    private List<Pengarang> daftarPengarang = new ArrayList<>(0);
+    private final List<Pengarang> daftarPengarang = new ArrayList<>(0);
 
     @Override
     public Integer getId() {
@@ -89,11 +85,11 @@ public class Buku extends Entity<Integer>{
         this.ISBN = ISBN;
     }
 
-    public Date getTahun_terbit() {
+    public Integer getTahun_terbit() {
         return tahun_terbit;
     }
 
-    public void setTahun_terbit(Date tahun_terbit) {
+    public void setTahun_terbit(Integer tahun_terbit) {
         this.tahun_terbit = tahun_terbit;
     }
 

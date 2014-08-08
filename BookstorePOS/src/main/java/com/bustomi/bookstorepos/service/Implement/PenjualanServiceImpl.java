@@ -76,4 +76,9 @@ public class PenjualanServiceImpl implements PenjualanService{
                 + "and date(:to)").setDate("from", from).setDate("to", to).list();
     }
     
+    @Override
+    public List<Penjualan> findAll() {
+        return currentSession().createCriteria(Penjualan.class).list();
+    }
+    
 }

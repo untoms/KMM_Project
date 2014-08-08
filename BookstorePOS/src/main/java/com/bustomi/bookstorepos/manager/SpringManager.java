@@ -24,8 +24,6 @@ import com.bustomi.bookstorepos.service.PemasokService;
 import com.bustomi.bookstorepos.service.SaldoService;
 import com.bustomi.bookstorepos.service.UserService;
 import java.math.BigDecimal;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.BeansException;
@@ -62,7 +60,7 @@ public class SpringManager {
     
     private static SpringManager INSTANCE;
 
-    public static SpringManager getInstance() throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public static SpringManager getInstance() {
         
         if (SpringManager.INSTANCE == null ) {
             SpringManager.INSTANCE = new SpringManager();
@@ -75,7 +73,7 @@ public class SpringManager {
                     hakAkses.setId(constant.toString());
                     hakAkses.setNama(constant.toString());
                     hakAkses.setWaktuDibuat(new Date());
-                    hakAkses.setTerakhirDirubah(null);
+                    hakAkses.setTerakhirDirubah(new Date());
                     hakAksesService.save(hakAkses);
                 }
             }
@@ -98,14 +96,17 @@ public class SpringManager {
                 pengguna = new User();
                 pengguna.setGrup(grup);
                 pengguna.setId("admin");
-                pengguna.setNama("Administrator");
+                pengguna.setNama("Administrator");   
                 pengguna.setPassword(SimplePasswordHash.getInstance("admin").getGeneratedSecuredPasswordHash());
-                pengguna.setTerakhirDirubah(null);
+               
                 pengguna.setWaktuDibuat(new Date());
+                pengguna.setTerakhirDirubah(new Date());
                 pengguna.setAlamat("Solo");
                 pengguna.setKodepos("57468");
                 pengguna.setKota("Solo");
                 pengguna.setTelepon("0123456789");
+                pengguna.setTerakhir_login(new Date());
+                pengguna.setTerakhir_logout(new Date());
                 penggunaService.save(pengguna);
             }
             
@@ -115,7 +116,7 @@ public class SpringManager {
                 pelanggan = new Pelanggan();
                 pelanggan.setId("umum");
                 pelanggan.setNama("Tidak terdaftar");
-                pelanggan.setTerakhirDirubah(null);
+                pelanggan.setTerakhirDirubah(new Date());
                 pelanggan.setWaktuDibuat(new Date());
                 pelanggan.setAlamat("Tidak diketahui");
                 pelanggan.setKodepos("000000");
@@ -154,6 +155,7 @@ public class SpringManager {
                 pemasok.setNama("Tidak diketahui");
                 pemasok.setTelepon("Tidak diketahui");
                 pemasok.setWaktuDibuat(new Date());
+                pemasok.setTerakhirDirubah(new Date());
                 
                 pemasokService.save(pemasok);
             }

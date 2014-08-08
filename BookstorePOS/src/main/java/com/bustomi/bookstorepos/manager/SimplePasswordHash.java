@@ -6,14 +6,10 @@
 
 package com.bustomi.bookstorepos.manager;
 
-import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
-import java.util.Arrays;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -35,8 +31,12 @@ public class SimplePasswordHash {
         return pass;
     }
 
-    public String getGeneratedSecuredPasswordHash() throws NoSuchAlgorithmException, InvalidKeySpecException {
-        generatedSecuredPasswordHash = md5(pass);
+    public String getGeneratedSecuredPasswordHash()  {
+        try {
+            generatedSecuredPasswordHash = md5(pass);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(SimplePasswordHash.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return generatedSecuredPasswordHash;
     }
        
@@ -48,7 +48,7 @@ public class SimplePasswordHash {
         return Instance;
     }
            
-    private String md5(String passwordToHash) throws NoSuchAlgorithmException{
+    private String md5(String passwordToHash) throws NoSuchAlgorithmException {
         String generatedPassword = null;
         
         // Create MessageDigest instance for MD5

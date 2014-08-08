@@ -50,6 +50,9 @@ public class Pembelian extends TransactionEntity{
     @Column(name = "Total", nullable = false)
     private BigDecimal total;
     
+    @Column(name = "Bayar", nullable = false)
+    private BigDecimal bayar;
+    
     public void tambahDetailPembelian(DetailPembelian detailPembelian) {
         detailPembelian.setPembelian(this);
         daftarPembelian.add(detailPembelian);
@@ -104,6 +107,14 @@ public class Pembelian extends TransactionEntity{
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    public BigDecimal getBayar() {
+        return bayar;
+    }
+
+    public void setBayar(BigDecimal bayar) {
+        this.bayar = bayar;
     }
     
 }

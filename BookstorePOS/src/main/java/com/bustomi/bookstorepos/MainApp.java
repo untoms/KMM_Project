@@ -7,6 +7,8 @@
 package com.bustomi.bookstorepos;
 
 import com.bustomi.bookstorepos.manager.SpringManager;
+import com.bustomi.bookstorepos.view.MainFrame;
+import com.bustomi.bookstorepos.view.dialog.DialogLogin;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.logging.Level;
@@ -14,7 +16,6 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 /**
  *
@@ -23,10 +24,10 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 public class MainApp implements Runnable {
 
-//    private FormMainApp form;
+    private MainFrame form;
 
-    public MainApp() {
-//        form = new FormMainApp();
+    public MainApp() throws NoSuchAlgorithmException {
+        form = new MainFrame();
     }
 
     public void start() {
@@ -35,9 +36,9 @@ public class MainApp implements Runnable {
 
     @Override
     public void run() {
-//        form.setVisible(true);
-//        LoginView view = new LoginView(form);
-//        view.display(form, null);
+        form.setVisible(true);
+        DialogLogin view = new DialogLogin(form);
+        view.display(form, null);
     }
 
     /**
@@ -46,17 +47,20 @@ public class MainApp implements Runnable {
      * @throws java.security.NoSuchAlgorithmException
      */
     public static void main(String[] args) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    
         try {
-            UIManager.setLookAndFeel(new NimbusLookAndFeel());
-        } catch (UnsupportedLookAndFeelException ex) {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | 
+                UnsupportedLookAndFeelException ex) {
             Logger.getLogger(MainApp.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+        } finally {            
             // ini spring
             SpringManager.getInstance();
             
             // run app
             MainApp app = new MainApp();
-            app.start();
+            app.start();            
         }
+           
     }
 }

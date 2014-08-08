@@ -23,13 +23,13 @@ import javax.persistence.TemporalType;
 @Entity
 @Table (name = "User")
 public class User extends Person{
-    
+        
+    @Column (name = "terakhir_login",nullable = true)
     @Temporal (TemporalType.TIMESTAMP)
-    @Column (name = "terakhir_login")
     private Date Terakhir_login;
-    
+        
+    @Column (name = "terakhir_logout",nullable = true)
     @Temporal (TemporalType.TIMESTAMP)
-    @Column (name = "terakhir_logout")
     private Date Terakhir_logout;
     
     @Column (name = "password",nullable = false, length = 255)
@@ -38,19 +38,23 @@ public class User extends Person{
     @ManyToOne 
     @JoinColumn (name = "Grup_Id")
     private Grup grup;
-
+    
+    @SuppressWarnings("ReturnOfDateField")
     public Date getTerakhir_login() {
         return Terakhir_login;
     }
-
+    
+    @SuppressWarnings("AssignmentToDateFieldFromParameter")
     public void setTerakhir_login(Date Terakhir_login) {
         this.Terakhir_login = Terakhir_login;
     }
-
+    
+    @SuppressWarnings("ReturnOfDateField")
     public Date getTerakhir_logout() {
         return Terakhir_logout;
     }
-
+    
+    @SuppressWarnings("AssignmentToDateFieldFromParameter")
     public void setTerakhir_logout(Date Terakhir_logout) {
         this.Terakhir_logout = Terakhir_logout;
     }
@@ -71,7 +75,5 @@ public class User extends Person{
     public void setGrup(Grup grup) {
         this.grup = grup;
     }
-    
-    
     
 }

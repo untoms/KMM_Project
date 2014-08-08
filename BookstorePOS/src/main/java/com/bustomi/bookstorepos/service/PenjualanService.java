@@ -19,4 +19,5 @@ public interface PenjualanService {
     void save(Penjualan penjualan);
 
     public List<Penjualan> findAll(Date from, Date to);
+    public List<Penjualan> findAll();
 }

@@ -9,7 +9,7 @@ package com.bustomi.bookstorepos.manager;
 import com.bustomi.bookstorepos.entity.User.User;
 import com.bustomi.bookstorepos.service.UserService;
 import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
+import java.util.Date;
 
 /**
  *
@@ -32,7 +32,7 @@ public class LoginManager {
         // singleton class
     }
 
-    public boolean login(String username, String password) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public boolean login(String username, String password) {
         if (getUserService().contains(username, SimplePasswordHash.getInstance(password).getGeneratedSecuredPasswordHash())) {
             this.id = username;
             return true;
@@ -41,11 +41,14 @@ public class LoginManager {
         }
     }
 
-    public void logout() {
+    public void logout() throws NoSuchAlgorithmException  {
+        getUser().setTerakhir_logout(new Date());
+        User user=getUser();
+        getUserService().save(user);
         this.id = null;
     }
 
-    public User getUser() throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public User getUser() throws NoSuchAlgorithmException {
         if (id == null) {
             return null;
         } else {
@@ -53,7 +56,7 @@ public class LoginManager {
         }
     }
 
-    private UserService getUserService() throws  NoSuchAlgorithmException, InvalidKeySpecException {
+    private UserService getUserService()  {
         return SpringManager.getInstance().getBean(UserService.class);
     }
     

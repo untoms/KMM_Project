@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +43,7 @@ public abstract class SimpleAbstractService<T extends SimpleEntity<?>, Id extend
     }
 
     @Transactional
+    @Override
     public void save(T entity) {
         currentSession().saveOrUpdate(entity);
     }
@@ -70,6 +72,14 @@ public abstract class SimpleAbstractService<T extends SimpleEntity<?>, Id extend
     @Override
     public List<T> findAll() {
         return currentSession().createCriteria(clazz).list();
+    }
+    
+    @Transactional(readOnly = true)
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<T> findAll(String nama) {
+        return currentSession().createCriteria(clazz).add(
+                Restrictions.like("nama", "%"+nama+"%")).list();
     }
     
 }

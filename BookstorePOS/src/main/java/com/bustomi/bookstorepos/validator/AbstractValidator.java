@@ -50,9 +50,7 @@ public abstract class AbstractValidator<T> implements Validator<T>{
     }
     
     protected void validateEntity(SimpleEntity<?> entity) throws ValidatorException {
-        if (entity.getId() == null) {
-            throwValidatorException("Kode tidak boleh null");
-        }else if (entity.getNama()== null) {
+        if (entity.getNama()== null) {
             throwValidatorException("Nama tidak boleh null");
         } else if (entity.getNama().trim().isEmpty()) {
             throwValidatorException("Nama tidak boleh kosong");

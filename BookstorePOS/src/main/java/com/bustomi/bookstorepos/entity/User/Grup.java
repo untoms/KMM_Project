@@ -6,7 +6,6 @@
 
 package com.bustomi.bookstorepos.entity.User;
 
-import com.bustomi.bookstorepos.entity.Entity;
 import com.bustomi.bookstorepos.entity.SimpleEntity;
 import java.util.ArrayList;
 import java.util.Collections;

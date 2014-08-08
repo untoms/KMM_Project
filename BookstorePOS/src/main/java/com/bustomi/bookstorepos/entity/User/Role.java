@@ -12,22 +12,38 @@ package com.bustomi.bookstorepos.entity.User;
  */
 public enum Role {
 
-    LIHAT_KATEGORI("Lihat Kategori"),
-    TAMBAH_KATEGORI("Tambah Kategori"),
-    UBAH_KATEGORI("Ubah Kategori"),
-    HAPUS_KATEGORI("Hapus Kategori"),
+    LIHAT_KATEGORI_BUKU("Lihat Kategori Buku"),
+    TAMBAH_KATEGORI_BUKU("Tambah Kategori Buku"),
+    UBAH_KATEGORI_BUKU("Ubah Kategori Buku"),
+    HAPUS_KATEGORI_BUKU("Hapus Kategori Buku"),
+    LIHAT_KATEGORI_BARANG("Lihat Kategori Barang"),
+    TAMBAH_KATEGORI_BARANG("Tambah Kategori Barang"),
+    UBAH_KATEGORI_BARANG("Ubah Kategori Barang"),
+    HAPUS_KATEGORI_BARANG("Hapus Kategori Barang"),
     LIHAT_SATUAN("Lihat Satuan"),
     TAMBAH_SATUAN("Tambah Satuan"),
     UBAH_SATUAN("Ubah Satuan"),
     HAPUS_SATUAN("Hapus Satuan"),
+    LIHAT_BUKU("Lihat Buku"),
+    TAMBAH_BUKU("Tambah Buku"),
+    UBAH_BUKU("Ubah Buku"),
+    HAPUS_BUKU("Hapus Buku"),
+    LIHAT_PENGARANG("Lihat Pengarang"),
+    TAMBAH_PENGARANG("Tambah Pengarang"),
+    UBAH_PENGARANG("Ubah Pengarang"),
+    HAPUS_PENGARANG("Hapus Pengarang"),
+    LIHAT_PENERBIT("Lihat Penerbit"),
+    TAMBAH_PENERBIT("Tambah Penerbit"),
+    UBAH_PENERBIT("Ubah Penerbit"),
+    HAPUS_PENERBIT("Hapus Penerbit"),
     LIHAT_BARANG("Lihat Barang"),
     TAMBAH_BARANG("Tambah Barang"),
     UBAH_BARANG("Ubah Barang"),
-    HAPUS_BARANG("HAPUS Barang"),
-    LIHAT_DETAIL_BARANG("Lihat Detail Barang"),
-    TAMBAH_DETAIL_BARANG("Tambah Detail Barang"),
-    UBAH_DETAIL_BARANG("Ubah Detail Barang"),
-    HAPUS_DETAIL_BARANG("Hapus Detail Barang"),
+    HAPUS_BARANG("Hapus Barang"),
+    LIHAT_ITEM("Lihat Item"),
+    TAMBAH_ITEM("Tambah Item"),
+    UBAH_ITEM("Ubah Item"),
+    HAPUS_ITEM("Hapus Item"),
     LIHAT_PEMASOK("Lihat Pemasok"),
     TAMBAH_PEMASOK("Tambah Pemasok"),
     UBAH_PEMASOK("Ubah Pemasok"),
@@ -62,7 +78,7 @@ public enum Role {
     LIHAT_LAPORAN_PEMBELIAN("Lihat Laporan Pembelian"),
     LIHAT_LAPORAN_KEUNTUNGAN("Lihat Laporan Keuntungan");
 
-    private String nama;
+    private final String nama;
 
     private Role(String nama) {
         this.nama = nama;

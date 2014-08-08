@@ -23,5 +23,6 @@ public interface InterfaceService <T extends Entity<?>, Id extends Serializable>
     void delete(T entity);
     T find(Id kode);
     List<T> findAll();
+    List<T> findAll(String nama);
     
 }
