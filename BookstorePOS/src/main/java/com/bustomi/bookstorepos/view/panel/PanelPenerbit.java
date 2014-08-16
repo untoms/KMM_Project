@@ -6,7 +6,11 @@
 
 package com.bustomi.bookstorepos.view.panel;
 
+import com.bustomi.bookstorepos.entity.User.Grup;
+import com.bustomi.bookstorepos.entity.User.Role;
+import com.bustomi.bookstorepos.entity.User.User;
 import com.bustomi.bookstorepos.entity.master.Penerbit;
+import com.bustomi.bookstorepos.manager.LoginManager;
 import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.service.PenerbitService;
 import com.bustomi.bookstorepos.view.dialog.DialogPenerbit;
@@ -31,7 +35,7 @@ public class PanelPenerbit extends javax.swing.JPanel {
         TabelPenerbit.setModel(modelPenerbit);
         
         loadData();
-        
+        TabelPenerbit.getColumnModel().getColumn(0).setMaxWidth(50);
         TabelPenerbit.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
         TabelPenerbit.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
         TabelPenerbit.getColumnModel().getColumn(2).setCellRenderer(new HurufRender());
@@ -39,6 +43,12 @@ public class PanelPenerbit extends javax.swing.JPanel {
         TabelPenerbit.getColumnModel().getColumn(4).setCellRenderer(new HurufRender());         
         TabelPenerbit.getColumnModel().getColumn(5).setCellRenderer(new HurufRender());  
         TabelPenerbit.getTableHeader().setAlignmentY(CENTER_ALIGNMENT);
+        
+        User user=LoginManager.getInstance().getUser();
+        Grup grup=user.getGrup();
+        buttonGreen1.setEnabled(grup.mengandungHakAkses(Role.TAMBAH_PENERBIT));
+        buttonYellow1.setEnabled(grup.mengandungHakAkses(Role.UBAH_PENERBIT));
+        buttonRed1.setEnabled(grup.mengandungHakAkses(Role.HAPUS_PENERBIT));
     }
 
     /**
@@ -134,7 +144,7 @@ public class PanelPenerbit extends javax.swing.JPanel {
         panelX2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Judul :");
+        jLabel2.setText("Nama :");
 
         buttonMin2.setText("Filter");
         buttonMin2.addActionListener(new java.awt.event.ActionListener() {
@@ -302,7 +312,7 @@ public class PanelPenerbit extends javax.swing.JPanel {
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX1;
     // End of variables declaration//GEN-END:variables
     
-    public void loadData() {
+    private void loadData() {
         PenerbitService penerbitService=SpringManager.getInstance().getBean(PenerbitService.class);
         modelPenerbit.load(penerbitService.findAll());
     }

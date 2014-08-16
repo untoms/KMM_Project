@@ -20,8 +20,11 @@ import com.bustomi.bookstorepos.manager.LoginManager;
 import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.service.UserService;
 import com.bustomi.bookstorepos.view.dialog.DialogLogin;
+import com.bustomi.bookstorepos.view.panel.PanelBarang;
 import com.bustomi.bookstorepos.view.panel.PanelBuku;
 import com.bustomi.bookstorepos.view.panel.PanelGrup;
+import com.bustomi.bookstorepos.view.panel.PanelHutang;
+import com.bustomi.bookstorepos.view.panel.PanelKatalogBuku;
 import com.bustomi.bookstorepos.view.panel.PanelKategoriBarang;
 import com.bustomi.bookstorepos.view.panel.PanelKategoriBuku;
 import com.bustomi.bookstorepos.view.panel.PanelPelanggan;
@@ -31,14 +34,14 @@ import com.bustomi.bookstorepos.view.panel.PanelPenerbit;
 import com.bustomi.bookstorepos.view.panel.PanelPengarang;
 import com.bustomi.bookstorepos.view.panel.PanelPenjualan;
 import com.bustomi.bookstorepos.view.panel.PanelSatuan;
+import com.bustomi.bookstorepos.view.panel.PanelTransPembelian;
+import com.bustomi.bookstorepos.view.panel.PanelTransPenjualan;
 import com.bustomi.bookstorepos.view.panel.PanelUser;
 import com.bustomi.bookstorepos.view.panel.PanelWelcome;
 import java.awt.CardLayout;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
+import java.awt.EventQueue;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 
 /**
@@ -48,7 +51,7 @@ import java.util.logging.Logger;
 public class MainFrame extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 1L;
-
+    
     private final PanelWelcome panelWelcome;
     private final PanelBuku panelBuku;
     private final PanelPemasok panelPemasok;
@@ -62,8 +65,13 @@ public class MainFrame extends javax.swing.JFrame {
     private final PanelGrup panelGrup;
     private final PanelPembelian panelPembelian;
     private final PanelPenjualan panelPenjualan;
+    private final PanelTransPembelian panelTransPembelian;
+    private final PanelBarang panelBarang;
+    private final PanelTransPenjualan panelTransPenjualan;
+    private final PanelKatalogBuku panelKatalogBuku;
+    private final PanelHutang panelHutang;
     
-    public MainFrame() throws NoSuchAlgorithmException {
+    public MainFrame()  {
         initComponents();
         
         panelWelcome =new PanelWelcome();
@@ -104,6 +112,21 @@ public class MainFrame extends javax.swing.JFrame {
         
         panelPembelian = new PanelPembelian();
         PanelCard.add(panelPembelian, "pembelian");
+        
+        panelTransPembelian = new PanelTransPembelian();
+        PanelCard.add(panelTransPembelian, "transPembelian");
+        
+        panelBarang = new PanelBarang();
+        PanelCard.add(panelBarang, "barang");
+        
+        panelTransPenjualan = new PanelTransPenjualan();
+        PanelCard.add(panelTransPenjualan, "transPenjualan");
+        
+        panelKatalogBuku = new PanelKatalogBuku();
+        PanelCard.add(panelKatalogBuku, "katalog");
+        
+        panelHutang = new PanelHutang();
+        PanelCard.add(panelHutang, "hutang");
         
     }
 
@@ -149,6 +172,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuDaftarTrans = new javax.swing.JMenu();
         jMenuItemDaftarPenjualan = new javax.swing.JMenuItem();
         jMenuItemDaftarPembelian = new javax.swing.JMenuItem();
+        jMenuItemDaftarUtang = new javax.swing.JMenuItem();
         jMenuHakAkses = new javax.swing.JMenu();
         jMenuItemGrup = new javax.swing.JMenuItem();
         jMenuItemPengguna = new javax.swing.JMenuItem();
@@ -156,10 +180,10 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItemLapPenjualan = new javax.swing.JMenuItem();
         jMenuItemLapPembelian = new javax.swing.JMenuItem();
         jMenuItemLapJurnal = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        jMenuTentang = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("UNS Bookstore");
+        setTitle("Bookstore POS");
 
         panelXBack1.setName("panelXBack1"); // NOI18N
 
@@ -416,6 +440,15 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenuDaftarTrans.add(jMenuItemDaftarPembelian);
 
+        jMenuItemDaftarUtang.setText("Hutang");
+        jMenuItemDaftarUtang.setName("jMenuItemDaftarUtang"); // NOI18N
+        jMenuItemDaftarUtang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionMenuItem(evt);
+            }
+        });
+        jMenuDaftarTrans.add(jMenuItemDaftarUtang);
+
         jMenuTransaksi.add(jMenuDaftarTrans);
 
         jMenuBarApp.add(jMenuTransaksi);
@@ -480,9 +513,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBarApp.add(jMenuLaporan);
 
-        jMenu1.setText("Tentang");
-        jMenu1.setName("jMenu1"); // NOI18N
-        jMenuBarApp.add(jMenu1);
+        jMenuTentang.setText("Tentang");
+        jMenuTentang.setName("jMenuTentang"); // NOI18N
+        jMenuBarApp.add(jMenuTentang);
 
         setJMenuBar(jMenuBarApp);
 
@@ -493,7 +526,8 @@ public class MainFrame extends javax.swing.JFrame {
     private void actionMenuItem(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionMenuItem
         Object source = evt.getSource();
         if (source == jMenuItemBarang) {
-            
+            CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
+            cardLayout.show(PanelCard, "barang");
         } else if (source == jMenuItemKategoriBuku){
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
             cardLayout.show(PanelCard, "kategoriBuku");
@@ -516,13 +550,26 @@ public class MainFrame extends javax.swing.JFrame {
         } else if (source == jMenuItemKategori) {
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
             cardLayout.show(PanelCard, "kategoriBarang");
-        } else if (source == jMenuItemKeluarAplikasi) {
-            try {
-                LoginManager.getInstance().logout();
-            } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            } 
-            new DialogLogin(this).setVisible(true);
+        } else if (source == jMenuItemKeluarAplikasi) { 
+            LoginManager.getInstance().logout();
+            this.dispose();
+            
+            EventQueue.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    DialogLogin login=new DialogLogin();
+                    login.setVisible(true);
+                    MainFrame frame;
+                    if (!login.isDisplayable()) {
+                        frame = new MainFrame();
+                        frame.renderHakAkses();
+                        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+                        frame.setVisible(true);
+                    }
+                }
+            });
+            
         } else if (source == jMenuItemLapJurnal) {
             
         } else if (source == jMenuItemPelanggan) {
@@ -534,7 +581,8 @@ public class MainFrame extends javax.swing.JFrame {
         } else if (source == jMenuItemLapPenjualan) {
             
         } else if (source == jMenuItemPembelian) {
-            
+            CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
+            cardLayout.show(PanelCard, "transPembelian");
         } else if (source == jMenuItemLapPembelian) {
             
         } else if (source == jMenuItemPengguna) {
@@ -543,7 +591,8 @@ public class MainFrame extends javax.swing.JFrame {
         } else if (source == jMenuItemPenjual) {
             
         } else if (source == jMenuItemPenjualan) {
-            
+            CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
+            cardLayout.show(PanelCard, "transPenjualan");             
         } else if (source == jMenuItemSatuan) {
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
             cardLayout.show(PanelCard, "satuan");
@@ -558,16 +607,23 @@ public class MainFrame extends javax.swing.JFrame {
             cardLayout.show(PanelCard, "buku");
         } else if (source == jMenuItemDaftarPembelian) {
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
-            cardLayout.show(PanelCard, "penjualan");
+            cardLayout.show(PanelCard, "pembelian");
         } else if (source == jMenuItemDaftarPenjualan){
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
-            cardLayout.show(PanelCard, "pembelian");
+            cardLayout.show(PanelCard, "penjualan");
+        } else if (source == jMenuHome){
+            CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
+            cardLayout.show(PanelCard, "welcome");
+        } else if(source == jMenuTentang){
+            
+        } else if(source == jMenuItemDaftarUtang){
+            CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
+            cardLayout.show(PanelCard, "hutang");
         } 
     }//GEN-LAST:event_actionMenuItem
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelCard;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenuAplikasi;
     private javax.swing.JMenuBar jMenuBarApp;
     private javax.swing.JMenu jMenuDaftarTrans;
@@ -578,6 +634,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemBuku;
     private javax.swing.JMenuItem jMenuItemDaftarPembelian;
     private javax.swing.JMenuItem jMenuItemDaftarPenjualan;
+    private javax.swing.JMenuItem jMenuItemDaftarUtang;
     private javax.swing.JMenuItem jMenuItemGrup;
     private javax.swing.JMenuItem jMenuItemJabatan;
     private javax.swing.JMenuItem jMenuItemKaryawan;
@@ -601,6 +658,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemTutupAplikasi;
     private javax.swing.JMenu jMenuLaporan;
     private javax.swing.JMenu jMenuOperasional;
+    private javax.swing.JMenu jMenuTentang;
     private javax.swing.JMenu jMenuTransaksi;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
@@ -610,7 +668,7 @@ public class MainFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
    
-    public void renderHakAkses() throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public void renderHakAkses() {
         User user = LoginManager.getInstance().getUser();
         user.setTerakhir_login(new Date());
         SpringManager.getInstance().getBean(UserService.class).update(user);
@@ -634,7 +692,6 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItemKategoriBuku.setEnabled(grup.mengandungHakAkses(Role.LIHAT_KATEGORI_BUKU));
         jMenuItemPenerbit.setEnabled(grup.mengandungHakAkses(Role.LIHAT_PENERBIT));
         jMenuItemPengarang.setEnabled(grup.mengandungHakAkses(Role.LIHAT_PENGARANG));
-        jMenuItemPenerbit.setEnabled(grup.mengandungHakAkses(Role.LIHAT_PENERBIT));
         jMenuItemBuku.setEnabled(grup.mengandungHakAkses(Role.LIHAT_BUKU));
 
     }

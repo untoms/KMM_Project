@@ -6,7 +6,6 @@
 
 package com.bustomi.bookstorepos.view.tablemodel;
 
-import com.bustomi.bookstorepos.entity.transaksi.Pembelian;
 import com.bustomi.bookstorepos.entity.transaksi.Penjualan;
 
 /**
@@ -40,7 +39,7 @@ public class TabelModelPenjualan extends ParentTableModel<Penjualan>{
             case 0 : return "No.";
             case 1 : return "Kode";
             case 2 : return "Waktu";
-            case 3 : return "Pengguna";
+            case 3 : return "Pelanggan";
             case 4 : return "User";
             case 5 : return "Total";
             case 6 : return "Keuntungan";

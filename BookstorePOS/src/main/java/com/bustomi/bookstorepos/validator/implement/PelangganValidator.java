@@ -47,14 +47,14 @@ public class PelangganValidator extends AbstractValidator<Pelanggan>{
             throwValidatorException("Telepon tidak boleh kosong");
         } else if (data.getTelepon().length() > 25){
             throwValidatorException("Karakter telepon terlalu panjang");
-        } else if (!data.getEmail().contains("@") && !data.getEmail().contains(".")){
+        } else if (!data.getEmail().contains("@") || !data.getEmail().contains(".")){
             throwValidatorException("Email tidak valid");
         } else if (data.getEmail().length() > 50){
             throwValidatorException("Karakter email terlalu panjang");
         }else if (data.getKodepos().length() > 6){
             throwValidatorException("Kodepos terlalu panjang");
-        }else if (data.getTgl_lahir().compareTo(new Date()) < 0){
-            throwValidatorException("Tanggal lahir tidak valid");
+        }else if (data.getTgl_lahir().compareTo(new Date()) >= 0){
+            throwValidatorException("Tanggal lahir tidak boleh di masa depan");
         }
     }
     

@@ -17,8 +17,9 @@ import java.util.List;
 public interface PembelianService {
 
     void save(Pembelian pembelian);
-
-    public List<Pembelian> findAll(Date from, Date to);
-    
-    public List<Pembelian> findAll();
+    void update(Pembelian pembelian);
+    List<Pembelian> findAll(Date from, Date to);    
+    List<Pembelian> findAll();    
+    List<Pembelian> findHutang();
+    List<Pembelian> findHutangTgl(Date from, Date to);;
 }

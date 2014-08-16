@@ -6,7 +6,11 @@
 
 package com.bustomi.bookstorepos.view.panel;
 
+import com.bustomi.bookstorepos.entity.User.Grup;
+import com.bustomi.bookstorepos.entity.User.Role;
+import com.bustomi.bookstorepos.entity.User.User;
 import com.bustomi.bookstorepos.entity.master.Pelanggan;
+import com.bustomi.bookstorepos.manager.LoginManager;
 import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.service.PelangganService;
 import com.bustomi.bookstorepos.view.dialog.DialogPelanggan;
@@ -31,7 +35,7 @@ public class PanelPelanggan extends javax.swing.JPanel {
         TabelPelanggan.setModel(modelPelanggan);
         
         loadData();
-        
+        TabelPelanggan.getColumnModel().getColumn(0).setMaxWidth(50);
         TabelPelanggan.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
         TabelPelanggan.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
         TabelPelanggan.getColumnModel().getColumn(2).setCellRenderer(new HurufRender());
@@ -42,6 +46,12 @@ public class PanelPelanggan extends javax.swing.JPanel {
         TabelPelanggan.getColumnModel().getColumn(7).setCellRenderer(new HurufRender());         
         TabelPelanggan.getColumnModel().getColumn(8).setCellRenderer(new HurufRender());  
         TabelPelanggan.getTableHeader().setAlignmentY(CENTER_ALIGNMENT);
+        
+        User user=LoginManager.getInstance().getUser();
+        Grup grup=user.getGrup();
+        buttonGreen1.setEnabled(grup.mengandungHakAkses(Role.TAMBAH_PELANGGAN));
+        buttonYellow1.setEnabled(grup.mengandungHakAkses(Role.UBAH_PELANGGAN));
+        buttonRed1.setEnabled(grup.mengandungHakAkses(Role.HAPUS_PELANGGAN));
     }
 
     /**
@@ -137,7 +147,7 @@ public class PanelPelanggan extends javax.swing.JPanel {
         panelX2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Judul :");
+        jLabel2.setText("Nama :");
 
         buttonMin2.setText("Filter");
         buttonMin2.addActionListener(new java.awt.event.ActionListener() {
@@ -306,7 +316,7 @@ public class PanelPelanggan extends javax.swing.JPanel {
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX1;
     // End of variables declaration//GEN-END:variables
     
-    public void loadData() {
+    private void loadData() {
         PelangganService pelangganService=SpringManager.getInstance().getBean(PelangganService.class);
         modelPelanggan.load(pelangganService.findAll());
     }

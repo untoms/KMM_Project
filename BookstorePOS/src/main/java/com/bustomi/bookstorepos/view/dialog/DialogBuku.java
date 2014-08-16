@@ -11,16 +11,14 @@ import com.bustomi.bookstorepos.entity.master.Item;
 import com.bustomi.bookstorepos.entity.master.KategoriBuku;
 import com.bustomi.bookstorepos.entity.master.Penerbit;
 import com.bustomi.bookstorepos.entity.master.Pengarang;
+import com.bustomi.bookstorepos.entity.transaksi.DetailPembelian;
 import com.bustomi.bookstorepos.manager.SpringManager;
-import com.bustomi.bookstorepos.service.BukuService;
-import com.bustomi.bookstorepos.service.ItemService;
 import com.bustomi.bookstorepos.service.KategoriBukuService;
 import com.bustomi.bookstorepos.service.PenerbitService;
 import com.bustomi.bookstorepos.validator.ValidatorException;
 import com.bustomi.bookstorepos.validator.implement.BukuValidator;
 import com.bustomi.bookstorepos.validator.implement.ItemValidator;
 import java.awt.Color;
-import java.awt.Window;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.math.BigDecimal;
@@ -36,6 +34,8 @@ import javax.swing.JOptionPane;
 public class DialogBuku extends javax.swing.JDialog {
 
     private Buku buku;
+    private Item item;
+    private DetailPembelian detailPembelian;
     private boolean editMode;
     private boolean deleteMode;
     private boolean okhapus;
@@ -93,15 +93,33 @@ public class DialogBuku extends javax.swing.JDialog {
         jLabelInfo.setText("Tambah Buku Baru");
         setTitle("Tambah Buku Baru");
         
+        textFormatXJmlhBeli.setEnabled(false);
+        
         setVisible(true);
         return buku;
+    }
+    
+    public DetailPembelian tambahDetail() {
+        
+        loadKategori();
+        loadPenerbit();
+        
+        editMode = false;        
+        deleteMode = false;
+        textFormatXStok.setEnabled(false);
+        
+        jLabelInfo.setText("Tambah Buku Baru");
+        setTitle("Tambah Buku Baru");
+        
+        setVisible(true);
+        return detailPembelian;
     }
     
     public Buku ubah(Buku parameter){
         
         loadKategori();
         loadPenerbit();
-        
+        System.out.println("Kategori : "+parameter.getKategoriBuku().getNama());
         editMode = true;
         deleteMode = false;
         
@@ -119,6 +137,11 @@ public class DialogBuku extends javax.swing.JDialog {
         textFormatXStok.setValue(parameter.getItem().getStok());
         textFormatXTahun.setValue(parameter.getTahun_terbit());
         
+        textFormatXJmlhBeli.setEnabled(false);
+        
+        comboBoxKategori.setSelectedItem(parameter.getKategoriBuku());
+        comboBoxPenrbit.setSelectedItem(parameter.getPenerbit());
+        
         labelDibuat.setText(parameter.getWaktuDibuat().toString());
         labelDiubah.setText(parameter.getTerakhirDirubah().toString());
         
@@ -127,6 +150,7 @@ public class DialogBuku extends javax.swing.JDialog {
         }
         
         buku = parameter;
+        item = parameter.getItem();
         
         setVisible(true);
         
@@ -134,6 +158,9 @@ public class DialogBuku extends javax.swing.JDialog {
     }
     
     public void detail(Buku parameter) {
+        
+        editMode = false;
+        deleteMode = false;
                 
         jLabelInfo.setText("Detail Buku");
         setTitle("Detail Buku");
@@ -155,6 +182,8 @@ public class DialogBuku extends javax.swing.JDialog {
         textFormatXStok.setEnabled(false);
         textFormatXTahun.setValue(parameter.getTahun_terbit());
         textFormatXTahun.setEnabled(false);
+        
+        textFormatXJmlhBeli.setEnabled(false);
         
         comboBoxKategori.setSelectedItem(parameter.getKategoriBuku());
         comboBoxKategori.setEnabled(false);
@@ -205,6 +234,8 @@ public class DialogBuku extends javax.swing.JDialog {
         comboBoxKategori.setEnabled(false);
         comboBoxPenrbit.setSelectedItem(parameter.getPenerbit());
         comboBoxPenrbit.setEnabled(false);
+        
+        textFormatXJmlhBeli.setEnabled(false);
         
         labelDibuat.setText(parameter.getWaktuDibuat().toString());
         labelDiubah.setText(parameter.getTerakhirDirubah().toString());
@@ -269,6 +300,8 @@ public class DialogBuku extends javax.swing.JDialog {
         jLabel15 = new javax.swing.JLabel();
         labelPemasok = new javax.swing.JLabel();
         buttonBlue1 = new com.bustomi.bookstorepos.component.ButtonBlue();
+        jLabel16 = new javax.swing.JLabel();
+        textFormatXJmlhBeli = new com.bustomi.bookstorepos.component.TextFormatX();
         jLabelInfo = new javax.swing.JLabel();
         panelX2 = new com.bustomi.bookstorepos.component.PanelX();
         buttonGreen1 = new com.bustomi.bookstorepos.component.ButtonGreen();
@@ -299,7 +332,8 @@ public class DialogBuku extends javax.swing.JDialog {
             }
         });
 
-        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder("Data Buku"));
+        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Buku", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        panelX1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -308,12 +342,6 @@ public class DialogBuku extends javax.swing.JDialog {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Judul :");
-
-        textFieldXId.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textFieldXIdActionPerformed(evt);
-            }
-        });
 
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -341,7 +369,7 @@ public class DialogBuku extends javax.swing.JDialog {
 
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel11.setText("Stok :");
+        jLabel11.setText("Jumlah Beli :");
 
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -349,17 +377,6 @@ public class DialogBuku extends javax.swing.JDialog {
 
         checkBoxAuto.setText("Otomatis");
         checkBoxAuto.setOpaque(false);
-        checkBoxAuto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                checkBoxAutoActionPerformed(evt);
-            }
-        });
-
-        textFieldXISBN.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textFieldXISBNActionPerformed(evt);
-            }
-        });
 
         jScrollPanePengarang.setOpaque(false);
         jScrollPanePengarang.setViewport(viewPortX3);
@@ -414,126 +431,146 @@ public class DialogBuku extends javax.swing.JDialog {
             }
         });
 
+        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel16.setText("Stok :");
+
+        textFormatXJmlhBeli.setValue(1);
+
         javax.swing.GroupLayout panelX1Layout = new javax.swing.GroupLayout(panelX1);
         panelX1.setLayout(panelX1Layout);
         panelX1Layout.setHorizontalGroup(
             panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelX1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelX1Layout.createSequentialGroup()
-                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelX1Layout.createSequentialGroup()
-                                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(comboBoxPenrbit, javax.swing.GroupLayout.Alignment.LEADING, 0, 196, Short.MAX_VALUE)
-                                    .addComponent(comboBoxKategori, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(textFieldXISBN, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(textFormatXTahun, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(27, 27, 27)
-                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelX1Layout.createSequentialGroup()
-                                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(buttonBlue1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPanePengarang, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(16, 16, 16)
-                                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
-                                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelPemasok, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
-                            .addGroup(panelX1Layout.createSequentialGroup()
-                                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(labelDiubah, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(labelDibuat, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jScrollPaneInfo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE))
-                                .addGap(0, 6, Short.MAX_VALUE))))
-                    .addGroup(panelX1Layout.createSequentialGroup()
-                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(panelX1Layout.createSequentialGroup()
-                                .addComponent(textFieldXId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(checkBoxAuto))
-                            .addComponent(jScrollPaneNama, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(20, 20, 20)
                         .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(textFormatXHJual, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(buttonBlue1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPanePengarang, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(comboBoxPenrbit, javax.swing.GroupLayout.Alignment.LEADING, 0, 196, Short.MAX_VALUE)
+                                .addComponent(comboBoxKategori, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(textFormatXTahun, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(panelX1Layout.createSequentialGroup()
+                                    .addComponent(textFieldXId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(checkBoxAuto))
+                                .addComponent(jScrollPaneNama, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelX1Layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textFieldXISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(panelX1Layout.createSequentialGroup()
+                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                                .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(labelPemasok, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+                            .addComponent(labelDibuat, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labelDiubah, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(panelX1Layout.createSequentialGroup()
+                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPaneInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
                             .addComponent(textFormatXStok, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(textFormatXHBeli, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                            .addComponent(textFormatXJmlhBeli, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(textFormatXHBeli, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(textFormatXHJual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelX1Layout.setVerticalGroup(
             panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelX1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(textFieldXId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(checkBoxAuto)
-                    .addComponent(jLabel9)
-                    .addComponent(textFormatXHBeli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jScrollPaneNama, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelX1Layout.createSequentialGroup()
-                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10)
-                            .addComponent(textFormatXHJual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11)
-                            .addComponent(textFormatXStok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelX1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
                         .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(textFieldXISBN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14))
+                            .addComponent(jLabel2)
+                            .addComponent(textFieldXId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(checkBoxAuto)
+                            .addComponent(jLabel9)
+                            .addComponent(textFormatXHBeli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(textFormatXTahun, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(comboBoxKategori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12)
-                            .addComponent(labelDibuat))
-                        .addGap(3, 3, 3)
-                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(comboBoxPenrbit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel13)
-                            .addComponent(labelDiubah)))
-                    .addComponent(jScrollPaneInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel15)
-                        .addComponent(labelPemasok))
-                    .addComponent(jScrollPanePengarang, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(panelX1Layout.createSequentialGroup()
+                                .addComponent(jScrollPaneNama, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(textFieldXISBN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4)))
+                            .addGroup(panelX1Layout.createSequentialGroup()
+                                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel10)
+                                    .addComponent(textFormatXHJual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel11)
+                                    .addComponent(textFormatXJmlhBeli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel16)
+                                    .addComponent(textFormatXStok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelX1Layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel7)
+                                    .addComponent(textFormatXTahun, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel5)
+                                    .addComponent(comboBoxKategori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(3, 3, 3)
+                                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel8)
+                                    .addComponent(comboBoxPenrbit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel12)
+                                    .addComponent(labelDibuat))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jScrollPanePengarang, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(panelX1Layout.createSequentialGroup()
+                                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jLabel13)
+                                            .addComponent(labelDiubah))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jLabel15)
+                                            .addComponent(labelPemasok)))))
+                            .addGroup(panelX1Layout.createSequentialGroup()
+                                .addGap(0, 0, 0)
+                                .addComponent(jLabel14))))
+                    .addGroup(panelX1Layout.createSequentialGroup()
+                        .addGap(146, 146, 146)
+                        .addComponent(jScrollPaneInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(buttonBlue1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabelInfo.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
@@ -591,6 +628,7 @@ public class DialogBuku extends javax.swing.JDialog {
         
         if (deleteMode) {
             okhapus=true;
+            dispose();
         }else {
             
             String info=textAreaInfo.getText();
@@ -599,124 +637,122 @@ public class DialogBuku extends javax.swing.JDialog {
             Integer terbit=(Integer) textFormatXTahun.getValue();
             KategoriBuku kategoriBuku=(KategoriBuku) comboBoxKategori.getSelectedItem();
             Penerbit penerbit=(Penerbit) comboBoxPenrbit.getSelectedItem();
-
-            Item item=new Item();
-            String kodeitem;
-            String namaItem="Buku";
+                        
+            String kodeitem = textFieldXId.getText();
             BigDecimal harga_beli=(BigDecimal) textFormatXHBeli.getValue();
             BigDecimal harga_jual=(BigDecimal) textFormatXHJual.getValue();
             Integer stok=(Integer) textFormatXStok.getValue();
-
+            
+            Integer jmlh=(Integer) textFormatXJmlhBeli.getValue();
+            
+            if (jmlh < 1) {
+                JOptionPane.showMessageDialog(this, "Jumlah beli tidak valid");
+                return;
+            }
+            
             if (!editMode) {
                 buku = new Buku();
                 buku.setWaktuDibuat(new Date());
                 buku.setTerakhirDirubah(new Date());
-
-                item.setHarga_beli(harga_beli);
-                item.setHarga_jual(harga_jual);
-                item.setInfo(info);
-                item.setNama(namaItem);
-                item.setStok(stok);            
-                item.setWaktuDibuat(new Date());                
+                
+                item = new Item();
+                item.setWaktuDibuat(new Date());
                 item.setTerakhirDirubah(new Date());
-            }else {
-                buku.setTerakhirDirubah(new Date());
-                kodeitem=textFieldXId.getText();
-
-                item.setHarga_beli(harga_beli);
-                item.setHarga_jual(harga_jual);
-                item.setId(kodeitem);
-                item.setInfo(info);
-                item.setNama(namaItem);
-                item.setStok(stok);
-                item.setTerakhirDirubah(new Date());
-
-                ItemService itemService=SpringManager.getInstance().getBean(ItemService.class);
-                ItemValidator itemValidator=SpringManager.getInstance().getBean(ItemValidator.class);
-
-                try {
-                    itemValidator.validate(item);
-                    itemService.save(item);
-                } catch (ValidatorException ex) {
-                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                
+                if (checkBoxAuto.isSelected()) {
+                    long auto=new Date().getTime();
+                    kodeitem=""+auto;
+                }else{
+                    kodeitem=textFieldXId.getText();                    
                 }
-
+                
+                detailPembelian = new DetailPembelian();                
+                stok=jmlh;
+            }else{               
+                buku.setTerakhirDirubah(new Date()); 
+                item.setTerakhirDirubah(new Date());
             }
+            
+            item.setHarga_beli(harga_beli);
+            item.setHarga_jual(harga_jual);
+            item.setId(kodeitem);
+            item.setInfo(info);
+            item.setNama("Buku");
+            item.setStok(stok);
+            
             buku.setISBN(isbn);
             buku.setInfo(info);
+            buku.setItem(item);
             buku.setKategoriBuku(kategoriBuku);
             buku.setNama(nama);
             buku.setPenerbit(penerbit);
             buku.setTahun_terbit(terbit);
-            buku.setItem(null);
-
-            BukuValidator validator = SpringManager.getInstance().getBean(BukuValidator.class);
-            BukuService service=SpringManager.getInstance().getBean(BukuService.class);
-
-            try {
-                validator.validate(buku);
+            for (int i = 0; i < defaultListModel.getSize(); i++) {
+                buku.tambahPengarang(defaultListModel.get(i));
+            }
+            
+            item.setBuku(buku);
+            item.setBarang(null);
+            
+            if (detailPembelian !=null) {
+                detailPembelian.setHarga(item.getHarga_beli());
+                detailPembelian.setItem(item);
+                detailPembelian.setJumlah(jmlh);
+            }
+            
+            BukuValidator bukuValidator=SpringManager.getInstance().getBean(BukuValidator.class);
+            ItemValidator itemValidator=SpringManager.getInstance().getBean(ItemValidator.class);
+                        
+            try {                
+                itemValidator.validate(item);
+                bukuValidator.validate(buku);
+                if (defaultListModel.getSize() < 1) {
+                    JOptionPane.showMessageDialog(this, "Pengarang tidak boleh kosong");
+                    return;
+                }
+                dispose();
             } catch (ValidatorException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage());
             }
-
-            String id;
-
-            if (!editMode) {
-                service.save(buku);
-
-                if (checkBoxAuto.isSelected()) {
-                    id="BK-"+kategoriBuku.getId()+""+penerbit.getId()+"-"+buku.getId();
-                }else{
-                    id=textFieldXId.getText();
-                }
-                item.setId(id);
-
-            }
-
-            buku.setItem(item);  
-            
+                 
         }
-        
-              
         
     }//GEN-LAST:event_buttonGreen1ActionPerformed
 
     private void buttonRed1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRed1ActionPerformed
         buku=null;
+        detailPembelian=null;
         dispose();
     }//GEN-LAST:event_buttonRed1ActionPerformed
 
-    private void textFieldXIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldXIdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textFieldXIdActionPerformed
-
-    private void textFieldXISBNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldXISBNActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textFieldXISBNActionPerformed
-
-    private void checkBoxAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkBoxAutoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_checkBoxAutoActionPerformed
-
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        buku = null;
+        buku=null;
+        detailPembelian=null;
+        dispose();
     }//GEN-LAST:event_formWindowClosing
 
     private void buttonBlue1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBlue1ActionPerformed
         
         DialogPengarangRelasi dialogPengarang=new DialogPengarangRelasi();
-        if (buku.getDaftarPengarang() != null) {
-            
-                List<Pengarang> list=dialogPengarang.ubah(buku.getDaftarPengarang(),buku.getNama());
-                for (Pengarang pengarang : list) {
-                    defaultListModel.addElement(pengarang);
-                    buku.tambahPengarang(pengarang);
-                }
+        if (buku != null) {
+            if (buku.getDaftarPengarang() != null) {            
+                List<Pengarang> list=dialogPengarang.ubah(buku.getDaftarPengarang());
+                if (list != null) {
+                    for (Pengarang pengarang : list) {
+                        defaultListModel.addElement(pengarang);
+                    }
+                }                
+            }            
         }else{
-            System.out.println("Nulll");
+            List<Pengarang> list=dialogPengarang.ubah();
+                if (list != null) {
+                    for (Pengarang pengarang : list) {
+                        defaultListModel.addElement(pengarang);
+                    }
+                } 
         }
         
-        
+                
     }//GEN-LAST:event_buttonBlue1ActionPerformed
 
  
@@ -733,6 +769,7 @@ public class DialogBuku extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -758,15 +795,12 @@ public class DialogBuku extends javax.swing.JDialog {
     private com.bustomi.bookstorepos.component.TextFieldX textFieldXId;
     private com.bustomi.bookstorepos.component.TextFormatX textFormatXHBeli;
     private com.bustomi.bookstorepos.component.TextFormatX textFormatXHJual;
+    private com.bustomi.bookstorepos.component.TextFormatX textFormatXJmlhBeli;
     private com.bustomi.bookstorepos.component.TextFormatX textFormatXStok;
     private com.bustomi.bookstorepos.component.TextFormatX textFormatXTahun;
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX1;
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX2;
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX3;
     // End of variables declaration//GEN-END:variables
-    
-    public void display(Window formApp, Object parameter) {
-        setLocationRelativeTo(formApp);
-        setVisible(true);
-    }
+       
 }

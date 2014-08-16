@@ -6,14 +6,12 @@
 
 package com.bustomi.bookstorepos;
 
-import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.view.MainFrame;
 import com.bustomi.bookstorepos.view.dialog.DialogLogin;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
+import java.awt.EventQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.SwingUtilities;
+import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -22,45 +20,35 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author PacuL
  */
 
-public class MainApp implements Runnable {
-
-    private MainFrame form;
-
-    public MainApp() throws NoSuchAlgorithmException {
-        form = new MainFrame();
-    }
-
-    public void start() {
-        SwingUtilities.invokeLater(this);
-    }
-
-    @Override
-    public void run() {
-        form.setVisible(true);
-        DialogLogin view = new DialogLogin(form);
-        view.display(form, null);
-    }
+public class MainApp  {
 
     /**
      * @param args the command line arguments
-     * @throws java.security.spec.InvalidKeySpecException
-     * @throws java.security.NoSuchAlgorithmException
      */
-    public static void main(String[] args) throws InvalidKeySpecException, NoSuchAlgorithmException {
-    
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | 
-                UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(MainApp.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {            
-            // ini spring
-            SpringManager.getInstance();
-            
-            // run app
-            MainApp app = new MainApp();
-            app.start();            
-        }
+    public static void main(String[] args) {
+        
+        EventQueue.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException 
+                        | UnsupportedLookAndFeelException ex) {
+                    Logger.getLogger(MainApp.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    DialogLogin login=new DialogLogin();
+                    login.setVisible(true);
+                    MainFrame frame;
+                    if (!login.isDisplayable()) {
+                        frame = new MainFrame();
+                        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                        frame.setVisible(true);
+                        frame.renderHakAkses();                        
+                    }
+                }
+            }
+        });
            
     }
 }

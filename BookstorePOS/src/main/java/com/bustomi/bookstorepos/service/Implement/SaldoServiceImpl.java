@@ -23,6 +23,14 @@ public class SaldoServiceImpl implements SaldoService{
     @Autowired
     private SessionFactory sessionFactory;
 
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     @Override
     @Transactional
     public void save(Saldo saldo) {

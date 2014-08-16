@@ -12,16 +12,16 @@
     
     <context:property-placeholder location="classpath:jdbc.properties"/>
     <context:annotation-config/>
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <tx:annotation-driven transaction-manager="transactionManager"/>       
     
-    <context:component-scan base-package="com.bustomi.bookstorepos.service.implement"></context:component-scan>
-    <context:component-scan base-package="com.bustomi.bookstorepos.validator.implement"></context:component-scan>
+    <context:component-scan base-package="com.bustomi.bookstorepos.service.implement"/>
+    <context:component-scan base-package="com.bustomi.bookstorepos.validator.implement"/>
     
     <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource" destroy-method="close">
-        <property name="driverClassName" value="${jdbc.driver}"></property>
-        <property name="username" value="${jdbc.username}"></property>
-        <property name="password" value="${jdbc.password}"></property>
-        <property name="url" value="${jdbc.url}"></property>
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+        <property name="username" value="root"></property>
+        <property name="password" value=""></property>
+        <property name="url" value="jdbc:mysql://localhost:3306/bookstore_pos"></property>
     </bean>
     
     <bean class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" id="sessionFactory">
@@ -62,5 +62,57 @@
     <bean class="org.springframework.orm.hibernate3.HibernateTransactionManager" id="transactionManager">
         <property name="sessionFactory" ref="sessionFactory"></property>
     </bean>
-
+    
+    <bean id="hakService" class="com.bustomi.bookstorepos.service.Implement.HakAksesServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="barangService" class="com.bustomi.bookstorepos.service.Implement.BarangServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="bukuService" class="com.bustomi.bookstorepos.service.Implement.BukuServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="grupService" class="com.bustomi.bookstorepos.service.Implement.GrupServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="itemService" class="com.bustomi.bookstorepos.service.Implement.ItemServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="jurnalService" class="com.bustomi.bookstorepos.service.Implement.JurnalServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="kategoriBarangService" class="com.bustomi.bookstorepos.service.Implement.KategoriBarangServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="kategoriBukuService" class="com.bustomi.bookstorepos.service.Implement.KategoriBukuServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="pelangganService" class="com.bustomi.bookstorepos.service.Implement.PelangganServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="pemasokService" class="com.bustomi.bookstorepos.service.Implement.PemasokServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="pembelianService" class="com.bustomi.bookstorepos.service.Implement.PembelianServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="penerbitService" class="com.bustomi.bookstorepos.service.Implement.PenerbitServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="pengarangService" class="com.bustomi.bookstorepos.service.Implement.PengarangServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="penjualanService" class="com.bustomi.bookstorepos.service.Implement.PenjualanServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="saldoService" class="com.bustomi.bookstorepos.service.Implement.SaldoServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="satuanService" class="com.bustomi.bookstorepos.service.Implement.SatuanServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="userService" class="com.bustomi.bookstorepos.service.Implement.UserServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean> 
+            
 </beans>

@@ -31,8 +31,17 @@ public class JurnalServiceImpl implements JurnalService{
     }
 
     @Override
+    @Transactional
     public List<Jurnal> findAll() {
         return sessionFactory.getCurrentSession().createCriteria(Jurnal.class).list();
+    }
+
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
     
 }

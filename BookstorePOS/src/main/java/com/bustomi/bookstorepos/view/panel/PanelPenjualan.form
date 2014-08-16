@@ -129,7 +129,7 @@
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="DAFTAR PEMBELIAN"/>
+        <Property name="text" type="java.lang.String" value="DAFTAR PENJUALAN"/>
       </Properties>
     </Component>
     <Container class="com.bustomi.bookstorepos.component.PanelX" name="panelX2">

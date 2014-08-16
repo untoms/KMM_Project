@@ -11,6 +11,7 @@ import com.bustomi.bookstorepos.entity.User.HakAkses;
 import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.validator.ValidatorException;
 import com.bustomi.bookstorepos.validator.implement.GrupValidator;
+import com.bustomi.bookstorepos.view.tablemodel.HurufListRender;
 import java.awt.Color;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -33,6 +34,7 @@ public class DialogGrup extends javax.swing.JDialog {
         listModel = new DefaultListModel<>();
         listRole.setModel(listModel);
         textAreaInfo.setDisabledTextColor(Color.LIGHT_GRAY);
+        listRole.setCellRenderer(new HurufListRender());
         
     }
         
@@ -156,10 +158,12 @@ public class DialogGrup extends javax.swing.JDialog {
         buttonRed1 = new com.bustomi.bookstorepos.component.ButtonRed();
 
         textAreaInfo.setColumns(20);
+        textAreaInfo.setForeground(new java.awt.Color(255, 255, 255));
         textAreaInfo.setRows(5);
         textAreaInfo.setOpaque(false);
         viewPortX2.add(textAreaInfo);
 
+        listRole.setForeground(new java.awt.Color(255, 255, 255));
         listRole.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -175,7 +179,8 @@ public class DialogGrup extends javax.swing.JDialog {
             }
         });
 
-        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder("Data Pemasok"));
+        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Grup", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        panelX1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -198,6 +203,7 @@ public class DialogGrup extends javax.swing.JDialog {
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel15.setText("Role :");
 
+        jScrollPane1.setOpaque(false);
         jScrollPane1.setViewport(viewPortX3);
 
         buttonBlue1.setText("Atur Role");

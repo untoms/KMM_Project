@@ -11,10 +11,6 @@ import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.validator.ValidatorException;
 import com.bustomi.bookstorepos.validator.implement.PenerbitValidator;
 import java.awt.Color;
-import java.awt.Window;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
@@ -167,11 +163,13 @@ public class DialogPenerbit extends javax.swing.JDialog {
         buttonRed1 = new com.bustomi.bookstorepos.component.ButtonRed();
 
         textAreaAlamat.setColumns(20);
+        textAreaAlamat.setForeground(new java.awt.Color(255, 255, 255));
         textAreaAlamat.setRows(5);
         textAreaAlamat.setOpaque(false);
         viewPortX1.add(textAreaAlamat);
 
         textAreaInfo.setColumns(20);
+        textAreaInfo.setForeground(new java.awt.Color(255, 255, 255));
         textAreaInfo.setRows(5);
         textAreaInfo.setOpaque(false);
         viewPortX2.add(textAreaInfo);
@@ -191,7 +189,8 @@ public class DialogPenerbit extends javax.swing.JDialog {
             }
         });
 
-        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder("Data Pemasok"));
+        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Penerbit", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        panelX1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);

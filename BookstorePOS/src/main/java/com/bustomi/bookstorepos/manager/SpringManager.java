@@ -24,8 +24,12 @@ import com.bustomi.bookstorepos.service.PemasokService;
 import com.bustomi.bookstorepos.service.SaldoService;
 import com.bustomi.bookstorepos.service.UserService;
 import java.math.BigDecimal;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -97,7 +101,7 @@ public class SpringManager {
                 pengguna.setGrup(grup);
                 pengguna.setId("admin");
                 pengguna.setNama("Administrator");   
-                pengguna.setPassword(SimplePasswordHash.getInstance("admin").getGeneratedSecuredPasswordHash());
+                pengguna.setPassword(sandi("admin"));
                
                 pengguna.setWaktuDibuat(new Date());
                 pengguna.setTerakhirDirubah(new Date());
@@ -172,6 +176,32 @@ public class SpringManager {
         }
         
         return SpringManager.INSTANCE;
+    }
+    
+     private static String sandi(String pass){
+        // Create MessageDigest instance for MD5
+        MessageDigest md = null;
+        
+        try {
+            md = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(SpringManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //Add password bytes to digest
+        md.update(pass.getBytes());
+        //Get the hash's bytes 
+        byte[] bytes = md.digest();
+        //This bytes[] has bytes in decimal format;
+        //Convert it to hexadecimal format
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i< bytes.length ;i++){
+            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        //Get complete hashed password in hex format
+        String generatedPassword = sb.toString();
+
+        return generatedPassword;
     }
            
 }

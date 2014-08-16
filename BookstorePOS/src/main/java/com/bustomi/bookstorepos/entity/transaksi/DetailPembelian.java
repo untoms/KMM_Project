@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -41,7 +42,7 @@ public class DetailPembelian extends AutoIncreamentEntity{
     @Transient
     private BigDecimal subTotal;    
     
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "Item_Id", nullable = false)
     private Item item;
 
@@ -64,8 +65,9 @@ public class DetailPembelian extends AutoIncreamentEntity{
     }
 
     public void setItem(Item item) {
+        item.setDetailPembelian(this);
         this.item = item;        
-        this.harga = item.getHarga_jual();
+        this.harga = item.getHarga_beli();
     }
 
     public Integer getJumlah() {

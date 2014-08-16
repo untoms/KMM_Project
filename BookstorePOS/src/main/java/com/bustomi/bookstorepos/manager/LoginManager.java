@@ -8,8 +8,11 @@ package com.bustomi.bookstorepos.manager;
 
 import com.bustomi.bookstorepos.entity.User.User;
 import com.bustomi.bookstorepos.service.UserService;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -33,22 +36,24 @@ public class LoginManager {
     }
 
     public boolean login(String username, String password) {
-        if (getUserService().contains(username, SimplePasswordHash.getInstance(password).getGeneratedSecuredPasswordHash())) {
+        if (getUserService().contains(username, sandi(password)) ){
             this.id = username;
             return true;
         } else {
+            SimplePasswordHash.getInstance(null).setPass(null);
             return false;
         }
     }
 
-    public void logout() throws NoSuchAlgorithmException  {
+    public void logout()   {
         getUser().setTerakhir_logout(new Date());
         User user=getUser();
-        getUserService().save(user);
+        getUserService().update(user);
+        
         this.id = null;
     }
 
-    public User getUser() throws NoSuchAlgorithmException {
+    public User getUser() {
         if (id == null) {
             return null;
         } else {
@@ -58,6 +63,32 @@ public class LoginManager {
 
     private UserService getUserService()  {
         return SpringManager.getInstance().getBean(UserService.class);
+    }
+    
+    private String sandi(String pass){
+        // Create MessageDigest instance for MD5
+        MessageDigest md = null;
+        
+        try {
+            md = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //Add password bytes to digest
+        md.update(pass.getBytes());
+        //Get the hash's bytes 
+        byte[] bytes = md.digest();
+        //This bytes[] has bytes in decimal format;
+        //Convert it to hexadecimal format
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i< bytes.length ;i++){
+            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        //Get complete hashed password in hex format
+        String generatedPassword = sb.toString();
+
+        return generatedPassword;
     }
     
 }

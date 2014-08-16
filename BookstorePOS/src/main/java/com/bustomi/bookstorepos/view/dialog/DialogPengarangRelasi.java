@@ -11,8 +11,10 @@ import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.service.PengarangService;
 import com.bustomi.bookstorepos.validator.ValidatorException;
 import com.bustomi.bookstorepos.validator.implement.PengarangValidator;
+import com.bustomi.bookstorepos.view.tablemodel.HurufListRender;
 import java.awt.Color;
 import java.awt.Window;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -38,6 +40,8 @@ public class DialogPengarangRelasi extends javax.swing.JDialog {
         defaultListModel2= new DefaultListModel<>();
         listpengarangpilih.setModel(defaultListModel2);
         
+        listPengarang.setCellRenderer(new HurufListRender());
+        listpengarangpilih.setCellRenderer(new HurufListRender());
         
         textAreaInfo.setDisabledTextColor(Color.LIGHT_GRAY);
         
@@ -56,12 +60,12 @@ public class DialogPengarangRelasi extends javax.swing.JDialog {
         }
     }
         
-    public List<Pengarang> ubah(List<Pengarang> parameter, String judul) {
+    public List<Pengarang> ubah(List<Pengarang> parameter) {
         
         loadPengarang();
                 
-        jLabelInfo.setText("Atur Pengarang dari "+judul);
-        setTitle("Atur Pengarang dari "+judul);
+        jLabelInfo.setText("Atur Pengarang");
+        setTitle("Atur Pengarang");
         
         for (Pengarang object : parameter) {
             defaultListModel2.addElement(object);
@@ -69,6 +73,19 @@ public class DialogPengarangRelasi extends javax.swing.JDialog {
         
         pengarangs = parameter;
         
+        setVisible(true);
+        
+        return pengarangs;
+    }
+    
+    public List<Pengarang> ubah() {
+        
+        loadPengarang();
+               
+                
+        jLabelInfo.setText("Atur Pengarang");
+        setTitle("Atur Pengarang");
+                       
         setVisible(true);
         
         return pengarangs;
@@ -109,10 +126,12 @@ public class DialogPengarangRelasi extends javax.swing.JDialog {
         buttonBlue1 = new com.bustomi.bookstorepos.component.ButtonBlue();
 
         textAreaInfo.setColumns(20);
+        textAreaInfo.setForeground(new java.awt.Color(255, 255, 255));
         textAreaInfo.setRows(5);
         textAreaInfo.setOpaque(false);
         viewPortX1.add(textAreaInfo);
 
+        listpengarangpilih.setForeground(new java.awt.Color(255, 255, 255));
         listpengarangpilih.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -121,6 +140,7 @@ public class DialogPengarangRelasi extends javax.swing.JDialog {
         listpengarangpilih.setOpaque(false);
         viewPortX3.add(listpengarangpilih);
 
+        listPengarang.setForeground(new java.awt.Color(255, 255, 255));
         listPengarang.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -136,7 +156,8 @@ public class DialogPengarangRelasi extends javax.swing.JDialog {
             }
         });
 
-        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder("Data Pengarang"));
+        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Pengarang", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        panelX1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -232,6 +253,7 @@ public class DialogPengarangRelasi extends javax.swing.JDialog {
         panelX2.add(buttonRed1);
 
         panelX3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tambah Pengarang Baru", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255)), "Tambah Pengarang Baru", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        panelX3.setForeground(new java.awt.Color(255, 255, 255));
 
         jScrollPaneNama.setOpaque(false);
         jScrollPaneNama.setViewport(viewPortX1);
@@ -326,16 +348,16 @@ public class DialogPengarangRelasi extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonGreen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen1ActionPerformed
-       
+       pengarangs = new ArrayList<>();
         for (int i = 0; i < defaultListModel2.getSize(); i++) {
-            pengarangs.add(defaultListModel.get(i));
+            pengarangs.add(defaultListModel2.get(i));
         }
         dispose();
         
     }//GEN-LAST:event_buttonGreen1ActionPerformed
 
     private void buttonRed1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRed1ActionPerformed
-//        pengarangs=null;
+        pengarangs=null;
         dispose();
     }//GEN-LAST:event_buttonRed1ActionPerformed
 
@@ -344,7 +366,8 @@ public class DialogPengarangRelasi extends javax.swing.JDialog {
     }//GEN-LAST:event_textFieldXNamaActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-//        pengarangs = null;
+        pengarangs = null;
+        dispose();
     }//GEN-LAST:event_formWindowClosing
 
     private void buttonBlue1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBlue1ActionPerformed

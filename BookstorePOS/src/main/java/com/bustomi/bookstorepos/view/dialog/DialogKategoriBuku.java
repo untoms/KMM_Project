@@ -132,6 +132,7 @@ public class DialogKategoriBuku extends javax.swing.JDialog {
         buttonRed1 = new com.bustomi.bookstorepos.component.ButtonRed();
 
         textAreaInfo.setColumns(20);
+        textAreaInfo.setForeground(new java.awt.Color(255, 255, 255));
         textAreaInfo.setRows(5);
         textAreaInfo.setOpaque(false);
         viewPortX2.add(textAreaInfo);
@@ -143,7 +144,8 @@ public class DialogKategoriBuku extends javax.swing.JDialog {
             }
         });
 
-        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder("Data Pemasok"));
+        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Kategori Buku", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        panelX1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -153,6 +155,7 @@ public class DialogKategoriBuku extends javax.swing.JDialog {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Nama :");
 
+        jScrollPaneInfo.setForeground(new java.awt.Color(255, 255, 255));
         jScrollPaneInfo.setOpaque(false);
         jScrollPaneInfo.setViewport(viewPortX2);
 
@@ -181,7 +184,7 @@ public class DialogKategoriBuku extends javax.swing.JDialog {
                         .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(textFieldXIdNama, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPaneInfo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(18, 65, Short.MAX_VALUE))))
         );
         panelX1Layout.setVerticalGroup(
             panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

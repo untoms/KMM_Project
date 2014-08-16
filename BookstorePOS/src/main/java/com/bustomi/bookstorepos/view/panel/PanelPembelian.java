@@ -33,15 +33,15 @@ public class PanelPembelian extends javax.swing.JPanel {
         TabelPembelian.setModel(modelPembelian);
         
         loadData();
-        
+        TabelPembelian.getColumnModel().getColumn(0).setMaxWidth(50);
         TabelPembelian.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
         TabelPembelian.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
         TabelPembelian.getColumnModel().getColumn(2).setCellRenderer(new HurufRender());
         TabelPembelian.getColumnModel().getColumn(3).setCellRenderer(new HurufRender());  
         TabelPembelian.getColumnModel().getColumn(4).setCellRenderer(new HurufRender());         
-        TabelPembelian.getColumnModel().getColumn(5).setCellRenderer(new HurufRender()); 
-        TabelPembelian.getColumnModel().getColumn(6).setCellRenderer(new HurufRender());  
-        TabelPembelian.getTableHeader().setAlignmentY(CENTER_ALIGNMENT);
+        TabelPembelian.getColumnModel().getColumn(5).setCellRenderer(new HurufRender());                 
+        TabelPembelian.getColumnModel().getColumn(6).setCellRenderer(new HurufRender());
+        TabelPembelian.getTableHeader().setAlignmentY(CENTER_ALIGNMENT);                
     }
 
     /**
@@ -143,8 +143,8 @@ public class PanelPembelian extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jDateChooserMulai, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jDateChooserSampai, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonMin2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -175,7 +175,7 @@ public class PanelPembelian extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(panelX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -248,7 +248,7 @@ public class PanelPembelian extends javax.swing.JPanel {
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX1;
     // End of variables declaration//GEN-END:variables
     
-    public void loadData() {
+    private void loadData() {
         PembelianService barangService=SpringManager.getInstance().getBean(PembelianService.class);
         modelPembelian.load(barangService.findAll());
     }

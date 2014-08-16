@@ -50,6 +50,11 @@ public abstract class ParentTableModel<T> extends AbstractTableModel{
             
     }
     
+    public void hapusSemua (){
+        list.clear();
+        fireTableDataChanged();
+    }
+    
     public void hapus (int baris){
         list.remove(baris);
         fireTableRowsDeleted(baris, baris);//memberitahu jtable data dihapus

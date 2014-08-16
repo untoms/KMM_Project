@@ -17,8 +17,6 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public abstract class SimpleEntity<T> implements Serializable {
-
-    private static final long serialVersionUID = 1L;
     
     @Column (name = "nama", nullable = false, length = 140, unique = true)
     private String nama;

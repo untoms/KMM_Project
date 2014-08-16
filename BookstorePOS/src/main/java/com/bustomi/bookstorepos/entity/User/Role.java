@@ -76,8 +76,10 @@ public enum Role {
     TRANSAKSI_PEMBELIAN("Transaksi Pembelian"),
     LIHAT_LAPORAN_PENJUALAN("Lihat Laporan Penjualan"),
     LIHAT_LAPORAN_PEMBELIAN("Lihat Laporan Pembelian"),
-    LIHAT_LAPORAN_KEUNTUNGAN("Lihat Laporan Keuntungan");
-
+    LIHAT_LAPORAN_KEUNTUNGAN("Lihat Laporan Keuntungan"),
+    LIHAT_HUTANG("Lihat Hutang"),
+    BAYAR_HUTANG("Bayar Hutang");
+    
     private final String nama;
 
     private Role(String nama) {

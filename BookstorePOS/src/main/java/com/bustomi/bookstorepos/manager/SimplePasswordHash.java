@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class SimplePasswordHash {
         
-    private final String pass;
+    private String pass;
     
     private String generatedSecuredPasswordHash;
     
@@ -29,6 +29,10 @@ public class SimplePasswordHash {
 
     public String getPass() {
         return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 
     public String getGeneratedSecuredPasswordHash()  {

@@ -16,7 +16,7 @@ public class TabelModelPembelian extends ParentTableModel<Pembelian>{
 
     @Override
     public int getColumnCount() {
-        return 6;
+        return 7;
     }
 
     @Override
@@ -28,6 +28,7 @@ public class TabelModelPembelian extends ParentTableModel<Pembelian>{
             case 3 : return getList().get(rowIndex).getPemasok().getNama();
             case 4 : return getList().get(rowIndex).getUser().getNama();
             case 5 : return getList().get(rowIndex).getTotal();
+            case 6 : return getList().get(rowIndex).getBayar();
                 default: return null;
         }
     }
@@ -38,9 +39,10 @@ public class TabelModelPembelian extends ParentTableModel<Pembelian>{
             case 0 : return "No.";
             case 1 : return "Kode";
             case 2 : return "Waktu";
-            case 3 : return "Pengguna";
+            case 3 : return "Pemasok";
             case 4 : return "User";
             case 5 : return "Total";
+            case 6 : return "Bayar";
                 default: return null;
         }
     } 

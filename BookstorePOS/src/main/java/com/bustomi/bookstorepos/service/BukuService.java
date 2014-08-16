@@ -7,11 +7,16 @@
 package com.bustomi.bookstorepos.service;
 
 import com.bustomi.bookstorepos.entity.master.Buku;
+import java.util.List;
 
 /**
  *
  * @author PacuL
  */
 public interface BukuService extends InterfaceService<Buku, Integer>{
+    
+    List<Buku> findPengarang(String nama);
+    List<Buku> findPenerbit(String nama);
+    List<Buku> findKategori(String nama);
     
 }

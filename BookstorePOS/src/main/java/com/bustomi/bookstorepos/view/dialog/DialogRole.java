@@ -9,6 +9,7 @@ package com.bustomi.bookstorepos.view.dialog;
 import com.bustomi.bookstorepos.entity.User.HakAkses;
 import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.service.HakAksesService;
+import com.bustomi.bookstorepos.view.tablemodel.HurufListRender;
 import java.awt.Color;
 import java.awt.Window;
 import java.util.ArrayList;
@@ -36,6 +37,8 @@ public class DialogRole extends javax.swing.JDialog {
         defaultListModel2= new DefaultListModel<>();
         listHakAksespilih.setModel(defaultListModel2);
         
+        listHakAkses.setCellRenderer(new HurufListRender());
+        listHakAksespilih.setCellRenderer(new HurufListRender());
         
         textAreaInfo.setDisabledTextColor(Color.LIGHT_GRAY);
         
@@ -105,6 +108,7 @@ public class DialogRole extends javax.swing.JDialog {
         textAreaInfo.setOpaque(false);
         viewPortX1.add(textAreaInfo);
 
+        listHakAksespilih.setForeground(new java.awt.Color(255, 255, 255));
         listHakAksespilih.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -113,6 +117,7 @@ public class DialogRole extends javax.swing.JDialog {
         listHakAksespilih.setOpaque(false);
         viewPortX3.add(listHakAksespilih);
 
+        listHakAkses.setForeground(new java.awt.Color(255, 255, 255));
         listHakAkses.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -128,7 +133,8 @@ public class DialogRole extends javax.swing.JDialog {
             }
         });
 
-        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder("Data Hak Akses"));
+        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Hak Akses", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        panelX1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);

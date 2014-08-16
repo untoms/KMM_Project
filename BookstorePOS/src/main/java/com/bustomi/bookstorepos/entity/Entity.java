@@ -20,8 +20,6 @@ import javax.persistence.TemporalType;
  */
 @MappedSuperclass
 public abstract class Entity<T> implements Serializable {
-
-    private static final long serialVersionUID = 1L;
     
     @Column (name = "nama", nullable = false, length = 140)
     private String nama;

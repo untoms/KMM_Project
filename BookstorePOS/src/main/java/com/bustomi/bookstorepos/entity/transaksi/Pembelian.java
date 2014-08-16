@@ -53,6 +53,9 @@ public class Pembelian extends TransactionEntity{
     @Column(name = "Bayar", nullable = false)
     private BigDecimal bayar;
     
+    @Column(name = "Bayar_terkhir", nullable = true)
+    private BigDecimal bayar_terakhir;
+    
     public void tambahDetailPembelian(DetailPembelian detailPembelian) {
         detailPembelian.setPembelian(this);
         daftarPembelian.add(detailPembelian);
@@ -115,6 +118,14 @@ public class Pembelian extends TransactionEntity{
 
     public void setBayar(BigDecimal bayar) {
         this.bayar = bayar;
+    }
+
+    public BigDecimal getBayar_terakhir() {
+        return bayar_terakhir;
+    }
+
+    public void setBayar_terakhir(BigDecimal bayar_terakhir) {
+        this.bayar_terakhir = bayar_terakhir;
     }
     
 }

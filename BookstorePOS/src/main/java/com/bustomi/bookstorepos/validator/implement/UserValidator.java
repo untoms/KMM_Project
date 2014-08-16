@@ -53,8 +53,8 @@ public class UserValidator extends AbstractValidator<User>{
             throwValidatorException("Karakter email terlalu panjang");
         }else if (data.getKodepos().length() > 6){
             throwValidatorException("Kodepos terlalu panjang");
-        }else if (data.getTgl_lahir().compareTo(new Date()) < 0){
-            throwValidatorException("Tanggal lahir tidak valid");
+        }else if (data.getTgl_lahir().compareTo(new Date()) >= 0){
+            throwValidatorException("Tanggal lahir tidak boleh di masa depan");
         } else if (data.getPassword() == null ){
             throwValidatorException("Password tidak boleh null");
         } else if (data.getPassword().trim().isEmpty()){

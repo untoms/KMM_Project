@@ -33,7 +33,7 @@ public class PanelPenjualan extends javax.swing.JPanel {
         TabelPenjualan.setModel(modelPenjualan);
         
         loadData();
-        
+        TabelPenjualan.getColumnModel().getColumn(0).setMaxWidth(50);
         TabelPenjualan.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
         TabelPenjualan.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
         TabelPenjualan.getColumnModel().getColumn(2).setCellRenderer(new HurufRender());
@@ -116,7 +116,7 @@ public class PanelPenjualan extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("DAFTAR PEMBELIAN");
+        jLabel1.setText("DAFTAR PENJUALAN");
 
         panelX2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
 
@@ -248,7 +248,7 @@ public class PanelPenjualan extends javax.swing.JPanel {
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX1;
     // End of variables declaration//GEN-END:variables
     
-    public void loadData() {
+    private void loadData() {
         PenjualanService barangService=SpringManager.getInstance().getBean(PenjualanService.class);
         modelPenjualan.load(barangService.findAll());
     }

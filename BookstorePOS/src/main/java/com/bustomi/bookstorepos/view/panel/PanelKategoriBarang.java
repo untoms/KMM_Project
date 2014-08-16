@@ -6,7 +6,11 @@
 
 package com.bustomi.bookstorepos.view.panel;
 
+import com.bustomi.bookstorepos.entity.User.Grup;
+import com.bustomi.bookstorepos.entity.User.Role;
+import com.bustomi.bookstorepos.entity.User.User;
 import com.bustomi.bookstorepos.entity.master.KategoriBarang;
+import com.bustomi.bookstorepos.manager.LoginManager;
 import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.service.KategoriBarangService;
 import com.bustomi.bookstorepos.view.dialog.DialogKategoriBarang;
@@ -31,12 +35,18 @@ public class PanelKategoriBarang extends javax.swing.JPanel {
         TabelKategoriBarang.setModel(modelKategoriBarang);
         
         loadData();
-        
+        TabelKategoriBarang.getColumnModel().getColumn(0).setMaxWidth(50);
         TabelKategoriBarang.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
         TabelKategoriBarang.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
         TabelKategoriBarang.getColumnModel().getColumn(2).setCellRenderer(new HurufRender());
         TabelKategoriBarang.getColumnModel().getColumn(3).setCellRenderer(new HurufRender());  
         TabelKategoriBarang.getTableHeader().setAlignmentY(CENTER_ALIGNMENT);
+        
+        User user=LoginManager.getInstance().getUser();
+        Grup grup=user.getGrup();
+        buttonGreen1.setEnabled(grup.mengandungHakAkses(Role.TAMBAH_KATEGORI_BARANG));
+        buttonYellow1.setEnabled(grup.mengandungHakAkses(Role.UBAH_KATEGORI_BARANG));
+        buttonRed1.setEnabled(grup.mengandungHakAkses(Role.HAPUS_KATEGORI_BARANG));
     }
 
     /**
@@ -123,7 +133,7 @@ public class PanelKategoriBarang extends javax.swing.JPanel {
         panelX2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Judul :");
+        jLabel2.setText("Nama :");
 
         buttonMin2.setText("Filter");
         buttonMin2.addActionListener(new java.awt.event.ActionListener() {
@@ -279,7 +289,7 @@ public class PanelKategoriBarang extends javax.swing.JPanel {
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX1;
     // End of variables declaration//GEN-END:variables
     
-    public void loadData() {
+    private void loadData() {
         KategoriBarangService kategoriBarangService=SpringManager.getInstance().getBean(KategoriBarangService.class);
         modelKategoriBarang.load(kategoriBarangService.findAll());
     }

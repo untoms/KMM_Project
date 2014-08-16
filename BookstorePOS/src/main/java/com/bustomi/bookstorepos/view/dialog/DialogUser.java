@@ -8,13 +8,18 @@ package com.bustomi.bookstorepos.view.dialog;
 
 import com.bustomi.bookstorepos.entity.User.Grup;
 import com.bustomi.bookstorepos.entity.User.User;
+import com.bustomi.bookstorepos.manager.LoginManager;
 import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.service.GrupService;
 import com.bustomi.bookstorepos.validator.ValidatorException;
 import com.bustomi.bookstorepos.validator.implement.UserValidator;
 import java.awt.Color;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -90,7 +95,9 @@ public class DialogUser extends javax.swing.JDialog {
         labelDibuat.setText(parameter.getWaktuDibuat().toString());
         labelDiubah.setText(parameter.getTerakhirDirubah().toString());
         labelLogin.setText(parameter.getTerakhir_login().toString());
-        labelLogout.setText(parameter.getTerakhir_logout().toString());
+        if (parameter.getTerakhir_logout() != null) {
+           labelLogout.setText(parameter.getTerakhir_logout().toString()); 
+        } 
         
         textPassX1.setEnabled(false);
         textPassX2.setEnabled(false);
@@ -116,6 +123,7 @@ public class DialogUser extends javax.swing.JDialog {
         textFieldXIEmail.setText(parameter.getEmail());        
         textFieldXKodepos.setText(parameter.getKodepos());
         jDateChooser1.setDate(parameter.getTgl_lahir());
+        jComboBox1.setSelectedItem(parameter.getGrup());
         
         labelDibuat.setText(parameter.getWaktuDibuat().toString());
         labelDiubah.setText(parameter.getTerakhirDirubah().toString());
@@ -129,12 +137,14 @@ public class DialogUser extends javax.swing.JDialog {
         textFieldXIEmail.setEnabled(false);
         textFieldXKodepos.setEnabled(false);
         jDateChooser1.setEnabled(false);
-        jComboBox1.setSelectedItem(parameter.getGrup());
+        jComboBox1.setEnabled(false);
         
         labelDibuat.setText(parameter.getWaktuDibuat().toString());
         labelDiubah.setText(parameter.getTerakhirDirubah().toString());
         labelLogin.setText(parameter.getTerakhir_login().toString());
-        labelLogout.setText(parameter.getTerakhir_logout().toString());
+        if (parameter.getTerakhir_logout() != null) {
+           labelLogout.setText(parameter.getTerakhir_logout().toString()); 
+        }       
         
         textPassX1.setEnabled(false);
         textPassX2.setEnabled(false);
@@ -177,11 +187,14 @@ public class DialogUser extends javax.swing.JDialog {
         textFieldXKodepos.setEnabled(false);
         jDateChooser1.setEnabled(false);
         jComboBox1.setSelectedItem(parameter.getGrup());
+        jComboBox1.setEnabled(false);
         
         labelDibuat.setText(parameter.getWaktuDibuat().toString());
         labelDiubah.setText(parameter.getTerakhirDirubah().toString());
         labelLogin.setText(parameter.getTerakhir_login().toString());
-        labelLogout.setText(parameter.getTerakhir_logout().toString());
+        if (parameter.getTerakhir_logout() != null) {
+           labelLogout.setText(parameter.getTerakhir_logout().toString()); 
+        } 
         
         textPassX1.setEnabled(false);
         textPassX2.setEnabled(false);
@@ -249,11 +262,13 @@ public class DialogUser extends javax.swing.JDialog {
         buttonRed1 = new com.bustomi.bookstorepos.component.ButtonRed();
 
         textAreaAlamat.setColumns(20);
+        textAreaAlamat.setForeground(new java.awt.Color(255, 255, 255));
         textAreaAlamat.setRows(5);
         textAreaAlamat.setOpaque(false);
         viewPortX1.add(textAreaAlamat);
 
         textAreaInfo.setColumns(20);
+        textAreaInfo.setForeground(new java.awt.Color(255, 255, 255));
         textAreaInfo.setRows(5);
         textAreaInfo.setOpaque(false);
         viewPortX2.add(textAreaInfo);
@@ -273,7 +288,8 @@ public class DialogUser extends javax.swing.JDialog {
             }
         });
 
-        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder("Data User"));
+        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data User", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        panelX1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -290,6 +306,7 @@ public class DialogUser extends javax.swing.JDialog {
         jScrollPaneInfo.setOpaque(false);
         jScrollPaneInfo.setViewport(viewPortX2);
 
+        jScrollPaneNama.setForeground(new java.awt.Color(255, 255, 255));
         jScrollPaneNama.setOpaque(false);
         jScrollPaneNama.setViewport(viewPortX1);
 
@@ -569,6 +586,7 @@ public class DialogUser extends javax.swing.JDialog {
             String kodepos=textFieldXKodepos.getText();
             Date lahir=jDateChooser1.getDate();
             String id=textFieldXId.getText();
+            String sandi=new String(textPassX1.getPassword());
             Grup grup=(Grup) jComboBox1.getSelectedItem();
             
             
@@ -591,6 +609,7 @@ public class DialogUser extends javax.swing.JDialog {
             user.setKodepos(kodepos);
             user.setTgl_lahir(lahir);
             user.setGrup(grup);
+            user.setPassword(sandi(sandi));
             
             UserValidator validator=SpringManager.getInstance().getBean(UserValidator.class);
             try {
@@ -660,5 +679,29 @@ public class DialogUser extends javax.swing.JDialog {
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX3;
     // End of variables declaration//GEN-END:variables
     
-    
+    private String sandi(String pass){
+        // Create MessageDigest instance for MD5
+        MessageDigest md = null;
+        
+        try {
+            md = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //Add password bytes to digest
+        md.update(pass.getBytes());
+        //Get the hash's bytes 
+        byte[] bytes = md.digest();
+        //This bytes[] has bytes in decimal format;
+        //Convert it to hexadecimal format
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i< bytes.length ;i++){
+            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        //Get complete hashed password in hex format
+        String generatedPassword = sb.toString();
+
+        return generatedPassword;
+    }
 }

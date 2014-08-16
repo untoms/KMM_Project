@@ -7,6 +7,9 @@
 package com.bustomi.bookstorepos.view.panel;
 
 import com.bustomi.bookstorepos.entity.User.Grup;
+import com.bustomi.bookstorepos.entity.User.Role;
+import com.bustomi.bookstorepos.entity.User.User;
+import com.bustomi.bookstorepos.manager.LoginManager;
 import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.service.GrupService;
 import com.bustomi.bookstorepos.view.dialog.DialogGrup;
@@ -31,12 +34,18 @@ public class PanelGrup extends javax.swing.JPanel {
         TabelGrup.setModel(modelGrup);
         
         loadData();
-        
+        TabelGrup.getColumnModel().getColumn(0).setMaxWidth(50);
         TabelGrup.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
         TabelGrup.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
         TabelGrup.getColumnModel().getColumn(2).setCellRenderer(new HurufRender());
         TabelGrup.getColumnModel().getColumn(3).setCellRenderer(new HurufRender());  
         TabelGrup.getTableHeader().setAlignmentY(CENTER_ALIGNMENT);
+        
+        User user=LoginManager.getInstance().getUser();
+        Grup grup=user.getGrup();
+        buttonGreen1.setEnabled(grup.mengandungHakAkses(Role.TAMBAH_GRUP));
+        buttonYellow1.setEnabled(grup.mengandungHakAkses(Role.UBAH_GRUP));
+        buttonRed1.setEnabled(grup.mengandungHakAkses(Role.HAPUS_GRUP));
     }
 
     /**
@@ -123,7 +132,7 @@ public class PanelGrup extends javax.swing.JPanel {
         panelX2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Judul :");
+        jLabel2.setText("Nama :");
 
         buttonMin2.setText("Filter");
         buttonMin2.addActionListener(new java.awt.event.ActionListener() {
@@ -280,7 +289,7 @@ public class PanelGrup extends javax.swing.JPanel {
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX1;
     // End of variables declaration//GEN-END:variables
     
-    public void loadData() {
+    private void loadData() {
         GrupService grupService=SpringManager.getInstance().getBean(GrupService.class);
         modelGrup.load(grupService.findAll());
     }

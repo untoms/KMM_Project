@@ -7,6 +7,7 @@
 package com.bustomi.bookstorepos.view.tablemodel;
 
 import com.bustomi.bookstorepos.entity.User.User;
+import java.util.Date;
 
 /**
  *
@@ -35,6 +36,7 @@ public class TabelModelUser extends ParentTableModel<User>{
             case 10 : return getList().get(rowIndex).getGrup().getNama();
             case 11 : return getList().get(rowIndex).getTerakhir_login();
             case 12 : return getList().get(rowIndex).getTerakhir_logout();
+                
                 default: return null;
         }
     }

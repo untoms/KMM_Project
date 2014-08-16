@@ -58,7 +58,7 @@ public class Buku extends Entity<Integer>{
     @Fetch(FetchMode.SELECT)
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "Buku_has_Pengarang", joinColumns =
-    @JoinColumn(name = "Buku_I", nullable = false), inverseJoinColumns =
+    @JoinColumn(name = "Buku_Id", nullable = false), inverseJoinColumns =
     @JoinColumn(name = "Pengarang_Id", nullable = false))
     private final List<Pengarang> daftarPengarang = new ArrayList<>(0);
 
@@ -123,7 +123,7 @@ public class Buku extends Entity<Integer>{
         }
     }
 
-    public void hapusHakAkses(Pengarang pengarang) {
+    public void hapusPengarang(Pengarang pengarang) {
         if (daftarPengarang.contains(pengarang)) {
             daftarPengarang.remove(pengarang);
         }

@@ -21,6 +21,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -42,6 +43,31 @@ public class PenjualanServiceImpl implements PenjualanService{
         return sessionFactory.getCurrentSession();
     }
 
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    public SaldoService getSaldoService() {
+        return saldoService;
+    }
+
+    public void setSaldoService(SaldoService saldoService) {
+        this.saldoService = saldoService;
+    }
+
+    public JurnalService getJurnalService() {
+        return jurnalService;
+    }
+
+    public void setJurnalService(JurnalService jurnalService) {
+        this.jurnalService = jurnalService;
+    }
+    
+    @Transactional
     @Override
     public void save(Penjualan penjualan) {
         Session session=currentSession();
@@ -68,6 +94,7 @@ public class PenjualanServiceImpl implements PenjualanService{
         jurnalService.save(jurnal);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Penjualan> findAll(Date from, Date to) {
         
@@ -76,6 +103,7 @@ public class PenjualanServiceImpl implements PenjualanService{
                 + "and date(:to)").setDate("from", from).setDate("to", to).list();
     }
     
+    @Transactional(readOnly = true)
     @Override
     public List<Penjualan> findAll() {
         return currentSession().createCriteria(Penjualan.class).list();

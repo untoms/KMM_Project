@@ -20,8 +20,6 @@ import javax.persistence.TemporalType;
 @MappedSuperclass
 public abstract class TransactionEntity extends AutoIncreamentEntity {
 
-    private static final long serialVersionUID = 1L;
-
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "terakhir_diubah")
     private Date terakhir_diubah;

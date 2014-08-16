@@ -7,10 +7,7 @@
 package com.bustomi.bookstorepos.view.dialog;
 
 import com.bustomi.bookstorepos.manager.LoginManager;
-import com.bustomi.bookstorepos.view.MainFrame;
 import java.awt.Window;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,13 +16,10 @@ import javax.swing.JOptionPane;
  */
 public class DialogLogin extends javax.swing.JDialog {
 
-    private final MainFrame frame;
-    public DialogLogin(MainFrame frame) {
-        super(frame);
+    public DialogLogin() {
         setModal(true);
-        this.frame=frame;
         initComponents();
-        setLocationRelativeTo(frame);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -49,6 +43,11 @@ public class DialogLogin extends javax.swing.JDialog {
         buttonRed1 = new com.bustomi.bookstorepos.component.ButtonRed();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Username (Kode pengguna) :");
@@ -138,24 +137,25 @@ public class DialogLogin extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonGreen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen1ActionPerformed
-        try {
-            boolean login=LoginManager.getInstance().login(textFieldX1.getText(), 
-                new String(textPassX1.getPassword())); 
-            if (login) {
-                frame.renderHakAkses();
-                dispose();
-            }else {
-                JOptionPane.showMessageDialog(this, "Kombinasi username dan password tidak ditemuan!");
-            }            
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            JOptionPane.showMessageDialog(this, "Terjadi error : "+e.getMessage());
-        }
-        
+        String username=textFieldX1.getText();
+        String pass=new String(textPassX1.getPassword());
+            
+        boolean login=LoginManager.getInstance().login(username, pass); 
+        if (login) {
+            dispose();
+        }else {
+            JOptionPane.showMessageDialog(this, "Kombinasi username dan password tidak ditemuan!");
+        }            
+                
     }//GEN-LAST:event_buttonGreen1ActionPerformed
 
     private void buttonRed1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRed1ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_buttonRed1ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        System.exit(0);
+    }//GEN-LAST:event_formWindowClosing
 
  
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -170,9 +170,5 @@ public class DialogLogin extends javax.swing.JDialog {
     private com.bustomi.bookstorepos.component.TextFieldX textFieldX1;
     private com.bustomi.bookstorepos.component.TextPassX textPassX1;
     // End of variables declaration//GEN-END:variables
-    
-    public void display(Window formApp, Object parameter) {
-        setLocationRelativeTo(formApp);
-        setVisible(true);
-    }
+        
 }
