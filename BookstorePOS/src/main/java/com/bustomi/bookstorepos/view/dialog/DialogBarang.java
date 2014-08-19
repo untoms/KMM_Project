@@ -17,7 +17,6 @@ import com.bustomi.bookstorepos.service.SatuanService;
 import com.bustomi.bookstorepos.validator.ValidatorException;
 import com.bustomi.bookstorepos.validator.implement.BarangValidator;
 import com.bustomi.bookstorepos.validator.implement.ItemValidator;
-import com.bustomi.bookstorepos.view.tablemodel.HurufListRender;
 import java.awt.Color;
 import java.awt.Window;
 import java.awt.event.ItemEvent;
@@ -39,9 +38,11 @@ public class DialogBarang extends javax.swing.JDialog {
     private boolean editMode;
     private boolean deleteMode;
     private boolean okhapus;
+    private boolean detailBeli ;
     
     public DialogBarang() {
         setModal(true);
+        detailBeli = false;
         
         initComponents();
         textAreaInfo.setDisabledTextColor(Color.LIGHT_GRAY);
@@ -95,11 +96,42 @@ public class DialogBarang extends javax.swing.JDialog {
         return barang;
     }
     
+    private void tampil(Barang parameter){
+        checkBoxAuto.setEnabled(false);
+        loadKategori();
+        loadSatuan();
+        
+        textFieldXId.setText(parameter.getItem().getId());
+        textFieldXId.setEnabled(false);
+        
+        textAreaInfo.setText(parameter.getInfo());
+        textAreaInfo.setEnabled(false);
+        textFieldXNama.setText(parameter.getNama());
+        textFieldXNama.setEnabled(false);
+        textFormatXHBeli.setValue(parameter.getItem().getHarga_beli());
+        textFormatXHBeli.setEnabled(false);
+        textFormatXHJual.setValue(parameter.getItem().getHarga_jual());
+        textFormatXHJual.setEnabled(false);
+        textFormatXStok.setValue(parameter.getItem().getStok());
+        textFormatXStok.setEnabled(false);
+        if (parameter.getItem().getDetailPembelian() != null) { 
+            textFormatXJmlhBeli.setValue(parameter.getItem().getDetailPembelian().getJumlah());
+        }
+        textFormatXJmlhBeli.setEnabled(false);
+        
+        comboBoxKategori.setSelectedItem(parameter.getKategoriBarang());
+        comboBoxSatuan.setSelectedItem(parameter.getSatuan());
+        
+        labelDibuat.setText(parameter.getWaktuDibuat().toString());
+        labelDiubah.setText(parameter.getTerakhirDirubah().toString());
+    }
+    
     public DetailPembelian tambahDetail() {
         
         loadKategori();
         loadSatuan();
         
+        detailBeli = true;
         editMode = false;        
         deleteMode = false;
         textFormatXStok.setEnabled(false);
@@ -116,7 +148,6 @@ public class DialogBarang extends javax.swing.JDialog {
         
         loadKategori();
         loadSatuan();
-        System.out.println("Kategori : "+parameter.getKategoriBarang().getNama());
         editMode = true;
         deleteMode = false;
         
@@ -156,27 +187,7 @@ public class DialogBarang extends javax.swing.JDialog {
         jLabelInfo.setText("Detail Barang");
         setTitle("Detail Barang");
         
-        textFieldXId.setText(parameter.getItem().getId());
-        textFieldXId.setEnabled(false);
-        
-        textAreaInfo.setText(parameter.getInfo());
-        textAreaInfo.setEnabled(false);
-        textFieldXNama.setText(parameter.getNama());
-        textFieldXNama.setEnabled(false);
-        textFormatXHBeli.setValue(parameter.getItem().getHarga_beli());
-        textFormatXHBeli.setEnabled(false);
-        textFormatXHJual.setValue(parameter.getItem().getHarga_jual());
-        textFormatXHJual.setEnabled(false);
-        textFormatXStok.setValue(parameter.getItem().getStok());
-        textFormatXStok.setEnabled(false);
-        
-        comboBoxKategori.setSelectedItem(parameter.getKategoriBarang());
-        comboBoxKategori.setEnabled(false);
-        comboBoxSatuan.setSelectedItem(parameter.getSatuan());
-        comboBoxSatuan.setEnabled(false);
-        
-        labelDibuat.setText(parameter.getWaktuDibuat().toString());
-        labelDiubah.setText(parameter.getTerakhirDirubah().toString());
+        tampil(parameter);
         
         buttonGreen1.setVisible(false);
         buttonRed1.setText("Oke");
@@ -192,27 +203,7 @@ public class DialogBarang extends javax.swing.JDialog {
         jLabelInfo.setText("Hapus Barang");
         setTitle("Hapus Barang");
         
-        textFieldXId.setText(parameter.getItem().getId());
-        textFieldXId.setEnabled(false);
-        
-        textAreaInfo.setText(parameter.getInfo());
-        textAreaInfo.setEnabled(false);
-        textFieldXNama.setText(parameter.getNama());
-        textFieldXNama.setEnabled(false);
-        textFormatXHBeli.setValue(parameter.getItem().getHarga_beli());
-        textFormatXHBeli.setEnabled(false);
-        textFormatXHJual.setValue(parameter.getItem().getHarga_jual());
-        textFormatXHJual.setEnabled(false);
-        textFormatXStok.setValue(parameter.getItem().getStok());
-        textFormatXStok.setEnabled(false);
-        
-        comboBoxKategori.setSelectedItem(parameter.getKategoriBarang());
-        comboBoxKategori.setEnabled(false);
-        comboBoxSatuan.setSelectedItem(parameter.getSatuan());
-        comboBoxSatuan.setEnabled(false);
-        
-        labelDibuat.setText(parameter.getWaktuDibuat().toString());
-        labelDiubah.setText(parameter.getTerakhirDirubah().toString());
+        tampil(parameter);
         
         buttonGreen1.setText("Hapus");
         
@@ -556,7 +547,9 @@ public class DialogBarang extends javax.swing.JDialog {
                 }
                 
                 detailPembelian = new DetailPembelian();
-                stok=jmlh;
+                if (detailBeli) {      
+                    stok=jmlh;
+                }
             }else{               
                 barang.setTerakhirDirubah(new Date()); 
                 item.setTerakhirDirubah(new Date());
@@ -573,7 +566,7 @@ public class DialogBarang extends javax.swing.JDialog {
             item.setHarga_jual(harga_jual);
             item.setId(kodeitem);
             item.setInfo(info);
-            item.setNama("Barang");
+            item.setNama(nama);
             item.setStok(stok);
             
             barang.setItem(item);

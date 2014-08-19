@@ -16,7 +16,7 @@ public class TabelModelHutangPembelian extends ParentTableModel<Pembelian>{
 
     @Override
     public int getColumnCount() {
-        return 7;
+        return 6;
     }
 
     @Override

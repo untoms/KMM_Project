@@ -89,7 +89,7 @@ public class Item extends Entity<String>{
         return barang;
     }
 
-    public void setBarang(Barang barang) {
+    public void setBarang(Barang barang) {     
         this.barang = barang;
     }
 
@@ -97,7 +97,7 @@ public class Item extends Entity<String>{
         return detailPembelian;
     }
 
-    public void setDetailPembelian(DetailPembelian detailPembelian) {
+    public void setDetailPembelian(DetailPembelian detailPembelian) {               
         this.detailPembelian = detailPembelian;
     }
         

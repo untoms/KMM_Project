@@ -20,6 +20,7 @@ import com.bustomi.bookstorepos.service.ItemService;
 import com.bustomi.bookstorepos.service.PembelianService;
 import com.bustomi.bookstorepos.view.dialog.DialogBarang;
 import com.bustomi.bookstorepos.view.dialog.DialogBuku;
+import com.bustomi.bookstorepos.view.dialog.DialogCariDataPembelian;
 import com.bustomi.bookstorepos.view.dialog.DialogCariPemasok;
 import com.bustomi.bookstorepos.view.tablemodel.HurufRender;
 import com.bustomi.bookstorepos.view.tablemodel.TabelModelDetailPembelian;
@@ -71,6 +72,7 @@ public class PanelTransPembelian extends javax.swing.JPanel {
         panelX3 = new com.bustomi.bookstorepos.component.PanelX();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
+        buttonBlue2 = new com.bustomi.bookstorepos.component.ButtonBlue();
         buttonGreen3 = new com.bustomi.bookstorepos.component.ButtonGreen();
         buttonGreen1 = new com.bustomi.bookstorepos.component.ButtonGreen();
         buttonRed1 = new com.bustomi.bookstorepos.component.ButtonRed();
@@ -114,6 +116,14 @@ public class PanelTransPembelian extends javax.swing.JPanel {
         jScrollPane1.setViewport(viewPortX1);
 
         jPanel1.setOpaque(false);
+
+        buttonBlue2.setText("Cari Data Tersimpan");
+        buttonBlue2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBlue2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(buttonBlue2);
 
         buttonGreen3.setText("Tambah Pembelian Barang");
         buttonGreen3.addActionListener(new java.awt.event.ActionListener() {
@@ -325,7 +335,7 @@ public class PanelTransPembelian extends javax.swing.JPanel {
             pembelian.setUser(LoginManager.getInstance().getUser());
             pembelian.setWaktu_transaksi(new Date());
             pembelian.setTerakhir_diubah(new Date());
-            pembelian.setTotal(total);
+//            pembelian.setTotal(total);
                         
             if (bayar.compareTo(total()) == -1) {
                 if(JOptionPane.showConfirmDialog(this, "Pembayaran belum lunas,"
@@ -334,27 +344,39 @@ public class PanelTransPembelian extends javax.swing.JPanel {
                     for (int i = 0; i < modelPembelian.getRowCount(); i++) {
                         DetailPembelian detailPembelian=modelPembelian.ambilData(i);
                         Item item=detailPembelian.getItem();
+                        if(itemService.find(item.getId()) == null){
+                            itemService.save(item);
+                        }else {
+                            item.setStok(item.getStok() + detailPembelian.getJumlah());
+                            itemService.update(item);
+                        }
                         Barang barang=item.getBarang();
                         Buku buku=item.getBuku();
-                        itemService.save(item);
+                        
                         if (barang != null) {
                             barangService.save(barang);
                         }else if(buku != null){
                             bukuService.save(buku);
                         }
+                        System.out.println(" Sok item bayar: "+item.getStok());
                         pembelian.tambahDetailPembelian(detailPembelian);
                     }
                     service.save(pembelian);
                     JOptionPane.showMessageDialog(this, "Transaksi berhasil disimpan");
-                    reset();
+                    reset();                    
                 }
             }else{                
                 for (int i = 0; i < modelPembelian.getRowCount(); i++) {
                     DetailPembelian detailPembelian=modelPembelian.ambilData(i);
                     Item item=detailPembelian.getItem();
+                    if(itemService.find(item.getId()) == null){
+                        itemService.save(item);
+                    }else {
+                        item.setStok(item.getStok() + detailPembelian.getJumlah());
+                        itemService.update(item);
+                    }
                     Barang barang=item.getBarang();
                     Buku buku=item.getBuku();
-                    itemService.save(item);
                     if (barang != null) {
                         barangService.save(barang);
                     }else if(buku != null){
@@ -431,13 +453,25 @@ public class PanelTransPembelian extends javax.swing.JPanel {
             }
             modelPembelian.tambah(dp);
             total();
+            System.out.println(" Sok item : "+dp.getItem().getStok());
         }  
     }//GEN-LAST:event_buttonGreen3ActionPerformed
+
+    private void buttonBlue2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBlue2ActionPerformed
+        DialogCariDataPembelian dataBeli=new DialogCariDataPembelian();
+        dataBeli.setLocationRelativeTo(this);
+        DetailPembelian dp=dataBeli.pilihPembelian();
+        if (dp != null) {
+            modelPembelian.tambah(dp);
+        }
+        total();
+    }//GEN-LAST:event_buttonBlue2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TabelPembelian;
     private com.bustomi.bookstorepos.component.ButtonBlue buttonBlue1;
+    private com.bustomi.bookstorepos.component.ButtonBlue buttonBlue2;
     private com.bustomi.bookstorepos.component.ButtonGreen buttonGreen1;
     private com.bustomi.bookstorepos.component.ButtonGreen buttonGreen2;
     private com.bustomi.bookstorepos.component.ButtonGreen buttonGreen3;

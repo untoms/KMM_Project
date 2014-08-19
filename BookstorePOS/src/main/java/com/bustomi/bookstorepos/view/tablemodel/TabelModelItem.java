@@ -24,12 +24,7 @@ public class TabelModelItem extends ParentTableModel<Item>{
         switch(columnIndex){
             case 0 : return rowIndex + 1;
             case 1 : return getList().get(rowIndex).getId();                
-            case 2 : 
-                if (getList().get(rowIndex).getBarang() != null) {
-                    return getList().get(rowIndex).getBarang().getNama();
-                }else if(getList().get(rowIndex).getBuku() != null){
-                    return getList().get(rowIndex).getBuku().getNama();
-                }
+            case 2 : return getList().get(rowIndex).getNama();
             case 3 : return getList().get(rowIndex).getHarga_jual();
             case 4 : return getList().get(rowIndex).getStok();
                 default: return null;

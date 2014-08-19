@@ -39,7 +39,10 @@ public class DetailPenjualan extends AutoIncreamentEntity{
     private BigDecimal harga;
 
     @Transient
-    private BigDecimal subTotal;    
+    private BigDecimal subTotal;  
+    
+    @Transient
+    private String nama; 
     
     @ManyToOne
     @JoinColumn(name = "Item_Id", nullable = false)
@@ -100,7 +103,13 @@ public class DetailPenjualan extends AutoIncreamentEntity{
     public void setPenjualan(Penjualan penjualan) {
         this.penjualan = penjualan;
     }
-    
-    
+
+    public String getNama() {
+        return nama;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
     
 }

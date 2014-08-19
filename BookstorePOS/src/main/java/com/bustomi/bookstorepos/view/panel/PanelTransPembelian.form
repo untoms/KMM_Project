@@ -147,6 +147,14 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
           <SubComponents>
+            <Component class="com.bustomi.bookstorepos.component.ButtonBlue" name="buttonBlue2">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cari Data Tersimpan"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonBlue2ActionPerformed"/>
+              </Events>
+            </Component>
             <Component class="com.bustomi.bookstorepos.component.ButtonGreen" name="buttonGreen3">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Tambah Pembelian Barang"/>

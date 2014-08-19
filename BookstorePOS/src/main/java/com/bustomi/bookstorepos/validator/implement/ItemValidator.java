@@ -22,21 +22,19 @@ public class ItemValidator extends AbstractValidator<Item>{
     @Override
     protected void doValidate(Item data) throws ValidatorException {
         if (data == null) {
-            throwValidatorException("Detail barang tidak boleh null");
+            throwValidatorException("Item tidak boleh null");
         } else if (data.getId() == null) {
             throwValidatorException("Id barang tidak boleh null");
         } else if (data.getId().trim().isEmpty()) {
             throwValidatorException("Id barang tidak boleh kosong");
         } else if (data.getHarga_beli() == null) {
-            throwValidatorException("Harga beli barang tidak boleh null");
+            throwValidatorException("Harga beli tidak boleh null");
         } else if ((data.getHarga_beli().compareTo(BigDecimal.ONE))==-1) {
-            throwValidatorException("Harga beli barang tidak valid");
+            throwValidatorException("Harga beli tidak valid");
         } else if (data.getHarga_jual()== null) {
-            throwValidatorException("Harga jual barang tidak boleh null");
-        } else if ((data.getHarga_beli().compareTo(BigDecimal.ONE))==-1) {
-            throwValidatorException("Harga jual barang tidak valid");
-        } else if ((data.getHarga_jual().compareTo(data.getHarga_beli()))==-1) {
-            throwValidatorException("Harga jual barang tidak boleh lebih kecil dari harga beli");
+            throwValidatorException("Harga jual tidak boleh null");
+        } else if ((data.getHarga_jual().compareTo(data.getHarga_beli())) != 1) {
+            throwValidatorException("Harga jual harus lebih besar dari harga beli!");
         } else if (data.getStok() == null) {
             throwValidatorException("Stok barang tidak boleh null");
         }

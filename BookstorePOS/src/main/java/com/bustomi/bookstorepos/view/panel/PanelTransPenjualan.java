@@ -15,16 +15,39 @@ import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.service.ItemService;
 import com.bustomi.bookstorepos.service.PelangganService;
 import com.bustomi.bookstorepos.service.PenjualanService;
-import com.bustomi.bookstorepos.view.dialog.DialogCariDataBeli;
+import com.bustomi.bookstorepos.view.dialog.DialogCariDataPembelian;
+import com.bustomi.bookstorepos.view.dialog.DialogCariDataPenjualan;
 import com.bustomi.bookstorepos.view.dialog.DialogCariPelanggan;
+import com.bustomi.bookstorepos.view.dialog.DialogLaporan;
 import com.bustomi.bookstorepos.view.tablemodel.HurufRender;
 import com.bustomi.bookstorepos.view.tablemodel.TabelModelDetailPenjualan;
 import static java.awt.Component.CENTER_ALIGNMENT;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRParameter;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.jdbc.Work;
 
 /**
  *
@@ -384,8 +407,8 @@ public class PanelTransPenjualan extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonBlue1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBlue1ActionPerformed
-        BigDecimal bayar=(BigDecimal) textFormatXBayar.getValue();
-        BigDecimal kembali=BigDecimal.ZERO;
+        final BigDecimal bayar=(BigDecimal) textFormatXBayar.getValue();
+        BigDecimal kembali;
         
         if (pelanggan == null) {
             JOptionPane.showMessageDialog(this, "Pelanggan belum di pilih");
@@ -409,9 +432,44 @@ public class PanelTransPenjualan extends javax.swing.JPanel {
             }
             kembali=bayar.subtract(total);
             textFormatXKembali.setValue(kembali);
-            service.save(penjualan);            
+            service.save(penjualan);    
+            modelPenjualan.hapusSemua();
             JOptionPane.showMessageDialog(this, "Transaksi berhasil disimpan"); 
             simpan=false;
+            
+            SessionFactory sessionFactory=SpringManager.getInstance().getBean(SessionFactory.class);
+            Session session=sessionFactory.openSession();
+            session.doWork(new Work() {
+
+                @Override
+                public void execute(Connection cnctn) throws SQLException {
+                    try {
+                        InputStream inputStream=getClass().getResourceAsStream
+        ("/com/bustomi/d3ti/uns/report/StrukPenjualan.jasper");
+                        
+                        List<DetailPenjualan> list=penjualan.getDaftarPenjualan();
+                        
+                        JRDataSource dataSource=new JRBeanCollectionDataSource(list,false);
+                        
+                        Map<String, Object> map=new HashMap<>();
+                        map.put("NO", penjualan.getId());
+                        map.put("CASHIER", penjualan.getUser().getNama());
+                        map.put("DATE", penjualan.getWaktu_transaksi());
+                        map.put("TOTAL", penjualan.getTotal());
+                        map.put("CASH", bayar);
+                        map.put(JRParameter.REPORT_DATA_SOURCE, dataSource);
+                        
+                        JasperPrint jasperPrint=JasperFillManager.fillReport(inputStream, map);
+                        DialogLaporan laporan=new DialogLaporan(jasperPrint);
+                        laporan.setLocationRelativeTo(null);
+                        laporan.setVisible(true);
+                        
+                    } catch (JRException ex) {
+                        Logger.getLogger(PanelTransPenjualan.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+            session.close();
         }
         
     }//GEN-LAST:event_buttonBlue1ActionPerformed
@@ -454,10 +512,12 @@ public class PanelTransPenjualan extends javax.swing.JPanel {
             detailPenjualan.setHarga(item.getHarga_jual());
             detailPenjualan.setItem(item);
             detailPenjualan.setJumlah(jmlhbeli);
+            detailPenjualan.setNama(item.getNama());
             for (int i = 0; i < modelPenjualan.getRowCount(); i++) {
                 DetailPenjualan dp=modelPenjualan.ambilData(i);
                 if (Objects.equals(dp.getItem().getId(), detailPenjualan.getItem().getId())) {
                     detailPenjualan.setJumlah(dp.getJumlah() + detailPenjualan.getJumlah());
+                    detailPenjualan.setNama(item.getNama());
                     modelPenjualan.hapus(i);
                     break;
                 }
@@ -471,7 +531,7 @@ public class PanelTransPenjualan extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonYellow1ActionPerformed
 
     private void buttonGreen4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen4ActionPerformed
-        DialogCariDataBeli dataBeli=new DialogCariDataBeli();
+        DialogCariDataPenjualan dataBeli=new DialogCariDataPenjualan();
         dataBeli.setLocationRelativeTo(this);
         Item item=dataBeli.pilih();
         if (item != null) {

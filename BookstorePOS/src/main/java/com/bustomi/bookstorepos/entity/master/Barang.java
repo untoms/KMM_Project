@@ -39,10 +39,12 @@ public class Barang extends com.bustomi.bookstorepos.entity.Entity<Integer>{
     @JoinColumn (name = "Satuan_Id")
     private Satuan satuan;
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }

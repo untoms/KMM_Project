@@ -63,6 +63,11 @@
         <property name="sessionFactory" ref="sessionFactory"></property>
     </bean>
     
+    <!-- Digunakan saat setelah di build dan di running via terminal.
+        Error jika diaktifkan dan running dengan netbeans, tapi berjalan bail jika lewat terminal.
+        Mboh ngopo, aku yo bingung -_-
+    -->
+   <!--
     <bean id="hakService" class="com.bustomi.bookstorepos.service.Implement.HakAksesServiceImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
     </bean>
@@ -114,5 +119,6 @@
     <bean id="userService" class="com.bustomi.bookstorepos.service.Implement.UserServiceImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
     </bean> 
+    -->
             
 </beans>

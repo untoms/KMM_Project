@@ -39,11 +39,12 @@ public class DialogBuku extends javax.swing.JDialog {
     private boolean editMode;
     private boolean deleteMode;
     private boolean okhapus;
+    private boolean detailBeli;
     private final DefaultListModel<Pengarang> defaultListModel;
     
     public DialogBuku() {
         setModal(true);
-        setModal(true);
+        detailBeli = false;
         initComponents();
         defaultListModel= new DefaultListModel<>();
         listPengarang.setModel(defaultListModel);
@@ -82,6 +83,49 @@ public class DialogBuku extends javax.swing.JDialog {
         }
     }
     
+    private void tampil(Buku parameter){
+        
+        loadKategori();
+        loadPenerbit();
+        
+        checkBoxAuto.setEnabled(false);
+        
+        textFieldXId.setText(parameter.getItem().getId());
+        textFieldXId.setEnabled(false);
+        
+        textAreaInfo.setText(parameter.getInfo());
+        textAreaInfo.setEnabled(false);
+        textAreaNama.setText(parameter.getNama());
+        textAreaNama.setEnabled(false);
+        textFieldXISBN.setText(parameter.getISBN());
+        textFieldXISBN.setEnabled(false);
+        textFormatXHBeli.setValue(parameter.getItem().getHarga_beli());
+        textFormatXHBeli.setEnabled(false);
+        textFormatXHJual.setValue(parameter.getItem().getHarga_jual());
+        textFormatXHJual.setEnabled(false);
+        textFormatXStok.setValue(parameter.getItem().getStok());
+        textFormatXStok.setEnabled(false);
+        textFormatXTahun.setValue(parameter.getTahun_terbit());
+        textFormatXTahun.setEnabled(false);
+        if (parameter.getItem().getDetailPembelian() != null) { 
+            textFormatXJmlhBeli.setValue(parameter.getItem().getDetailPembelian().getJumlah());
+        }
+        textFormatXJmlhBeli.setEnabled(false);
+                
+        comboBoxKategori.setSelectedItem(parameter.getKategoriBuku());
+        comboBoxPenrbit.setEnabled(false);
+        comboBoxPenrbit.setSelectedItem(parameter.getPenerbit());
+        comboBoxKategori.setEnabled(false);
+        
+        labelDibuat.setText(parameter.getWaktuDibuat().toString());
+        labelDiubah.setText(parameter.getTerakhirDirubah().toString());
+        
+        for (Pengarang object : parameter.getDaftarPengarang()) {
+            defaultListModel.addElement(object);
+        }
+        
+    }
+    
     public Buku tambah() {
         
         loadKategori();
@@ -104,6 +148,7 @@ public class DialogBuku extends javax.swing.JDialog {
         loadKategori();
         loadPenerbit();
         
+        detailBeli = true;
         editMode = false;        
         deleteMode = false;
         textFormatXStok.setEnabled(false);
@@ -163,40 +208,9 @@ public class DialogBuku extends javax.swing.JDialog {
         deleteMode = false;
                 
         jLabelInfo.setText("Detail Buku");
-        setTitle("Detail Buku");
+        setTitle("Detail Buku");        
         
-        textFieldXId.setText(parameter.getItem().getId());
-        textFieldXId.setEnabled(false);
-        
-        textAreaInfo.setText(parameter.getInfo());
-        textAreaInfo.setEnabled(false);
-        textAreaNama.setText(parameter.getNama());
-        textAreaNama.setEnabled(false);
-        textFieldXISBN.setText(parameter.getISBN());
-        textFieldXISBN.setEnabled(false);
-        textFormatXHBeli.setValue(parameter.getItem().getHarga_beli());
-        textFormatXHBeli.setEnabled(false);
-        textFormatXHJual.setValue(parameter.getItem().getHarga_jual());
-        textFormatXHJual.setEnabled(false);
-        textFormatXStok.setValue(parameter.getItem().getStok());
-        textFormatXStok.setEnabled(false);
-        textFormatXTahun.setValue(parameter.getTahun_terbit());
-        textFormatXTahun.setEnabled(false);
-        
-        textFormatXJmlhBeli.setEnabled(false);
-        
-        comboBoxKategori.setSelectedItem(parameter.getKategoriBuku());
-        comboBoxKategori.setEnabled(false);
-        comboBoxPenrbit.setSelectedItem(parameter.getPenerbit());
-        comboBoxPenrbit.setEnabled(false);
-        
-        labelDibuat.setText(parameter.getWaktuDibuat().toString());
-        labelDiubah.setText(parameter.getTerakhirDirubah().toString());
-        
-        for (Pengarang object : parameter.getDaftarPengarang()) {
-            defaultListModel.addElement(object);
-        }
-        
+        tampil(parameter);
         buttonBlue1.setEnabled(false);
         buttonGreen1.setVisible(false);
         buttonRed1.setText("Oke");
@@ -212,37 +226,7 @@ public class DialogBuku extends javax.swing.JDialog {
         jLabelInfo.setText("Hapus Buku");
         setTitle("Hapus Buku");
         
-        textFieldXId.setText(parameter.getItem().getId());
-        textFieldXId.setEnabled(false);
-        
-        textAreaInfo.setText(parameter.getInfo());
-        textAreaInfo.setEnabled(false);
-        textAreaNama.setText(parameter.getNama());
-        textAreaNama.setEnabled(false);
-        textFieldXISBN.setText(parameter.getISBN());
-        textFieldXISBN.setEnabled(false);
-        textFormatXHBeli.setValue(parameter.getItem().getHarga_beli());
-        textFormatXHBeli.setEnabled(false);
-        textFormatXHJual.setValue(parameter.getItem().getHarga_jual());
-        textFormatXHJual.setEnabled(false);
-        textFormatXStok.setValue(parameter.getItem().getStok());
-        textFormatXStok.setEnabled(false);
-        textFormatXTahun.setValue(parameter.getTahun_terbit());
-        textFormatXTahun.setEnabled(false);
-        
-        comboBoxKategori.setSelectedItem(parameter.getKategoriBuku());
-        comboBoxKategori.setEnabled(false);
-        comboBoxPenrbit.setSelectedItem(parameter.getPenerbit());
-        comboBoxPenrbit.setEnabled(false);
-        
-        textFormatXJmlhBeli.setEnabled(false);
-        
-        labelDibuat.setText(parameter.getWaktuDibuat().toString());
-        labelDiubah.setText(parameter.getTerakhirDirubah().toString());
-        
-        for (Pengarang object : parameter.getDaftarPengarang()) {
-            defaultListModel.addElement(object);
-        }
+        tampil(parameter);
         
         buttonBlue1.setEnabled(false);
         buttonGreen1.setText("Hapus");
@@ -667,7 +651,9 @@ public class DialogBuku extends javax.swing.JDialog {
                 }
                 
                 detailPembelian = new DetailPembelian();                
-                stok=jmlh;
+                if (detailBeli) {      
+                    stok=jmlh;
+                }
             }else{               
                 buku.setTerakhirDirubah(new Date()); 
                 item.setTerakhirDirubah(new Date());
@@ -677,7 +663,7 @@ public class DialogBuku extends javax.swing.JDialog {
             item.setHarga_jual(harga_jual);
             item.setId(kodeitem);
             item.setInfo(info);
-            item.setNama("Buku");
+            item.setNama(nama);
             item.setStok(stok);
             
             buku.setISBN(isbn);

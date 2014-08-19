@@ -7,7 +7,6 @@
 package com.bustomi.bookstorepos.view.dialog;
 
 import com.bustomi.bookstorepos.manager.LoginManager;
-import java.awt.Window;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,6 +19,7 @@ public class DialogLogin extends javax.swing.JDialog {
         setModal(true);
         initComponents();
         setLocationRelativeTo(null);
+        setTitle("Login Pengguna");
     }
 
     /**
@@ -48,6 +48,8 @@ public class DialogLogin extends javax.swing.JDialog {
                 formWindowClosing(evt);
             }
         });
+
+        panelX1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Username (Kode pengguna) :");
@@ -90,6 +92,8 @@ public class DialogLogin extends javax.swing.JDialog {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Silahkah Login Terlebih Dahulu");
         jLabel1.setName(""); // NOI18N
+
+        panelX2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
 
         buttonGreen1.setText("Login");
         buttonGreen1.addActionListener(new java.awt.event.ActionListener() {

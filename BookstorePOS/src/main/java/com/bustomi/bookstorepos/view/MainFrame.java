@@ -128,6 +128,8 @@ public class MainFrame extends javax.swing.JFrame {
         panelHutang = new PanelHutang();
         PanelCard.add(panelHutang, "hutang");
         
+        LabelUser.setText(LoginManager.getInstance().getUser().getNama());
+        
     }
 
     /**
@@ -142,6 +144,9 @@ public class MainFrame extends javax.swing.JFrame {
         panelXBack1 = new com.bustomi.bookstorepos.component.PanelXBack();
         PanelCard = new javax.swing.JPanel();
         panelXFoot1 = new com.bustomi.bookstorepos.component.PanelXFoot();
+        jLabel1 = new javax.swing.JLabel();
+        LabelUser = new javax.swing.JLabel();
+        LabelWaktu = new javax.swing.JLabel();
         jMenuBarApp = new javax.swing.JMenuBar();
         jMenuHome = new javax.swing.JMenu();
         jMenuAplikasi = new javax.swing.JMenu();
@@ -193,19 +198,56 @@ public class MainFrame extends javax.swing.JFrame {
 
         panelXFoot1.setName("panelXFoot1"); // NOI18N
 
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel1.setText("User :");
+        jLabel1.setName("jLabel1"); // NOI18N
+
+        LabelUser.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        LabelUser.setForeground(new java.awt.Color(0, 0, 0));
+        LabelUser.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        LabelUser.setText("User :");
+        LabelUser.setName("LabelUser"); // NOI18N
+
+        LabelWaktu.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        LabelWaktu.setForeground(new java.awt.Color(204, 0, 51));
+        LabelWaktu.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        LabelWaktu.setText("jLabel3");
+        LabelWaktu.setName("LabelWaktu"); // NOI18N
+
+        javax.swing.GroupLayout panelXFoot1Layout = new javax.swing.GroupLayout(panelXFoot1);
+        panelXFoot1.setLayout(panelXFoot1Layout);
+        panelXFoot1Layout.setHorizontalGroup(
+            panelXFoot1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelXFoot1Layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(LabelUser, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(LabelWaktu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelXFoot1Layout.setVerticalGroup(
+            panelXFoot1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelXFoot1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(LabelUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(LabelWaktu, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
         javax.swing.GroupLayout panelXBack1Layout = new javax.swing.GroupLayout(panelXBack1);
         panelXBack1.setLayout(panelXBack1Layout);
         panelXBack1Layout.setHorizontalGroup(
             panelXBack1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PanelCard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(panelXFoot1, javax.swing.GroupLayout.DEFAULT_SIZE, 808, Short.MAX_VALUE)
+            .addComponent(PanelCard, javax.swing.GroupLayout.DEFAULT_SIZE, 808, Short.MAX_VALUE)
+            .addComponent(panelXFoot1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelXBack1Layout.setVerticalGroup(
             panelXBack1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelXBack1Layout.createSequentialGroup()
-                .addComponent(PanelCard, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)
+                .addComponent(PanelCard, javax.swing.GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelXFoot1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(panelXFoot1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         getContentPane().add(panelXBack1, java.awt.BorderLayout.CENTER);
@@ -619,11 +661,14 @@ public class MainFrame extends javax.swing.JFrame {
         } else if(source == jMenuItemDaftarUtang){
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
             cardLayout.show(PanelCard, "hutang");
-        } 
+        }                 
     }//GEN-LAST:event_actionMenuItem
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel LabelUser;
+    private javax.swing.JLabel LabelWaktu;
     private javax.swing.JPanel PanelCard;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenuAplikasi;
     private javax.swing.JMenuBar jMenuBarApp;
     private javax.swing.JMenu jMenuDaftarTrans;
