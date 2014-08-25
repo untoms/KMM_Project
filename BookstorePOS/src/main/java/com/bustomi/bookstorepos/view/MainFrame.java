@@ -29,9 +29,11 @@ import com.bustomi.bookstorepos.view.panel.PanelKategoriBarang;
 import com.bustomi.bookstorepos.view.panel.PanelKategoriBuku;
 import com.bustomi.bookstorepos.view.panel.PanelPelanggan;
 import com.bustomi.bookstorepos.view.panel.PanelPemasok;
+import com.bustomi.bookstorepos.view.panel.PanelPemasukan;
 import com.bustomi.bookstorepos.view.panel.PanelPembelian;
 import com.bustomi.bookstorepos.view.panel.PanelPenerbit;
 import com.bustomi.bookstorepos.view.panel.PanelPengarang;
+import com.bustomi.bookstorepos.view.panel.PanelPengeluaran;
 import com.bustomi.bookstorepos.view.panel.PanelPenjualan;
 import com.bustomi.bookstorepos.view.panel.PanelSatuan;
 import com.bustomi.bookstorepos.view.panel.PanelTransPembelian;
@@ -70,6 +72,8 @@ public class MainFrame extends javax.swing.JFrame {
     private final PanelTransPenjualan panelTransPenjualan;
     private final PanelKatalogBuku panelKatalogBuku;
     private final PanelHutang panelHutang;
+    private final PanelPengeluaran panelPengeluaran;
+    private final PanelPemasukan panelPemasukan;
     
     public MainFrame()  {
         initComponents();
@@ -127,6 +131,12 @@ public class MainFrame extends javax.swing.JFrame {
         
         panelHutang = new PanelHutang();
         PanelCard.add(panelHutang, "hutang");
+        
+        panelPengeluaran = new PanelPengeluaran();
+        PanelCard.add(panelPengeluaran, "pengeluaran");
+        
+        panelPemasukan = new PanelPemasukan();
+        PanelCard.add(panelPemasukan, "pemasukan");
         
         LabelUser.setText(LoginManager.getInstance().getUser().getNama());
         
@@ -258,6 +268,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuHome.setText("Home");
         jMenuHome.setName("jMenuHome"); // NOI18N
+        jMenuHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionMenuItem(evt);
+            }
+        });
         jMenuBarApp.add(jMenuHome);
 
         jMenuAplikasi.setText("Aplikasi");
@@ -641,9 +656,11 @@ public class MainFrame extends javax.swing.JFrame {
         } else if (source == jMenuItemTutupAplikasi) {
             System.exit(0);
         } else if (source == jMenuItemPemasukkan) {
-            
+            CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
+            cardLayout.show(PanelCard, "pemasukan");            
         } else if (source == jMenuItemPengeluaran) {
-            
+            CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
+            cardLayout.show(PanelCard, "pengeluaran");
         } else if (source == jMenuItemBuku){
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
             cardLayout.show(PanelCard, "buku");

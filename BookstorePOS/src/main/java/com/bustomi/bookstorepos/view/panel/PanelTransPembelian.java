@@ -358,7 +358,6 @@ public class PanelTransPembelian extends javax.swing.JPanel {
                         }else if(buku != null){
                             bukuService.save(buku);
                         }
-                        System.out.println(" Sok item bayar: "+item.getStok());
                         pembelian.tambahDetailPembelian(detailPembelian);
                     }
                     service.save(pembelian);

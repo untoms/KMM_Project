@@ -83,6 +83,8 @@ public class DialogBayarHutang extends javax.swing.JDialog {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Bayar :");
 
+        textFormatXBayar.setValue(new BigDecimal(1.00));
+
         javax.swing.GroupLayout panelX1Layout = new javax.swing.GroupLayout(panelX1);
         panelX1.setLayout(panelX1Layout);
         panelX1Layout.setHorizontalGroup(
@@ -164,8 +166,8 @@ public class DialogBayarHutang extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonGreen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen1ActionPerformed
-        BigDecimal bayar=(BigDecimal) textFormatXHutang.getValue();
-        if (bayar.compareTo(BigDecimal.ONE) == -1) {
+        BigDecimal bayar=(BigDecimal) textFormatXBayar.getValue();
+        if (bayar.compareTo(BigDecimal.ZERO) <= 0 ) {
             JOptionPane.showMessageDialog(this, "Jumlah pembayaran tidak valid");
         } else if(bayar.compareTo(hutang) == 1){
             JOptionPane.showMessageDialog(this, "Jumlah pembayaran terlalu banyak");

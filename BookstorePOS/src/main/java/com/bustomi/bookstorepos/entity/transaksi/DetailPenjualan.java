@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -44,7 +45,7 @@ public class DetailPenjualan extends AutoIncreamentEntity{
     @Transient
     private String nama; 
     
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "Item_Id", nullable = false)
     private Item item;
 

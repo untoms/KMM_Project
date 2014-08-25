@@ -22,10 +22,10 @@ import javax.persistence.Table;
 public class Saldo implements Serializable{
     
     @Id
-    @Column(name = "kode")
+    @Column(name = "kode",length = 25)
     private String kode;
 
-    @Column(name = "nilai_long")
+    @Column(name = "nilai")
     private BigDecimal nilai;
 
     public String getKode() {

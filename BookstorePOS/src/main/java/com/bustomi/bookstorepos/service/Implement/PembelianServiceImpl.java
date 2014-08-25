@@ -8,8 +8,6 @@ package com.bustomi.bookstorepos.service.Implement;
 
 import com.bustomi.bookstorepos.entity.Saldo;
 import com.bustomi.bookstorepos.entity.laporan.Jurnal;
-import com.bustomi.bookstorepos.entity.master.Item;
-import com.bustomi.bookstorepos.entity.transaksi.DetailPembelian;
 import com.bustomi.bookstorepos.entity.transaksi.Pembelian;
 import com.bustomi.bookstorepos.service.JurnalService;
 import com.bustomi.bookstorepos.service.PembelianService;
@@ -42,7 +40,7 @@ public class PembelianServiceImpl implements PembelianService{
     protected Session currentSession(){
         return sessionFactory.getCurrentSession();
     }
-
+    
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
@@ -73,12 +71,6 @@ public class PembelianServiceImpl implements PembelianService{
         Session session=currentSession();
         session.save(pembelian);
         
-        for (DetailPembelian detailPembelian : pembelian.getDaftarPembelian()) {
-            Item item=detailPembelian.getItem();
-            item.setStok(item.getStok() + detailPembelian.getJumlah());
-            session.update(item);
-        }
-        
         Saldo saldo=saldoService.find("saldo-terakhir");
         BigDecimal nilai=saldo.getNilai().subtract(pembelian.getBayar());
         
@@ -90,6 +82,7 @@ public class PembelianServiceImpl implements PembelianService{
         jurnal.setSaldoSebelumnya(saldo.getNilai());
         jurnal.setWaktu(pembelian.getWaktu_transaksi());
         
+        saldo.setNilai(nilai);
         saldoService.update(saldo);
         jurnalService.save(jurnal);
     }
@@ -99,24 +92,19 @@ public class PembelianServiceImpl implements PembelianService{
     public void update(Pembelian pembelian) {
         Session session=currentSession();
         session.update(pembelian);
-        
-        for (DetailPembelian detailPembelian : pembelian.getDaftarPembelian()) {
-            Item item=detailPembelian.getItem();
-            item.setStok(item.getStok() + detailPembelian.getJumlah());
-            session.update(item);
-        }
-        
+                
         Saldo saldo=saldoService.find("saldo-terakhir");
         BigDecimal nilai=saldo.getNilai().subtract(pembelian.getBayar_terakhir());
         
         Jurnal jurnal=new Jurnal();
         jurnal.setDebit(BigDecimal.ZERO);
         jurnal.setKredit(pembelian.getBayar_terakhir());
-        jurnal.setNama("Pembayaran hutang : No " + pembelian.getId() + " Dari " + pembelian.getPemasok().getNama());
+        jurnal.setNama("Pembayaran hutang : No " + pembelian.getId() + " Kepada " + pembelian.getPemasok().getNama());
         jurnal.setSaldo(nilai);
         jurnal.setSaldoSebelumnya(saldo.getNilai());
         jurnal.setWaktu(pembelian.getWaktu_transaksi());
         
+        saldo.setNilai(nilai);
         saldoService.update(saldo);
         jurnalService.save(jurnal);
     }

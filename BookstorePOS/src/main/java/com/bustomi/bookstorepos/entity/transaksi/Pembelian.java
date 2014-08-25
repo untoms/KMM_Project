@@ -15,6 +15,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -44,7 +45,7 @@ public class Pembelian extends TransactionEntity{
     @JoinColumn(name = "Pemasok_Id")
     private Pemasok pemasok;
     
-    @OneToMany(mappedBy = "pembelian", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pembelian", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetailPembelian> daftarPembelian = new ArrayList<>();
 
     @Column(name = "Total", nullable = false)

@@ -8,6 +8,7 @@ package com.bustomi.bookstorepos.entity.master;
 
 import com.bustomi.bookstorepos.entity.Entity;
 import com.bustomi.bookstorepos.entity.transaksi.DetailPembelian;
+import com.bustomi.bookstorepos.entity.transaksi.DetailPenjualan;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -42,6 +43,9 @@ public class Item extends Entity<String>{
     
     @OneToOne (mappedBy = "item")
     private DetailPembelian detailPembelian;
+    
+    @OneToOne (mappedBy = "item")
+    private DetailPenjualan detailPenjualan;
     
     @Override
     public String getId() {
@@ -99,6 +103,14 @@ public class Item extends Entity<String>{
 
     public void setDetailPembelian(DetailPembelian detailPembelian) {               
         this.detailPembelian = detailPembelian;
+    }
+
+    public DetailPenjualan getDetailPenjualan() {
+        return detailPenjualan;
+    }
+
+    public void setDetailPenjualan(DetailPenjualan detailPenjualan) {
+        this.detailPenjualan = detailPenjualan;
     }
         
 }

@@ -53,6 +53,8 @@
                 <value>com.bustomi.bookstorepos.entity.transaksi.Pembelian</value>
                 <value>com.bustomi.bookstorepos.entity.transaksi.DetailPenjualan</value>
                 <value>com.bustomi.bookstorepos.entity.transaksi.DetailPembelian</value>
+                <value>com.bustomi.bookstorepos.entity.transaksi.Pemasukan</value>
+                <value>com.bustomi.bookstorepos.entity.transaksi.Pengeluaran</value>
                 <value>com.bustomi.bookstorepos.entity.Saldo</value>
                 <value>com.bustomi.bookstorepos.entity.laporan.Jurnal</value>
             </util:list>
@@ -117,6 +119,14 @@
 		<property name="sessionFactory" ref="sessionFactory" />
     </bean>
     <bean id="userService" class="com.bustomi.bookstorepos.service.Implement.UserServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean> 
+    
+    <bean id="masukSerevice" class="com.bustomi.bookstorepos.service.Implement.PemasukanServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+    </bean> 
+    
+    <bean id="keluarSerevice" class="com.bustomi.bookstorepos.service.Implement.PengeluaranServiceImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
     </bean> 
     -->

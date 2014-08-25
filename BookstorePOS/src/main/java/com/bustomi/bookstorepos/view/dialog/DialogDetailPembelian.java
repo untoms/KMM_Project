@@ -7,7 +7,9 @@
 package com.bustomi.bookstorepos.view.dialog;
 
 import com.bustomi.bookstorepos.entity.transaksi.Pembelian;
+import com.bustomi.bookstorepos.view.tablemodel.HurufRender;
 import com.bustomi.bookstorepos.view.tablemodel.TabelModelDetailPembelian;
+import static java.awt.Component.CENTER_ALIGNMENT;
 
 /**
  *
@@ -23,6 +25,15 @@ public class DialogDetailPembelian extends javax.swing.JDialog {
         this.pembelian=pembelian;
         modelDetailPembelian=new TabelModelDetailPembelian();
         jTable1.setModel(modelDetailPembelian);
+        
+        jTable1.getColumnModel().getColumn(0).setMaxWidth(50);        
+        jTable1.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
+        jTable1.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
+        jTable1.getColumnModel().getColumn(2).setCellRenderer(new HurufRender());
+        jTable1.getColumnModel().getColumn(3).setCellRenderer(new HurufRender());  
+        jTable1.getColumnModel().getColumn(4).setCellRenderer(new HurufRender());         
+        jTable1.getColumnModel().getColumn(5).setCellRenderer(new HurufRender());  
+        jTable1.getTableHeader().setAlignmentY(CENTER_ALIGNMENT);
         
         jLabelKode.setText(pembelian.getId().toString());
         jLabelPemasok.setText(pembelian.getPemasok().getNama());
@@ -177,7 +188,7 @@ public class DialogDetailPembelian extends javax.swing.JDialog {
         jLabelInfo.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabelInfo.setForeground(new java.awt.Color(255, 255, 255));
         jLabelInfo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelInfo.setText("Detail Pembelian");
+        jLabelInfo.setText("Detail Hutang");
         jLabelInfo.setName(""); // NOI18N
 
         buttonGreen1.setText("OK");

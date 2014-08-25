@@ -10,12 +10,30 @@ import com.bustomi.bookstorepos.entity.transaksi.Penjualan;
 import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.service.PenjualanService;
 import com.bustomi.bookstorepos.view.dialog.DialogDetailPenjualan;
+import com.bustomi.bookstorepos.view.dialog.DialogLaporan;
 import com.bustomi.bookstorepos.view.tablemodel.HurufRender;
 import com.bustomi.bookstorepos.view.tablemodel.TabelModelPenjualan;
 import static java.awt.Component.CENTER_ALIGNMENT;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRParameter;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.jdbc.Work;
 
 /**
  *
@@ -24,6 +42,9 @@ import javax.swing.JOptionPane;
 public class PanelPenjualan extends javax.swing.JPanel {
 
     private final TabelModelPenjualan modelPenjualan;
+    private Date mulai;
+    private Date sampai;
+    private boolean filter=false;
     
     public PanelPenjualan()  {
         
@@ -67,6 +88,7 @@ public class PanelPenjualan extends javax.swing.JPanel {
         jDateChooserMulai = new com.toedter.calendar.JDateChooser();
         jLabel3 = new javax.swing.JLabel();
         jDateChooserSampai = new com.toedter.calendar.JDateChooser();
+        buttonRed1 = new com.bustomi.bookstorepos.component.ButtonRed();
 
         TabelPenjualan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -121,6 +143,7 @@ public class PanelPenjualan extends javax.swing.JPanel {
         panelX2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Mulai :");
 
         buttonMin2.setText("Filter");
@@ -131,6 +154,7 @@ public class PanelPenjualan extends javax.swing.JPanel {
         });
 
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Sampai :");
 
         javax.swing.GroupLayout panelX2Layout = new javax.swing.GroupLayout(panelX2);
@@ -167,19 +191,29 @@ public class PanelPenjualan extends javax.swing.JPanel {
                 .addGap(6, 6, 6))
         );
 
+        buttonRed1.setText("CETAK LAPORAN");
+        buttonRed1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonRed1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(panelX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(panelX2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelX2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonRed1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 96, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -188,12 +222,13 @@ public class PanelPenjualan extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelX1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelX2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(12, 12, 12))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelX1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelX2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonRed1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -210,25 +245,72 @@ public class PanelPenjualan extends javax.swing.JPanel {
 
     private void buttonMin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin1ActionPerformed
         loadData();
+        filter = false;
     }//GEN-LAST:event_buttonMin1ActionPerformed
 
     private void buttonMin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin2ActionPerformed
-        Date mulai=jDateChooserMulai.getDate();
-        Date sampai=jDateChooserSampai.getDate();
+        mulai=jDateChooserMulai.getDate();
+        sampai=jDateChooserSampai.getDate();
         
-        PenjualanService service=SpringManager.getInstance().getBean(PenjualanService.class);
-        List<Penjualan> penjualans=service.findAll(mulai,sampai);
-        if (penjualans != null) {
-            modelPenjualan.load(penjualans);
+        if (mulai == null) {
+            JOptionPane.showMessageDialog(this, "Tanggal 'mulai' belum dipilih!");
+        } else if (sampai == null){
+            JOptionPane.showMessageDialog(this, "Tanggal 'sampai' belum dipilih");            
         } else {
-            JOptionPane.showMessageDialog(this, "Tidak ada transaksi");
+            filter = true;
+            PenjualanService service=SpringManager.getInstance().getBean(PenjualanService.class);
+            List<Penjualan> penjualans=service.findAll(mulai,sampai);
+            if (penjualans != null) {
+                modelPenjualan.load(penjualans);
+            } else {
+                JOptionPane.showMessageDialog(this, "Tidak ada transaksi");
+            }
         }
+        
+        
         
     }//GEN-LAST:event_buttonMin2ActionPerformed
 
     private void buttonGreen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen1ActionPerformed
         loadData();
     }//GEN-LAST:event_buttonGreen1ActionPerformed
+
+    private void buttonRed1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRed1ActionPerformed
+        if (!filter) {
+            JOptionPane.showMessageDialog(this, "Silahkan filter date penjualan agar tidak terlalu banyak");
+        }else if (modelPenjualan.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Daftar penjualan kosong");
+        } else {
+            int pilih=JOptionPane.showConfirmDialog(this, "Apakah anda yakin ingin mencetak dari tanggal "+mulai+
+                    " sampai tanggal "+sampai+" ?", "Pertanyaan?", JOptionPane.YES_NO_OPTION);
+            if (pilih == JOptionPane.YES_OPTION) {
+                SessionFactory sessionFactory=SpringManager.getInstance().getBean(SessionFactory.class);
+                Session session=sessionFactory.openSession();
+                session.doWork(new Work() {
+
+                    @Override
+                    public void execute(Connection cnctn) throws SQLException {
+                        try {
+                            InputStream inputStream=getClass().getResourceAsStream("/com/bustomi/d3ti/uns/report/penjualan.jasper");
+
+                            JRDataSource dataSource=new JRBeanCollectionDataSource(modelPenjualan.getList(), false);
+                            Map<String, Object> map=new HashMap<>();
+                            map.put(JRParameter.REPORT_DATA_SOURCE, dataSource);
+                            map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
+
+                            JasperPrint jasperPrint=JasperFillManager.fillReport(inputStream, map);
+                            DialogLaporan dialogLaporan=new DialogLaporan(jasperPrint);
+                            dialogLaporan.setLocationRelativeTo(null);
+                            dialogLaporan.setVisible(true);
+                        } catch (JRException ex) {
+                            Logger.getLogger(PanelPenjualan.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });                
+            }
+            
+        }
+    }//GEN-LAST:event_buttonRed1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -237,6 +319,7 @@ public class PanelPenjualan extends javax.swing.JPanel {
     private com.bustomi.bookstorepos.component.ButtonGreen buttonGreen1;
     private com.bustomi.bookstorepos.component.ButtonMin buttonMin1;
     private com.bustomi.bookstorepos.component.ButtonMin buttonMin2;
+    private com.bustomi.bookstorepos.component.ButtonRed buttonRed1;
     private com.toedter.calendar.JDateChooser jDateChooserMulai;
     private com.toedter.calendar.JDateChooser jDateChooserSampai;
     private javax.swing.JLabel jLabel1;

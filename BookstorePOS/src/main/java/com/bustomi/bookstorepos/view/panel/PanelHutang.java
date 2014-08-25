@@ -204,7 +204,8 @@ public class PanelHutang extends javax.swing.JPanel {
             int pilih=TabelPembelian.convertRowIndexToModel(TabelPembelian.getSelectedRow());
             Pembelian pembelian=modelPembelian.ambilData(pilih);
             DialogDetailPembelian dialogDetailPembelian=new DialogDetailPembelian(pembelian);
-            dialogDetailPembelian.setLocationRelativeTo(this);            
+            dialogDetailPembelian.setLocationRelativeTo(this);   
+            dialogDetailPembelian.setVisible(true);
         }
     }//GEN-LAST:event_buttonBlue1ActionPerformed
 

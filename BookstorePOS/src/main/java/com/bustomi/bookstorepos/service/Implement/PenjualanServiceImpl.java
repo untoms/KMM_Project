@@ -42,30 +42,6 @@ public class PenjualanServiceImpl implements PenjualanService{
     protected Session currentSession(){
         return sessionFactory.getCurrentSession();
     }
-
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-    public SaldoService getSaldoService() {
-        return saldoService;
-    }
-
-    public void setSaldoService(SaldoService saldoService) {
-        this.saldoService = saldoService;
-    }
-
-    public JurnalService getJurnalService() {
-        return jurnalService;
-    }
-
-    public void setJurnalService(JurnalService jurnalService) {
-        this.jurnalService = jurnalService;
-    }
     
     @Transactional
     @Override
@@ -89,7 +65,7 @@ public class PenjualanServiceImpl implements PenjualanService{
         jurnal.setSaldo(nilai);
         jurnal.setSaldoSebelumnya(saldo.getNilai());
         jurnal.setWaktu(penjualan.getWaktu_transaksi());
-        
+        saldo.setNilai(nilai);
         saldoService.update(saldo);
         jurnalService.save(jurnal);
     }

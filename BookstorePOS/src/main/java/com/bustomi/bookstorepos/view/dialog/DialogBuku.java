@@ -22,6 +22,7 @@ import java.awt.Color;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -371,8 +372,8 @@ public class DialogBuku extends javax.swing.JDialog {
         jScrollPaneNama.setOpaque(false);
         jScrollPaneNama.setViewport(viewPortX1);
 
-        textFormatXTahun.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        textFormatXTahun.setValue(1945);
+        textFormatXTahun.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("YYYY"))));
+        textFormatXTahun.setValue(new Date());
 
         textFormatXHBeli.setValue(new BigDecimal(0.00));
 
@@ -546,9 +547,7 @@ public class DialogBuku extends javax.swing.JDialog {
                                         .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(jLabel15)
                                             .addComponent(labelPemasok)))))
-                            .addGroup(panelX1Layout.createSequentialGroup()
-                                .addGap(0, 0, 0)
-                                .addComponent(jLabel14))))
+                            .addComponent(jLabel14)))
                     .addGroup(panelX1Layout.createSequentialGroup()
                         .addGap(146, 146, 146)
                         .addComponent(jScrollPaneInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -618,7 +617,9 @@ public class DialogBuku extends javax.swing.JDialog {
             String info=textAreaInfo.getText();
             String nama=textAreaNama.getText();
             String isbn=textFieldXISBN.getText();
-            Integer terbit=(Integer) textFormatXTahun.getValue();
+            Calendar calendar=Calendar.getInstance() ;
+            calendar.setTime((Date) textFormatXTahun.getValue());         
+            Integer terbit=calendar.get(Calendar.YEAR);
             KategoriBuku kategoriBuku=(KategoriBuku) comboBoxKategori.getSelectedItem();
             Penerbit penerbit=(Penerbit) comboBoxPenrbit.getSelectedItem();
                         

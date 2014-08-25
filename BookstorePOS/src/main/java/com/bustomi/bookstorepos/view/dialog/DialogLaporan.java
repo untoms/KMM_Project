@@ -6,6 +6,7 @@
 
 package com.bustomi.bookstorepos.view.dialog;
 
+import java.awt.Dimension;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.swing.JRViewer;
 
@@ -24,7 +25,9 @@ public class DialogLaporan extends javax.swing.JDialog {
         initComponents();
         
         JRViewer viewer=new JRViewer(print);
-        jPanel1.add(viewer);
+        setPreferredSize(new Dimension(800, 600));
+        setMinimumSize(new Dimension(800, 600));
+        getContentPane().add(viewer);
     }
 
     /**
@@ -36,22 +39,8 @@ public class DialogLaporan extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        jPanel1.setLayout(new java.awt.BorderLayout());
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 739, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
+        setPreferredSize(new java.awt.Dimension(0, 0));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -59,6 +48,5 @@ public class DialogLaporan extends javax.swing.JDialog {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

@@ -9,7 +9,6 @@ package com.bustomi.bookstorepos.view.dialog;
 import com.bustomi.bookstorepos.entity.master.Barang;
 import com.bustomi.bookstorepos.entity.master.Buku;
 import com.bustomi.bookstorepos.entity.master.Item;
-import com.bustomi.bookstorepos.entity.transaksi.DetailPembelian;
 import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.service.BarangService;
 import com.bustomi.bookstorepos.service.BukuService;

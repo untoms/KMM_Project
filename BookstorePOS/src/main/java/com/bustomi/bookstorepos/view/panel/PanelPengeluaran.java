@@ -6,14 +6,16 @@
 
 package com.bustomi.bookstorepos.view.panel;
 
-import com.bustomi.bookstorepos.entity.transaksi.Pembelian;
+import com.bustomi.bookstorepos.entity.User.Grup;
+import com.bustomi.bookstorepos.entity.User.Role;
+import com.bustomi.bookstorepos.entity.User.User;
+import com.bustomi.bookstorepos.entity.transaksi.Pengeluaran;
+import com.bustomi.bookstorepos.manager.LoginManager;
 import com.bustomi.bookstorepos.manager.SpringManager;
-import com.bustomi.bookstorepos.service.PembelianService;
-import com.bustomi.bookstorepos.view.dialog.DialogDetailPembelian;
+import com.bustomi.bookstorepos.service.PengeluaranService;
+import com.bustomi.bookstorepos.view.dialog.DialogPengeluaran;
 import com.bustomi.bookstorepos.view.tablemodel.HurufRender;
-import com.bustomi.bookstorepos.view.tablemodel.TabelModelPembelian;
-import static java.awt.Component.CENTER_ALIGNMENT;
-import java.util.Date;
+import com.bustomi.bookstorepos.view.tablemodel.TabelModelPengeluaran;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -21,27 +23,29 @@ import javax.swing.JOptionPane;
  *
  * @author PacuL
  */
-public class PanelPembelian extends javax.swing.JPanel {
+public class PanelPengeluaran extends javax.swing.JPanel {
 
-    private final TabelModelPembelian modelPembelian;
+    private final TabelModelPengeluaran modelPengeluaran;
     
-    public PanelPembelian()  {
+    public PanelPengeluaran()  {
         
-        modelPembelian=new TabelModelPembelian();
+        modelPengeluaran=new TabelModelPengeluaran();
         initComponents();
         
-        TabelPembelian.setModel(modelPembelian);
+        TabelPengeluaran.setModel(modelPengeluaran);
         
         loadData();
-        TabelPembelian.getColumnModel().getColumn(0).setMaxWidth(50);
-        TabelPembelian.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
-        TabelPembelian.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
-        TabelPembelian.getColumnModel().getColumn(2).setCellRenderer(new HurufRender());
-        TabelPembelian.getColumnModel().getColumn(3).setCellRenderer(new HurufRender());  
-        TabelPembelian.getColumnModel().getColumn(4).setCellRenderer(new HurufRender());         
-        TabelPembelian.getColumnModel().getColumn(5).setCellRenderer(new HurufRender());                 
-        TabelPembelian.getColumnModel().getColumn(6).setCellRenderer(new HurufRender());
-        TabelPembelian.getTableHeader().setAlignmentY(CENTER_ALIGNMENT);                
+        TabelPengeluaran.getColumnModel().getColumn(0).setMaxWidth(50);
+        TabelPengeluaran.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
+        TabelPengeluaran.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
+        TabelPengeluaran.getColumnModel().getColumn(2).setCellRenderer(new HurufRender());
+        TabelPengeluaran.getColumnModel().getColumn(3).setCellRenderer(new HurufRender());  
+        TabelPengeluaran.getColumnModel().getColumn(4).setCellRenderer(new HurufRender());   
+        TabelPengeluaran.getTableHeader().setAlignmentY(CENTER_ALIGNMENT);
+        
+        User user=LoginManager.getInstance().getUser();
+        Grup grup=user.getGrup();
+        buttonGreen1.setEnabled(grup.mengandungHakAkses(Role.TAMBAH_PELANGGAN));
     }
 
     /**
@@ -54,7 +58,7 @@ public class PanelPembelian extends javax.swing.JPanel {
     private void initComponents() {
 
         viewPortX1 = new com.bustomi.bookstorepos.component.ViewPortX();
-        TabelPembelian = new javax.swing.JTable();
+        TabelPengeluaran = new javax.swing.JTable();
         panelX1 = new com.bustomi.bookstorepos.component.PanelX();
         buttonBlue1 = new com.bustomi.bookstorepos.component.ButtonBlue();
         buttonGreen1 = new com.bustomi.bookstorepos.component.ButtonGreen();
@@ -63,13 +67,10 @@ public class PanelPembelian extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         panelX2 = new com.bustomi.bookstorepos.component.PanelX();
         jLabel2 = new javax.swing.JLabel();
+        textFieldXCari = new com.bustomi.bookstorepos.component.TextFieldX();
         buttonMin2 = new com.bustomi.bookstorepos.component.ButtonMin();
-        jDateChooserMulai = new com.toedter.calendar.JDateChooser();
-        jLabel3 = new javax.swing.JLabel();
-        jDateChooserSampai = new com.toedter.calendar.JDateChooser();
-        buttonRed1 = new com.bustomi.bookstorepos.component.ButtonRed();
 
-        TabelPembelian.setModel(new javax.swing.table.DefaultTableModel(
+        TabelPengeluaran.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -80,14 +81,14 @@ public class PanelPembelian extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        TabelPembelian.setOpaque(false);
-        viewPortX1.add(TabelPembelian);
+        TabelPengeluaran.setOpaque(false);
+        viewPortX1.add(TabelPengeluaran);
 
         setOpaque(false);
 
         panelX1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
 
-        buttonBlue1.setText("Detail Pembelian");
+        buttonBlue1.setText("Detail");
         buttonBlue1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonBlue1ActionPerformed(evt);
@@ -95,7 +96,7 @@ public class PanelPembelian extends javax.swing.JPanel {
         });
         panelX1.add(buttonBlue1);
 
-        buttonGreen1.setText("Tambah Pembelian");
+        buttonGreen1.setText("Tambah Pengeluaran");
         buttonGreen1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonGreen1ActionPerformed(evt);
@@ -117,13 +118,12 @@ public class PanelPembelian extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("DAFTAR PEMBELIAN");
+        jLabel1.setText("DAFTAR PENGELUARAN");
 
         panelX2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Mulai :");
+        jLabel2.setText("Nama :");
 
         buttonMin2.setText("Filter");
         buttonMin2.addActionListener(new java.awt.event.ActionListener() {
@@ -132,24 +132,16 @@ public class PanelPembelian extends javax.swing.JPanel {
             }
         });
 
-        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Sampai :");
-
         javax.swing.GroupLayout panelX2Layout = new javax.swing.GroupLayout(panelX2);
         panelX2.setLayout(panelX2Layout);
         panelX2Layout.setHorizontalGroup(
             panelX2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelX2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(16, 16, 16)
                 .addComponent(jLabel2)
+                .addGap(5, 5, 5)
+                .addComponent(textFieldXCari, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jDateChooserMulai, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jDateChooserSampai, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonMin2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -158,36 +150,29 @@ public class PanelPembelian extends javax.swing.JPanel {
             .addGroup(panelX2Layout.createSequentialGroup()
                 .addGroup(panelX2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelX2Layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addComponent(buttonMin2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel2))
                     .addGroup(panelX2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(panelX2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addComponent(jDateChooserSampai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDateChooserMulai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))))
+                        .addGap(5, 5, 5)
+                        .addGroup(panelX2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(textFieldXCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonMin2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(6, 6, 6))
         );
-
-        buttonRed1.setText("CETAK LAPORAN");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 868, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(panelX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(panelX2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonRed1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(panelX2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -196,71 +181,77 @@ public class PanelPembelian extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(panelX1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelX2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonRed1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panelX1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelX2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(12, 12, 12))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void buttonBlue1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBlue1ActionPerformed
-        if (TabelPembelian.getSelectedColumn() == -1) {
-            JOptionPane.showMessageDialog(this, "Silahkan pilih data pembelian!");
-        }else {
-            int pilih=TabelPembelian.convertRowIndexToModel(TabelPembelian.getSelectedRow());
-            Pembelian pembelian=modelPembelian.ambilData(pilih);
-            DialogDetailPembelian dialogDetailPembelian=new DialogDetailPembelian(pembelian);
-            dialogDetailPembelian.setLocationRelativeTo(this);            
-        }
-    }//GEN-LAST:event_buttonBlue1ActionPerformed
 
     private void buttonMin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin1ActionPerformed
         loadData();
     }//GEN-LAST:event_buttonMin1ActionPerformed
 
     private void buttonMin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin2ActionPerformed
-        Date mulai=jDateChooserMulai.getDate();
-        Date sampai=jDateChooserSampai.getDate();
+        String nama=textFieldXCari.getText();
         
-        PembelianService service=SpringManager.getInstance().getBean(PembelianService.class);
-        List<Pembelian> pembelians=service.findAll(mulai,sampai);
-        if (pembelians != null) {
-            modelPembelian.load(pembelians);
+        PengeluaranService service=SpringManager.getInstance().getBean(PengeluaranService.class);
+        List<Pengeluaran> pengeluarans=service.findAll(nama);
+        if (pengeluarans != null) {
+            modelPengeluaran.load(pengeluarans);
+            textFieldXCari.setText("");
         } else {
-            JOptionPane.showMessageDialog(this, "Tidak ada transaksi");
+            JOptionPane.showMessageDialog(this, "Data tidak ada yang cocok");
         }
         
     }//GEN-LAST:event_buttonMin2ActionPerformed
 
     private void buttonGreen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen1ActionPerformed
+        DialogPengeluaran dialogPengeluaran=new DialogPengeluaran();
+        dialogPengeluaran.setLocationRelativeTo(this);
+        
+        Pengeluaran pengeluaran=dialogPengeluaran.tambah();
+        if (pengeluaran != null) {
+            PengeluaranService service=SpringManager.getInstance().getBean(PengeluaranService.class);
+            service.save(pengeluaran);
+        }
         loadData();
     }//GEN-LAST:event_buttonGreen1ActionPerformed
 
+    private void buttonBlue1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBlue1ActionPerformed
+        if (TabelPengeluaran.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih salah satu data pengeluaran");
+        }else{
+            int pilih=TabelPengeluaran.convertRowIndexToModel(TabelPengeluaran.getSelectedRow());
+            Pengeluaran pengeluaran=modelPengeluaran.ambilData(pilih);
+            
+            DialogPengeluaran dialogPengeluaran=new DialogPengeluaran();
+            dialogPengeluaran.setLocationRelativeTo(this);
+            dialogPengeluaran.detail(pengeluaran);            
+        }   
+    }//GEN-LAST:event_buttonBlue1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable TabelPembelian;
+    private javax.swing.JTable TabelPengeluaran;
     private com.bustomi.bookstorepos.component.ButtonBlue buttonBlue1;
     private com.bustomi.bookstorepos.component.ButtonGreen buttonGreen1;
     private com.bustomi.bookstorepos.component.ButtonMin buttonMin1;
     private com.bustomi.bookstorepos.component.ButtonMin buttonMin2;
-    private com.bustomi.bookstorepos.component.ButtonRed buttonRed1;
-    private com.toedter.calendar.JDateChooser jDateChooserMulai;
-    private com.toedter.calendar.JDateChooser jDateChooserSampai;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private com.bustomi.bookstorepos.component.PanelX panelX1;
     private com.bustomi.bookstorepos.component.PanelX panelX2;
+    private com.bustomi.bookstorepos.component.TextFieldX textFieldXCari;
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX1;
     // End of variables declaration//GEN-END:variables
     
     private void loadData() {
-        PembelianService barangService=SpringManager.getInstance().getBean(PembelianService.class);
-        modelPembelian.load(barangService.findAll());
+        PengeluaranService pengeluaranService=SpringManager.getInstance().getBean(PengeluaranService.class);
+        modelPengeluaran.load(pengeluaranService.findAll());
     }
 
 }

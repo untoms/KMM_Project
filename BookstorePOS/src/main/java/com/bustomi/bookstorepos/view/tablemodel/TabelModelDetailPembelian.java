@@ -7,6 +7,7 @@
 package com.bustomi.bookstorepos.view.tablemodel;
 
 import com.bustomi.bookstorepos.entity.transaksi.DetailPembelian;
+import java.math.BigDecimal;
 
 /**
  *
@@ -27,7 +28,8 @@ public class TabelModelDetailPembelian extends ParentTableModel<DetailPembelian>
             case 2 : return getList().get(rowIndex).getItem().getNama();
             case 3 : return getList().get(rowIndex).getHarga();
             case 4 : return getList().get(rowIndex).getJumlah();
-            case 5 : return getList().get(rowIndex).getSubTotal();
+            case 5 : return getList().get(rowIndex).getHarga().multiply(
+                    new BigDecimal(getList().get(rowIndex).getJumlah()));
                 default: return null;
         }
     }

@@ -22,6 +22,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -50,7 +51,7 @@ public class Penjualan extends TransactionEntity{
     @Column(name = "Total")
     private BigDecimal total;
     
-    @Column(name = "Uang")
+    @Transient
     private BigDecimal uang;
     
     @Column(name = "Keuntungan")

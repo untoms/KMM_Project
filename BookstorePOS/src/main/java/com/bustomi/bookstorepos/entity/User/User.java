@@ -7,11 +7,14 @@
 package com.bustomi.bookstorepos.entity.User;
 
 import com.bustomi.bookstorepos.entity.Person;
+import com.bustomi.bookstorepos.entity.transaksi.Pemasukan;
+import com.bustomi.bookstorepos.entity.transaksi.Pengeluaran;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,7 +41,7 @@ public class User extends Person{
     @ManyToOne 
     @JoinColumn (name = "Grup_Id")
     private Grup grup;
-    
+        
     @SuppressWarnings("ReturnOfDateField")
     public Date getTerakhir_login() {
         return Terakhir_login;
