@@ -25,5 +25,6 @@ public interface SimpleInterfaceService <T extends SimpleEntity<?>, Id extends S
     T find(String nama);
     List<T> findAll();
     List<T> findAll(String nama);
-    
+    List<T> findAll(Integer pageNumber, Integer rowsPerPage);
+    Integer countRows();
 }

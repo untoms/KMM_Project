@@ -7,6 +7,8 @@
 package com.bustomi.bookstorepos.service;
 
 import com.bustomi.bookstorepos.entity.transaksi.Pemasukan;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -14,4 +16,6 @@ import com.bustomi.bookstorepos.entity.transaksi.Pemasukan;
  */
 public interface PemasukanService extends InterfaceService<Pemasukan, Long>{
     
+    List<Pemasukan> findAll(Date from, Date to);
+              
 }

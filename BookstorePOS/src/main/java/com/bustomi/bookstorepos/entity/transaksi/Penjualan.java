@@ -11,18 +11,9 @@ import com.bustomi.bookstorepos.entity.User.User;
 import com.bustomi.bookstorepos.entity.master.Pelanggan;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 /**
  *
@@ -45,17 +36,29 @@ public class Penjualan extends TransactionEntity{
     @JoinColumn(name = "Pelanggan_Id")
     private Pelanggan pelanggan;
 
-    @OneToMany(mappedBy = "penjualan", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "penjualan")
     private List<DetailPenjualan> daftarPenjualan = new ArrayList<>();
 
     @Column(name = "Total")
     private BigDecimal total;
     
+    @Column(name = "Diskon")
+    private BigDecimal diskon;
+        
     @Transient
     private BigDecimal uang;
     
     @Column(name = "Keuntungan")
     private BigDecimal keuntungan;
+    
+    @Transient
+    private Long jumlah;
+    
+    @Transient
+    private BigDecimal totals;
+    
+    @Transient
+    private Date waktu;
     
     public void tambahDaftarPenjualan(DetailPenjualan detailPenjualan) {
         detailPenjualan.setPenjualan(this);
@@ -67,6 +70,7 @@ public class Penjualan extends TransactionEntity{
             totalBeli = totalBeli.add(detail.getItem().getHarga_beli().multiply(
                     new BigDecimal(detail.getJumlah()))) ;
         }
+        total=total.subtract(diskon);
         keuntungan = total.subtract(totalBeli) ;
     }
 
@@ -132,5 +136,36 @@ public class Penjualan extends TransactionEntity{
     public void setKeuntungan(BigDecimal keuntungan) {
         this.keuntungan = keuntungan;
     }
-    
+
+    public Long getJumlah() {
+        return jumlah;
+    }
+
+    public void setJumlah(Long jumlah) {
+        this.jumlah = jumlah;
+    }
+
+    public BigDecimal getTotals() {
+        return totals;
+    }
+
+    public void setTotals(BigDecimal totals) {
+        this.totals = totals;
+    }
+
+    public Date getWaktu() {
+        return waktu;
+    }
+
+    public void setWaktu(Date waktu) {
+        this.waktu = waktu;
+    }
+
+    public BigDecimal getDiskon() {
+        return diskon;
+    }
+
+    public void setDiskon(BigDecimal diskon) {
+        this.diskon = diskon;
+    }    
 }

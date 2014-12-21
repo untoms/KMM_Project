@@ -14,6 +14,9 @@ import com.bustomi.bookstorepos.service.JurnalService;
 import com.bustomi.bookstorepos.service.PemasukanService;
 import com.bustomi.bookstorepos.service.SaldoService;
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +49,7 @@ public class PemasukanServiceImpl extends AbstractService<Pemasukan, Long> imple
         Jurnal jurnal=new Jurnal();
         jurnal.setDebit(entity.getJumlah());
         jurnal.setKredit(BigDecimal.ZERO);
-        jurnal.setNama("Pemasukan : "+entity.getNama());
+        jurnal.setNama("Pemasukan : Id = "+entity.getId()+". "+entity.getNama());
         jurnal.setSaldo(nilai);
         jurnal.setSaldoSebelumnya(saldo.getNilai());
         jurnal.setWaktu(entity.getWaktuDibuat());
@@ -55,5 +58,14 @@ public class PemasukanServiceImpl extends AbstractService<Pemasukan, Long> imple
         saldoService.update(saldo);
         jurnalService.save(jurnal);
     }
+
+    @Override
+    @Transactional(readOnly=true)
+    public List<Pemasukan> findAll(Date from, Date to) {
+        return currentSession().createCriteria(clazz).
+                add(Restrictions.between("waktuDibuat", from, to)).list();
+    }
+    
+    
     
 }

@@ -7,19 +7,28 @@
 package com.bustomi.bookstorepos.view.dialog;
 
 import com.bustomi.bookstorepos.manager.LoginManager;
+import java.awt.Cursor;
+import java.awt.event.KeyEvent;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 
 /**
  *
  * @author PacuL
  */
 public class DialogLogin extends javax.swing.JDialog {
+    
+    private worker w;
 
     public DialogLogin() {
         setModal(true);
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Login Pengguna");
+        labelProgress.setText("Login gagal, username atau kata sandi salah !");
     }
 
     /**
@@ -31,6 +40,7 @@ public class DialogLogin extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        labelProgress = new javax.swing.JLabel();
         panelXBack1 = new com.bustomi.bookstorepos.component.PanelXBack();
         panelX1 = new com.bustomi.bookstorepos.component.PanelX();
         jLabel2 = new javax.swing.JLabel();
@@ -41,6 +51,10 @@ public class DialogLogin extends javax.swing.JDialog {
         panelX2 = new com.bustomi.bookstorepos.component.PanelX();
         buttonGreen1 = new com.bustomi.bookstorepos.component.ButtonGreen();
         buttonRed1 = new com.bustomi.bookstorepos.component.ButtonRed();
+        PanelProgress = new javax.swing.JPanel();
+        jProgressBar1 = new javax.swing.JProgressBar();
+
+        labelProgress.setText("jLabel4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -56,6 +70,12 @@ public class DialogLogin extends javax.swing.JDialog {
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Password :");
+
+        textPassX1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textPassX1KeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelX1Layout = new javax.swing.GroupLayout(panelX1);
         panelX1.setLayout(panelX1Layout);
@@ -111,6 +131,30 @@ public class DialogLogin extends javax.swing.JDialog {
         });
         panelX2.add(buttonRed1);
 
+        PanelProgress.setBorder(new javax.swing.border.LineBorder(java.awt.Color.white, 1, true));
+        PanelProgress.setOpaque(false);
+
+        javax.swing.GroupLayout PanelProgressLayout = new javax.swing.GroupLayout(PanelProgress);
+        PanelProgress.setLayout(PanelProgressLayout);
+        PanelProgressLayout.setHorizontalGroup(
+            PanelProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(PanelProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelProgressLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+        PanelProgressLayout.setVerticalGroup(
+            PanelProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 44, Short.MAX_VALUE)
+            .addGroup(PanelProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelProgressLayout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
         javax.swing.GroupLayout panelXBack1Layout = new javax.swing.GroupLayout(panelXBack1);
         panelXBack1.setLayout(panelXBack1Layout);
         panelXBack1Layout.setHorizontalGroup(
@@ -118,9 +162,10 @@ public class DialogLogin extends javax.swing.JDialog {
             .addGroup(panelXBack1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelXBack1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
+                    .addComponent(panelX2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelX1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                    .addComponent(panelX2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(PanelProgress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelXBack1Layout.setVerticalGroup(
@@ -131,48 +176,111 @@ public class DialogLogin extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(PanelProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(panelX2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
-        getContentPane().add(panelXBack1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(panelXBack1, java.awt.BorderLayout.PAGE_START);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void buttonGreen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen1ActionPerformed
-        String username=textFieldX1.getText();
-        String pass=new String(textPassX1.getPassword());
-            
-        boolean login=LoginManager.getInstance().login(username, pass); 
-        if (login) {
-            dispose();
-        }else {
-            JOptionPane.showMessageDialog(this, "Kombinasi username dan password tidak ditemuan!");
-        }            
-                
-    }//GEN-LAST:event_buttonGreen1ActionPerformed
-
-    private void buttonRed1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRed1ActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_buttonRed1ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         System.exit(0);
     }//GEN-LAST:event_formWindowClosing
 
+    private void buttonRed1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRed1ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_buttonRed1ActionPerformed
+
+    private void buttonGreen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen1ActionPerformed
+        login();
+    }//GEN-LAST:event_buttonGreen1ActionPerformed
+
+    private void textPassX1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textPassX1KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            login();
+        }
+    }//GEN-LAST:event_textPassX1KeyPressed
+
  
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel PanelProgress;
     private com.bustomi.bookstorepos.component.ButtonGreen buttonGreen1;
     private com.bustomi.bookstorepos.component.ButtonRed buttonRed1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JLabel labelProgress;
     private com.bustomi.bookstorepos.component.PanelX panelX1;
     private com.bustomi.bookstorepos.component.PanelX panelX2;
     private com.bustomi.bookstorepos.component.PanelXBack panelXBack1;
     private com.bustomi.bookstorepos.component.TextFieldX textFieldX1;
     private com.bustomi.bookstorepos.component.TextPassX textPassX1;
     // End of variables declaration//GEN-END:variables
+    
+    private class worker extends SwingWorker<Boolean, Object> {
         
+        String username;
+        String pass;
+
+        public worker(String username, String pass) {
+            this.username = username;
+            this.pass = pass;
+        }
+        
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            return LoginManager.getInstance().login(username, pass); 
+                      
+        }
+
+        @Override
+        protected void done() {
+            try {
+                if (get()) {
+                    close();
+                }else {
+                    JOptionPane.showMessageDialog(null, "Login gagal, username atau kata sandi salah !");
+                    textFieldX1.requestFocusInWindow();
+                    textFieldX1.selectAll();
+                }
+                buttonGreen1.setEnabled(true);
+                jProgressBar1.setIndeterminate(false);
+                jProgressBar1.setVisible(false);
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(DialogLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+
+    }
+    
+    private void close(){
+        this.dispose();
+    }
+    
+    private void login(){
+        String username = textFieldX1.getText();
+        String pass = new String(textPassX1.getPassword());
+
+        if (w != null && !w.isDone()) {
+            w.cancel(true);
+            w = null;
+        }
+
+        PanelProgress.add(jProgressBar1);
+
+        worker work = new worker(username, pass);
+        work.execute();
+
+        buttonGreen1.setEnabled(false);
+        jProgressBar1.setVisible(true);
+        jProgressBar1.setIndeterminate(true);
+
+    }
 }

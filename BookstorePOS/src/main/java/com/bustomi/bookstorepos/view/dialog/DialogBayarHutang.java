@@ -6,12 +6,7 @@
 
 package com.bustomi.bookstorepos.view.dialog;
 
-import com.bustomi.bookstorepos.entity.master.KategoriBarang;
 import com.bustomi.bookstorepos.entity.transaksi.Pembelian;
-import com.bustomi.bookstorepos.manager.SpringManager;
-import com.bustomi.bookstorepos.validator.ValidatorException;
-import com.bustomi.bookstorepos.validator.implement.KategoriBarangValidator;
-import java.awt.Color;
 import java.math.BigDecimal;
 import javax.swing.JOptionPane;
 

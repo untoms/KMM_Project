@@ -14,10 +14,7 @@ import com.bustomi.bookstorepos.entity.transaksi.DetailPembelian;
 import com.bustomi.bookstorepos.entity.transaksi.Pembelian;
 import com.bustomi.bookstorepos.manager.LoginManager;
 import com.bustomi.bookstorepos.manager.SpringManager;
-import com.bustomi.bookstorepos.service.BarangService;
-import com.bustomi.bookstorepos.service.BukuService;
-import com.bustomi.bookstorepos.service.ItemService;
-import com.bustomi.bookstorepos.service.PembelianService;
+import com.bustomi.bookstorepos.service.*;
 import com.bustomi.bookstorepos.view.dialog.DialogBarang;
 import com.bustomi.bookstorepos.view.dialog.DialogBuku;
 import com.bustomi.bookstorepos.view.dialog.DialogCariDataPembelian;
@@ -25,9 +22,12 @@ import com.bustomi.bookstorepos.view.dialog.DialogCariPemasok;
 import com.bustomi.bookstorepos.view.tablemodel.HurufRender;
 import com.bustomi.bookstorepos.view.tablemodel.TabelModelDetailPembelian;
 import static java.awt.Component.CENTER_ALIGNMENT;
+import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Locale;
 import javax.swing.JOptionPane;
+import org.springframework.format.number.CurrencyFormatter;
 
 /**
  *
@@ -38,6 +38,8 @@ public class PanelTransPembelian extends javax.swing.JPanel {
     private final TabelModelDetailPembelian modelPembelian;
     private Pemasok pemasok;
     private BigDecimal total;
+    private CurrencyFormatter formatter = new CurrencyFormatter();
+    private Locale locale = new Locale("in", "ID");
     
     public PanelTransPembelian()  {
         
@@ -76,17 +78,16 @@ public class PanelTransPembelian extends javax.swing.JPanel {
         buttonGreen3 = new com.bustomi.bookstorepos.component.ButtonGreen();
         buttonGreen1 = new com.bustomi.bookstorepos.component.ButtonGreen();
         buttonRed1 = new com.bustomi.bookstorepos.component.ButtonRed();
-        panelX4 = new com.bustomi.bookstorepos.component.PanelX();
-        jLabel4 = new javax.swing.JLabel();
-        textFieldX1 = new com.bustomi.bookstorepos.component.TextFieldX();
-        buttonGreen2 = new com.bustomi.bookstorepos.component.ButtonGreen();
         panelX5 = new com.bustomi.bookstorepos.component.PanelX();
         labelTotal = new javax.swing.JLabel();
-        panelX1 = new com.bustomi.bookstorepos.component.PanelX();
-        buttonBlue1 = new com.bustomi.bookstorepos.component.ButtonBlue();
-        textFormatX1 = new com.bustomi.bookstorepos.component.TextFormatX();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        textFieldX1 = new com.bustomi.bookstorepos.component.TextFieldX();
+        buttonGreen2 = new com.bustomi.bookstorepos.component.ButtonGreen();
+        jLabel4 = new javax.swing.JLabel();
+        textFormatX1 = new com.bustomi.bookstorepos.component.TextFormatX();
         buttonMin1 = new com.bustomi.bookstorepos.component.ButtonMin();
+        buttonBlue1 = new com.bustomi.bookstorepos.component.ButtonBlue();
 
         TabelPembelian.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -109,7 +110,7 @@ public class PanelTransPembelian extends javax.swing.JPanel {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("TRANSAKSI PEMBELIAN");
 
-        panelX3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Detail Pembelian", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        panelX3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Detail Pembelian", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(255, 255, 255)));
         panelX3.setForeground(new java.awt.Color(255, 255, 255));
 
         jScrollPane1.setOpaque(false);
@@ -153,24 +154,37 @@ public class PanelTransPembelian extends javax.swing.JPanel {
         panelX3.setLayout(panelX3Layout);
         panelX3Layout.setHorizontalGroup(
             panelX3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelX3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelX3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
         panelX3Layout.setVerticalGroup(
             panelX3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelX3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4))
         );
 
-        panelX4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Pembelian", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
-        panelX4.setForeground(new java.awt.Color(255, 255, 255));
+        panelX5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        panelX5.setForeground(new java.awt.Color(255, 255, 255));
 
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Pemasok :");
+        labelTotal.setBackground(new java.awt.Color(255, 255, 255));
+        labelTotal.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        labelTotal.setForeground(new java.awt.Color(255, 0, 51));
+        labelTotal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelTotal.setText("0.00");
+
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("TOTAL :");
+
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("PEMASOK :");
 
         textFieldX1.setEnabled(false);
 
@@ -181,96 +195,70 @@ public class PanelTransPembelian extends javax.swing.JPanel {
             }
         });
 
-        javax.swing.GroupLayout panelX4Layout = new javax.swing.GroupLayout(panelX4);
-        panelX4.setLayout(panelX4Layout);
-        panelX4Layout.setHorizontalGroup(
-            panelX4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelX4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textFieldX1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonGreen2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        panelX4Layout.setVerticalGroup(
-            panelX4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelX4Layout.createSequentialGroup()
-                .addGroup(panelX4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textFieldX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(buttonGreen2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 4, Short.MAX_VALUE))
-        );
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("JUMLAH BAYAR :");
 
-        panelX5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Total Harga (IDR)", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
-        panelX5.setForeground(new java.awt.Color(255, 255, 255));
-
-        labelTotal.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        labelTotal.setForeground(new java.awt.Color(255, 0, 51));
-        labelTotal.setText("0.00");
+        textFormatX1.setForeground(new java.awt.Color(255, 0, 0));
+        textFormatX1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        textFormatX1.setValue(new BigDecimal(0.00));
+        textFormatX1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFormatX1KeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelX5Layout = new javax.swing.GroupLayout(panelX5);
         panelX5.setLayout(panelX5Layout);
         panelX5Layout.setHorizontalGroup(
             panelX5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelX5Layout.createSequentialGroup()
+            .addGroup(panelX5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(labelTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
+                .addGroup(panelX5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(panelX5Layout.createSequentialGroup()
+                        .addComponent(textFieldX1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(buttonGreen2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelX5Layout.createSequentialGroup()
+                        .addGroup(panelX5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGap(0, 248, Short.MAX_VALUE))
+                    .addComponent(textFormatX1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelX5Layout.setVerticalGroup(
             panelX5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelX5Layout.createSequentialGroup()
-                .addGap(4, 4, 4)
-                .addComponent(labelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2))
-        );
-
-        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Uang Pembayaran", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
-        panelX1.setForeground(new java.awt.Color(255, 255, 255));
-
-        buttonBlue1.setText("BAYAR");
-        buttonBlue1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonBlue1ActionPerformed(evt);
-            }
-        });
-
-        textFormatX1.setForeground(new java.awt.Color(51, 255, 51));
-        textFormatX1.setValue(new BigDecimal(0.00));
-
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Jumlah Bayar :");
-
-        javax.swing.GroupLayout panelX1Layout = new javax.swing.GroupLayout(panelX1);
-        panelX1.setLayout(panelX1Layout);
-        panelX1Layout.setHorizontalGroup(
-            panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelX1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textFormatX1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(labelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(buttonBlue1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelX5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textFieldX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonGreen2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(textFormatX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-        );
-        panelX1Layout.setVerticalGroup(
-            panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelX1Layout.createSequentialGroup()
-                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textFormatX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(buttonBlue1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(5, 5, 5))
         );
 
         buttonMin1.setText("RESET");
         buttonMin1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonMin1ActionPerformed(evt);
+            }
+        });
+
+        buttonBlue1.setText("BAYAR");
+        buttonBlue1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBlue1ActionPerformed(evt);
             }
         });
 
@@ -281,18 +269,14 @@ public class PanelTransPembelian extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelX3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1003, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(panelX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(panelX4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(panelX5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonMin1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 51, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(panelX5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(buttonBlue1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(buttonMin1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(panelX3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -301,94 +285,21 @@ public class PanelTransPembelian extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(panelX4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(panelX5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(buttonMin1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelX3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(panelX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelX3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(panelX5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(buttonBlue1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(buttonMin1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 113, Short.MAX_VALUE)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonBlue1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBlue1ActionPerformed
-        BigDecimal bayar=(BigDecimal) textFormatX1.getValue();
-        if (pemasok == null) {
-            JOptionPane.showMessageDialog(this, "Pemasok belum di pilih");
-        } else if (modelPembelian.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(this, "Belum ada item yang dibeli");
-        } else if (bayar.compareTo(total()) == 1){
-            JOptionPane.showMessageDialog(this, "Jumlah bayar tidak boleh lebih dari total harga");
-        } else{
-            PembelianService service=SpringManager.getInstance().getBean(PembelianService.class);
-            BukuService bukuService=SpringManager.getInstance().getBean(BukuService.class);
-            BarangService barangService=SpringManager.getInstance().getBean(BarangService.class);
-            ItemService itemService=SpringManager.getInstance().getBean(ItemService.class);
-            
-            Pembelian pembelian=new Pembelian();
-            
-            pembelian.setBayar(bayar);
-            pembelian.setPemasok(pemasok);
-            pembelian.setUser(LoginManager.getInstance().getUser());
-            pembelian.setWaktu_transaksi(new Date());
-            pembelian.setTerakhir_diubah(new Date());
-//            pembelian.setTotal(total);
-                        
-            if (bayar.compareTo(total()) == -1) {
-                if(JOptionPane.showConfirmDialog(this, "Pembayaran belum lunas,"
-                        + "\n transaksi akan masuk ke daftar hutang", "Konfirmasi transaksi",
-                        JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){  
-                    for (int i = 0; i < modelPembelian.getRowCount(); i++) {
-                        DetailPembelian detailPembelian=modelPembelian.ambilData(i);
-                        Item item=detailPembelian.getItem();
-                        if(itemService.find(item.getId()) == null){
-                            itemService.save(item);
-                        }else {
-                            item.setStok(item.getStok() + detailPembelian.getJumlah());
-                            itemService.update(item);
-                        }
-                        Barang barang=item.getBarang();
-                        Buku buku=item.getBuku();
-                        
-                        if (barang != null) {
-                            barangService.save(barang);
-                        }else if(buku != null){
-                            bukuService.save(buku);
-                        }
-                        pembelian.tambahDetailPembelian(detailPembelian);
-                    }
-                    service.save(pembelian);
-                    JOptionPane.showMessageDialog(this, "Transaksi berhasil disimpan");
-                    reset();                    
-                }
-            }else{                
-                for (int i = 0; i < modelPembelian.getRowCount(); i++) {
-                    DetailPembelian detailPembelian=modelPembelian.ambilData(i);
-                    Item item=detailPembelian.getItem();
-                    if(itemService.find(item.getId()) == null){
-                        itemService.save(item);
-                    }else {
-                        item.setStok(item.getStok() + detailPembelian.getJumlah());
-                        itemService.update(item);
-                    }
-                    Barang barang=item.getBarang();
-                    Buku buku=item.getBuku();
-                    if (barang != null) {
-                        barangService.save(barang);
-                    }else if(buku != null){
-                        bukuService.save(buku);
-                    }
-                    pembelian.tambahDetailPembelian(detailPembelian);
-                }
-                service.save(pembelian);
-                JOptionPane.showMessageDialog(this, "Transaksi berhasil disimpan");
-                reset();
-            }            
-        }
-        
+        bayar();        
     }//GEN-LAST:event_buttonBlue1ActionPerformed
 
     private void buttonGreen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen1ActionPerformed
@@ -466,6 +377,13 @@ public class PanelTransPembelian extends javax.swing.JPanel {
         total();
     }//GEN-LAST:event_buttonBlue2ActionPerformed
 
+    private void textFormatX1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFormatX1KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            bayar();
+        }
+    }//GEN-LAST:event_textFormatX1KeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TabelPembelian;
@@ -478,13 +396,12 @@ public class PanelTransPembelian extends javax.swing.JPanel {
     private com.bustomi.bookstorepos.component.ButtonRed buttonRed1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelTotal;
-    private com.bustomi.bookstorepos.component.PanelX panelX1;
     private com.bustomi.bookstorepos.component.PanelX panelX3;
-    private com.bustomi.bookstorepos.component.PanelX panelX4;
     private com.bustomi.bookstorepos.component.PanelX panelX5;
     private com.bustomi.bookstorepos.component.TextFieldX textFieldX1;
     private com.bustomi.bookstorepos.component.TextFormatX textFormatX1;
@@ -497,7 +414,7 @@ public class PanelTransPembelian extends javax.swing.JPanel {
             DetailPembelian detailPembelian = modelPembelian.ambilData(i);
             total = total.add(detailPembelian.getSubTotal() );
         }
-        labelTotal.setText(total.toString());
+        labelTotal.setText(formatter.print(total, locale));
         return total;
     }   
     
@@ -507,5 +424,90 @@ public class PanelTransPembelian extends javax.swing.JPanel {
         textFormatX1.setValue(BigDecimal.ZERO);
         labelTotal.setText("0.00");
         modelPembelian.hapusSemua();
+    }
+    
+    private void bayar(){
+        BigDecimal bayar=(BigDecimal) textFormatX1.getValue();
+        if (pemasok == null) {
+            JOptionPane.showMessageDialog(this, "Pemasok belum di pilih");
+        } else if (modelPembelian.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Belum ada item yang dibeli");
+        } else if (bayar.compareTo(total()) == 1){
+            JOptionPane.showMessageDialog(this, "Jumlah bayar tidak boleh lebih dari total harga");
+        } else{
+            PembelianService service=SpringManager.getInstance().getBean(PembelianService.class);
+            BukuService bukuService=SpringManager.getInstance().getBean(BukuService.class);
+            BarangService barangService=SpringManager.getInstance().getBean(BarangService.class);
+            ItemService itemService=SpringManager.getInstance().getBean(ItemService.class);
+            SaldoService saldoService=SpringManager.getInstance().getBean(SaldoService.class);
+            
+            Pembelian pembelian=new Pembelian();
+            
+            pembelian.setBayar(bayar);
+            pembelian.setPemasok(pemasok);
+            pembelian.setUser(LoginManager.getInstance().getUser());
+            pembelian.setWaktu_transaksi(new Date());
+            pembelian.setTerakhir_diubah(new Date());
+//            pembelian.setTotal(total);
+            
+            if (bayar.compareTo(saldoService.find("saldo-terakhir").getNilai()) == 1) {
+                JOptionPane.showMessageDialog(this, "Saldo tersimpan tidak cukup untuk melakukan pembayaran!");
+                return;
+            }
+                        
+            if (bayar.compareTo(total()) == -1) {
+                
+                if(JOptionPane.showConfirmDialog(this, "Pembayaran belum lunas,"
+                        + "\n transaksi akan masuk ke daftar hutang", "Konfirmasi transaksi",
+                        JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){ 
+                    
+                    for (int i = 0; i < modelPembelian.getRowCount(); i++) {
+                        DetailPembelian detailPembelian=modelPembelian.ambilData(i);
+                        Item item=detailPembelian.getItem();
+                        if(itemService.find(item.getId()) == null){
+                            itemService.save(item);
+                        }else {
+                            item.setStok(item.getStok() + detailPembelian.getJumlah());
+                            itemService.update(item);
+                        }
+                        Barang barang=item.getBarang();
+                        Buku buku=item.getBuku();
+                        
+                        if (barang != null) {
+                            barangService.save(barang);
+                        }else if(buku != null){
+                            bukuService.save(buku);
+                        }
+                        pembelian.tambahDetailPembelian(detailPembelian);
+                    }
+                    
+                    service.save(pembelian);
+                    JOptionPane.showMessageDialog(this, "Transaksi berhasil disimpan");
+                    reset();                    
+                }
+            }else{                
+                for (int i = 0; i < modelPembelian.getRowCount(); i++) {
+                    DetailPembelian detailPembelian=modelPembelian.ambilData(i);
+                    Item item=detailPembelian.getItem();
+                    if(itemService.find(item.getId()) == null){
+                        itemService.save(item);
+                    }else {
+                        item.setStok(item.getStok() + detailPembelian.getJumlah());
+                        itemService.update(item);
+                    }
+                    Barang barang=item.getBarang();
+                    Buku buku=item.getBuku();
+                    if (barang != null) {
+                        barangService.save(barang);
+                    }else if(buku != null){
+                        bukuService.save(buku);
+                    }
+                    pembelian.tambahDetailPembelian(detailPembelian);
+                }
+                service.save(pembelian);
+                JOptionPane.showMessageDialog(this, "Transaksi berhasil disimpan");
+                reset();
+            }            
+        }
     }
 }

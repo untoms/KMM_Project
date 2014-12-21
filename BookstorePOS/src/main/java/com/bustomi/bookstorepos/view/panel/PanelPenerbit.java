@@ -16,7 +16,10 @@ import com.bustomi.bookstorepos.service.PenerbitService;
 import com.bustomi.bookstorepos.view.dialog.DialogPenerbit;
 import com.bustomi.bookstorepos.view.tablemodel.HurufRender;
 import com.bustomi.bookstorepos.view.tablemodel.TabelModelPenerbit;
+import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -33,8 +36,7 @@ public class PanelPenerbit extends javax.swing.JPanel {
         initComponents();
         
         TabelPenerbit.setModel(modelPenerbit);
-        
-        loadData();
+       
         TabelPenerbit.getColumnModel().getColumn(0).setMaxWidth(50);
         TabelPenerbit.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
         TabelPenerbit.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
@@ -146,6 +148,12 @@ public class PanelPenerbit extends javax.swing.JPanel {
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Nama :");
 
+        textFieldXCari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldXCariKeyPressed(evt);
+            }
+        });
+
         buttonMin2.setText("Filter");
         buttonMin2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -237,7 +245,12 @@ public class PanelPenerbit extends javax.swing.JPanel {
             
             if (hasil) {
                 PenerbitService penerbitService=SpringManager.getInstance().getBean(PenerbitService.class);
-                penerbitService.delete(penerbit);
+                try {
+                    penerbitService.delete(penerbit);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Data Penerbit tidak bisa dihapus!");
+                    Logger.getLogger(PanelPenerbit.class.getName()).log(Level.SEVERE, null, e);
+                }
             }
             
             loadData();
@@ -269,17 +282,7 @@ public class PanelPenerbit extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonMin1ActionPerformed
 
     private void buttonMin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin2ActionPerformed
-        String nama=textFieldXCari.getText();
-        
-        PenerbitService service=SpringManager.getInstance().getBean(PenerbitService.class);
-        List<Penerbit> penerbits=service.findAll(nama);
-        if (penerbits != null) {
-            modelPenerbit.load(penerbits);
-            textFieldXCari.setText("");
-        } else {
-            JOptionPane.showMessageDialog(this, "Data tidak ada yang cocok");
-        }
-        
+        cari();        
     }//GEN-LAST:event_buttonMin2ActionPerformed
 
     private void buttonGreen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen1ActionPerformed
@@ -293,6 +296,12 @@ public class PanelPenerbit extends javax.swing.JPanel {
         }
         loadData();
     }//GEN-LAST:event_buttonGreen1ActionPerformed
+
+    private void textFieldXCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldXCariKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            cari();
+        }
+    }//GEN-LAST:event_textFieldXCariKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -317,4 +326,16 @@ public class PanelPenerbit extends javax.swing.JPanel {
         modelPenerbit.load(penerbitService.findAll());
     }
 
+    private void cari(){
+        String nama=textFieldXCari.getText();
+        
+        PenerbitService service=SpringManager.getInstance().getBean(PenerbitService.class);
+        List<Penerbit> penerbits=service.findAll(nama);
+        if (penerbits != null) {
+            modelPenerbit.load(penerbits);
+            textFieldXCari.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "Data tidak ada yang cocok");
+        }
+    }
 }

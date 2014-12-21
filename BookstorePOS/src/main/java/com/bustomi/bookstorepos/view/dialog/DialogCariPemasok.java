@@ -12,6 +12,7 @@ import com.bustomi.bookstorepos.service.PemasokService;
 import com.bustomi.bookstorepos.view.tablemodel.HurufRender;
 import com.bustomi.bookstorepos.view.tablemodel.TabelModelPemasok;
 import static java.awt.Component.CENTER_ALIGNMENT;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -39,7 +40,6 @@ public class DialogCariPemasok extends javax.swing.JDialog {
         jTable1.getColumnModel().getColumn(6).setCellRenderer(new HurufRender()); 
         jTable1.getTableHeader().setAlignmentY(CENTER_ALIGNMENT);
         
-        load();
     }
     
     public Pemasok pilih(){
@@ -67,7 +67,6 @@ public class DialogCariPemasok extends javax.swing.JDialog {
         panelX2 = new com.bustomi.bookstorepos.component.PanelX();
         buttonGreen1 = new com.bustomi.bookstorepos.component.ButtonGreen();
         buttonYellow1 = new com.bustomi.bookstorepos.component.ButtonYellow();
-        buttonMin2 = new com.bustomi.bookstorepos.component.ButtonMin();
         jScrollPaneDaftar1 = new javax.swing.JScrollPane();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -91,12 +90,18 @@ public class DialogCariPemasok extends javax.swing.JDialog {
             }
         });
 
-        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Filter Pemasok", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Filter Pemasok", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(255, 255, 255)));
         panelX1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Nama :");
+
+        textFieldXNama.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldXNamaKeyPressed(evt);
+            }
+        });
 
         buttonMin1.setText("Filter");
         buttonMin1.addActionListener(new java.awt.event.ActionListener() {
@@ -151,14 +156,6 @@ public class DialogCariPemasok extends javax.swing.JDialog {
         });
         panelX2.add(buttonYellow1);
 
-        buttonMin2.setText("Refresh");
-        buttonMin2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonMin2ActionPerformed(evt);
-            }
-        });
-        panelX2.add(buttonMin2);
-
         jScrollPaneDaftar1.setOpaque(false);
         jScrollPaneDaftar1.setViewport(viewPortX1);
 
@@ -174,7 +171,7 @@ public class DialogCariPemasok extends javax.swing.JDialog {
                     .addComponent(panelX2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelXBack1Layout.createSequentialGroup()
                         .addComponent(panelX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 115, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelXBack1Layout.setVerticalGroup(
@@ -185,7 +182,7 @@ public class DialogCariPemasok extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneDaftar1, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                .addComponent(jScrollPaneDaftar1, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelX2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -204,8 +201,8 @@ public class DialogCariPemasok extends javax.swing.JDialog {
         if (hasil != null) {
             PemasokService service=SpringManager.getInstance().getBean(PemasokService.class);
             service.save(hasil);
+            modelPemasok.tambahsatu(hasil);
         }        
-        load();
     }//GEN-LAST:event_buttonGreen1ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -214,17 +211,7 @@ public class DialogCariPemasok extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowClosing
 
     private void buttonMin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin1ActionPerformed
-        String nama=textFieldXNama.getText();
-        
-        if (nama.trim().equals("")) {
-            JOptionPane.showMessageDialog(this, "Masukan nama pencarian");
-        }else {
-            PemasokService pemasokService=SpringManager.getInstance().getBean(PemasokService.class);
-            List<Pemasok> pemasoks=pemasokService.findAll(nama);
-            
-            modelPemasok.load(pemasoks);
-        }
-        
+        cari();        
         
     }//GEN-LAST:event_buttonMin1ActionPerformed
 
@@ -238,15 +225,16 @@ public class DialogCariPemasok extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_buttonYellow1ActionPerformed
 
-    private void buttonMin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin2ActionPerformed
-        load();
-    }//GEN-LAST:event_buttonMin2ActionPerformed
+    private void textFieldXNamaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldXNamaKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            cari();
+        }
+    }//GEN-LAST:event_textFieldXNamaKeyPressed
 
  
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.bustomi.bookstorepos.component.ButtonGreen buttonGreen1;
     private com.bustomi.bookstorepos.component.ButtonMin buttonMin1;
-    private com.bustomi.bookstorepos.component.ButtonMin buttonMin2;
     private com.bustomi.bookstorepos.component.ButtonYellow buttonYellow1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelInfo;
@@ -264,5 +252,18 @@ public class DialogCariPemasok extends javax.swing.JDialog {
         List<Pemasok> pemasoks=pemasokService.findAll();
         
         modelPemasok.load(pemasoks);
+    }
+    
+    private void cari(){
+        String nama=textFieldXNama.getText();
+        
+        if (nama.trim().equals("")) {
+            JOptionPane.showMessageDialog(this, "Masukan nama pencarian");
+        }else {
+            PemasokService pemasokService=SpringManager.getInstance().getBean(PemasokService.class);
+            List<Pemasok> pemasoks=pemasokService.findAll(nama);
+            
+            modelPemasok.load(pemasoks);
+        }
     }
 }

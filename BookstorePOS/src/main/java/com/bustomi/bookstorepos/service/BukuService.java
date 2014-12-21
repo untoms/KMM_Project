@@ -15,8 +15,11 @@ import java.util.List;
  */
 public interface BukuService extends InterfaceService<Buku, Integer>{
     
-    List<Buku> findPengarang(String nama);
-    List<Buku> findPenerbit(String nama);
-    List<Buku> findKategori(String nama);
+    List<Buku> findPengarang(String nama, Integer pageNumber, Integer rowsPerPage);
+    List<Buku> findPenerbit(String nama, Integer pageNumber, Integer rowsPerPage);
+    List<Buku> findKategori(String nama, Integer pageNumber, Integer rowsPerPage);
+    Integer countPengarang(String nama);
+    Integer countPenerbit(String nama);
+    Integer countKategori(String nama);
     
 }

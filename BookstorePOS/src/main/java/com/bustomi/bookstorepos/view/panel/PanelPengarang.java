@@ -16,7 +16,10 @@ import com.bustomi.bookstorepos.service.PengarangService;
 import com.bustomi.bookstorepos.view.dialog.DialogPengarang;
 import com.bustomi.bookstorepos.view.tablemodel.HurufRender;
 import com.bustomi.bookstorepos.view.tablemodel.TabelModelPengarang;
+import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -33,8 +36,7 @@ public class PanelPengarang extends javax.swing.JPanel {
         initComponents();
         
         TabelPengarang.setModel(modelPengarang);
-        
-        loadData();
+  
         TabelPengarang.getColumnModel().getColumn(0).setMaxWidth(50);
         TabelPengarang.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
         TabelPengarang.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
@@ -135,6 +137,12 @@ public class PanelPengarang extends javax.swing.JPanel {
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Nama :");
 
+        textFieldXCari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldXCariKeyPressed(evt);
+            }
+        });
+
         buttonMin2.setText("Filter");
         buttonMin2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -213,7 +221,12 @@ public class PanelPengarang extends javax.swing.JPanel {
             
             if (hasil) {
                 PengarangService pengarangService=SpringManager.getInstance().getBean(PengarangService.class);
-                pengarangService.delete(pengarang);
+                try {
+                    pengarangService.delete(pengarang);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Data Pengarang tidak bisa dihapus!");
+                    Logger.getLogger(PanelPengarang.class.getName()).log(Level.SEVERE, null, e);
+                }
             }
             
             loadData();
@@ -246,17 +259,7 @@ public class PanelPengarang extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonMin1ActionPerformed
 
     private void buttonMin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin2ActionPerformed
-        String nama=textFieldXCari.getText();
-        
-        PengarangService service=SpringManager.getInstance().getBean(PengarangService.class);
-        List<Pengarang> pengarangs=service.findAll(nama);
-        if (pengarangs != null) {
-            modelPengarang.load(pengarangs);
-            textFieldXCari.setText("");
-        } else {
-            JOptionPane.showMessageDialog(this, "Data tidak ada yang cocok");
-        }
-        
+        cari();        
     }//GEN-LAST:event_buttonMin2ActionPerformed
 
     private void buttonGreen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen1ActionPerformed
@@ -270,6 +273,12 @@ public class PanelPengarang extends javax.swing.JPanel {
         }
         loadData();
     }//GEN-LAST:event_buttonGreen1ActionPerformed
+
+    private void textFieldXCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldXCariKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            cari();
+        }
+    }//GEN-LAST:event_textFieldXCariKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -293,4 +302,16 @@ public class PanelPengarang extends javax.swing.JPanel {
         modelPengarang.load(pengarangService.findAll());
     }
 
+    private void cari(){
+        String nama=textFieldXCari.getText();
+        
+        PengarangService service=SpringManager.getInstance().getBean(PengarangService.class);
+        List<Pengarang> pengarangs=service.findAll(nama);
+        if (pengarangs != null) {
+            modelPengarang.load(pengarangs);
+            textFieldXCari.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "Data tidak ada yang cocok");
+        }
+    }
 }

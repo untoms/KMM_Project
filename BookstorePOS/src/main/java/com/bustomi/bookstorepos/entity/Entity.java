@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.hibernate.annotations.Index;
 
 /**
  *
@@ -22,6 +23,7 @@ import javax.persistence.TemporalType;
 public abstract class Entity<T> implements Serializable {
     
     @Column (name = "nama", nullable = false, length = 140)
+    @Index (name="index_nama")
     private String nama;
 
     @Column(name = "waktu_dibuat", nullable = false)

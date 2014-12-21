@@ -11,18 +11,9 @@ import com.bustomi.bookstorepos.entity.User.User;
 import com.bustomi.bookstorepos.entity.master.Pemasok;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -45,7 +36,7 @@ public class Pembelian extends TransactionEntity{
     @JoinColumn(name = "Pemasok_Id")
     private Pemasok pemasok;
     
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pembelian", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch= FetchType.EAGER, mappedBy = "pembelian", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetailPembelian> daftarPembelian = new ArrayList<>();
 
     @Column(name = "Total", nullable = false)
@@ -56,6 +47,15 @@ public class Pembelian extends TransactionEntity{
     
     @Column(name = "Bayar_terkhir", nullable = true)
     private BigDecimal bayar_terakhir;
+    
+    @Transient
+    private Long jumlah;
+    
+    @Transient
+    private BigDecimal totals;
+    
+    @Transient
+    private Date waktu;
     
     public void tambahDetailPembelian(DetailPembelian detailPembelian) {
         detailPembelian.setPembelian(this);
@@ -127,6 +127,30 @@ public class Pembelian extends TransactionEntity{
 
     public void setBayar_terakhir(BigDecimal bayar_terakhir) {
         this.bayar_terakhir = bayar_terakhir;
+    }
+
+    public Long getJumlah() {
+        return jumlah;
+    }
+
+    public void setJumlah(Long jumlah) {
+        this.jumlah = jumlah;
+    }
+
+    public BigDecimal getTotals() {
+        return totals;
+    }
+
+    public void setTotals(BigDecimal totals) {
+        this.totals = totals;
+    }
+
+    public Date getWaktu() {
+        return waktu;
+    }
+
+    public void setWaktu(Date waktu) {
+        this.waktu = waktu;
     }
     
 }

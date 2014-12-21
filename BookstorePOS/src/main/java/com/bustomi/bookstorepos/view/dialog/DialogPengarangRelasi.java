@@ -43,14 +43,14 @@ public class DialogPengarangRelasi extends javax.swing.JDialog {
         listPengarang.setCellRenderer(new HurufListRender());
         listpengarangpilih.setCellRenderer(new HurufListRender());
         
-        textAreaInfo.setDisabledTextColor(Color.LIGHT_GRAY);
-        
+        textAreaInfo.setDisabledTextColor(Color.LIGHT_GRAY);        
       
     }
     
     public void loadPengarang() {
         PengarangService service = SpringManager.getInstance().getBean(PengarangService.class);
         List<Pengarang> list = service.findAll();
+        defaultListModel.clear();
         
         for (Pengarang object : list) {
             defaultListModel.addElement(object);
@@ -61,8 +61,7 @@ public class DialogPengarangRelasi extends javax.swing.JDialog {
     }
         
     public List<Pengarang> ubah(List<Pengarang> parameter) {
-        
-        loadPengarang();
+                
                 
         jLabelInfo.setText("Atur Pengarang");
         setTitle("Atur Pengarang");
@@ -70,6 +69,7 @@ public class DialogPengarangRelasi extends javax.swing.JDialog {
         for (Pengarang object : parameter) {
             defaultListModel2.addElement(object);
         }
+        loadPengarang();
         
         pengarangs = parameter;
         
@@ -383,11 +383,14 @@ public class DialogPengarangRelasi extends javax.swing.JDialog {
         PengarangService service=SpringManager.getInstance().getBean(PengarangService.class);
         try {
             validator.validate(pengarang);
+            service.save(pengarang);            
+            loadPengarang();
+            textFieldXNama.setText("");
+            textAreaInfo.setText("");
         } catch (ValidatorException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }            
-        service.save(pengarang);
-        loadPengarang();
+        
     
         
     }//GEN-LAST:event_buttonBlue1ActionPerformed
@@ -441,9 +444,5 @@ public class DialogPengarangRelasi extends javax.swing.JDialog {
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX2;
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX3;
     // End of variables declaration//GEN-END:variables
-    
-    public void display(Window formApp, Object parameter) {
-        setLocationRelativeTo(formApp);
-        setVisible(true);
-    }
+  
 }

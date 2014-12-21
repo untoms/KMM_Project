@@ -22,65 +22,65 @@ import javax.swing.border.EmptyBorder;
  */
 public class TextFieldX extends JTextField{
     
-    private Shape shape;
-    
-    private boolean fokus;
-       
-    private Color color;
-   
-    public TextFieldX() {
-       
-        setOpaque(false);
-        setBorder(new EmptyBorder(3, 3, 3, 3));
-        
-        addFocusListener(new FocusAdapter() {
-
-            @Override
-            public void focusGained(FocusEvent fe) {
-                setFokus(true);
-            }
-
-            @Override
-            public void focusLost(FocusEvent fe) {
-                setFokus(false);
-            }
-        
-            
-        });
-    }
-
-    public boolean isFokus() {
-        return fokus;
-    }
-
-    public void setFokus(boolean fokus) {
-        this.fokus = fokus;
-        repaint();
-    }
-    
-    @Override
-    protected void paintComponent(Graphics g) {
-        
-        Graphics2D gd=(Graphics2D) g.create();
-        gd.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-        gd.setStroke(new BasicStroke(3f));
-        shape=new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 10, 10);
-        if (isFokus()) {
-            color=new Color(255,255,255,75);
-        }else{
-            color=new Color(255,255,255,50);
-        }
-        
-        setForeground(Color.WHITE);        
-        setDisabledTextColor(Color.LIGHT_GRAY);
-        gd.setColor(color);
-        
-        gd.fill(shape); 
-        
-        
-        gd.dispose();
-        super.paintComponent(g);
-    }
+//    private Shape shape;
+//    
+//    private boolean fokus;
+//       
+//    private Color color;
+//   
+//    public TextFieldX() {
+//       
+//        setOpaque(false);
+//        setBorder(new EmptyBorder(3, 3, 3, 3));
+//        
+//        addFocusListener(new FocusAdapter() {
+//
+//            @Override
+//            public void focusGained(FocusEvent fe) {
+//                setFokus(true);
+//            }
+//
+//            @Override
+//            public void focusLost(FocusEvent fe) {
+//                setFokus(false);
+//            }
+//        
+//            
+//        });
+//    }
+//
+//    public boolean isFokus() {
+//        return fokus;
+//    }
+//
+//    public void setFokus(boolean fokus) {
+//        this.fokus = fokus;
+//        repaint();
+//    }
+//    
+//    @Override
+//    protected void paintComponent(Graphics g) {
+//        
+//        Graphics2D gd=(Graphics2D) g.create();
+//        gd.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+//        gd.setStroke(new BasicStroke(3f));
+//        shape=new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 10, 10);
+//        if (isFokus()) {
+//            color=new Color(255,255,255,75);
+//        }else{
+//            color=new Color(255,255,255,50);
+//        }
+//        
+//        setForeground(Color.WHITE);        
+//        setDisabledTextColor(Color.LIGHT_GRAY);
+//        gd.setColor(color);
+//        
+//        gd.fill(shape); 
+//        
+//        
+//        gd.dispose();
+//        super.paintComponent(g);
+//    }
 
     
 }

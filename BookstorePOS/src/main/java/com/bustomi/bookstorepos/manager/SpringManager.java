@@ -11,18 +11,8 @@ import com.bustomi.bookstorepos.entity.User.Grup;
 import com.bustomi.bookstorepos.entity.User.HakAkses;
 import com.bustomi.bookstorepos.entity.User.Role;
 import com.bustomi.bookstorepos.entity.User.User;
-import com.bustomi.bookstorepos.entity.master.KategoriBarang;
-import com.bustomi.bookstorepos.entity.master.KategoriBuku;
-import com.bustomi.bookstorepos.entity.master.Pelanggan;
-import com.bustomi.bookstorepos.entity.master.Pemasok;
-import com.bustomi.bookstorepos.service.GrupService;
-import com.bustomi.bookstorepos.service.HakAksesService;
-import com.bustomi.bookstorepos.service.KategoriBarangService;
-import com.bustomi.bookstorepos.service.KategoriBukuService;
-import com.bustomi.bookstorepos.service.PelangganService;
-import com.bustomi.bookstorepos.service.PemasokService;
-import com.bustomi.bookstorepos.service.SaldoService;
-import com.bustomi.bookstorepos.service.UserService;
+import com.bustomi.bookstorepos.entity.master.*;
+import com.bustomi.bookstorepos.service.*;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -68,7 +58,7 @@ public class SpringManager {
         
         if (SpringManager.INSTANCE == null ) {
             SpringManager.INSTANCE = new SpringManager();
-            
+                        
             HakAksesService hakAksesService = SpringManager.getInstance().getBean(HakAksesService.class);
             for (Role constant : Role.values()) {
                 HakAkses hakAkses = hakAksesService.find(constant.toString());
@@ -145,6 +135,33 @@ public class SpringManager {
                 kategoriBarang.setNama("Tidak dikategorikan");
                 kategoriBarang.setInfo("Kategori barang belum didefinisikan");
                 kategoriBarangService.save(kategoriBarang);
+            }
+            
+            SatuanService satuanService=SpringManager.getInstance().getBean(SatuanService.class);
+            Satuan satuan=satuanService.find("Biji");
+            if (satuan == null) {
+                satuan = new Satuan();
+                satuan.setNama("Biji");
+                satuan.setInfo("Tidak ada info");
+                satuanService.save(satuan);
+            }
+            
+            PengarangService pengarangService=SpringManager.getInstance().getBean(PengarangService.class);
+            Pengarang pengarang=pengarangService.find("Tidak diketahui");
+            if (pengarang == null) {
+                pengarang = new Pengarang();
+                pengarang.setNama("Tidak diketahui");
+                pengarang.setInfo("Tidak ada info");
+                pengarangService.save(pengarang);
+            }
+            
+            PenerbitService penerbitService=SpringManager.getInstance().getBean(PenerbitService.class);
+            Penerbit penerbit=penerbitService.find("Tidak diketahui");
+            if (penerbit == null) {
+                penerbit = new Penerbit();
+                penerbit.setNama("Tidak diketahui");
+                penerbit.setInfo("Tidak ada info");
+                penerbitService.save(penerbit);
             }
             
             PemasokService pemasokService=SpringManager.getInstance().getBean(PemasokService.class);

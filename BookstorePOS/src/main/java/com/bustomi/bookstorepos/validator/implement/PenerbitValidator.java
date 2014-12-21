@@ -34,10 +34,12 @@ public class PenerbitValidator extends AbstractValidator<Penerbit>{
             throwValidatorException("Telepon tidak boleh kosong");
         } else if (data.getTelepon().length() > 25){
             throwValidatorException("Karakter telepon terlalu panjang");
-        } else if (!data.getEmail().contains("@") && !data.getEmail().contains(".")){
-            throwValidatorException("Email tidak valid");
-        } else if (data.getEmail().length() > 50){
-            throwValidatorException("Karakter email terlalu panjang");
+        } else if(!data.getEmail().equals("")){
+            if ((!data.getEmail().contains("@")) && (!data.getEmail().contains("."))){
+                throwValidatorException("Email tidak valid");
+            } else if (data.getEmail().length() > 50){
+                throwValidatorException("Karakter email terlalu panjang");
+            }
         }
     }
     

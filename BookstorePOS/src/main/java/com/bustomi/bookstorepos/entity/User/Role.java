@@ -77,6 +77,9 @@ public enum Role {
     LIHAT_LAPORAN_PENJUALAN("Lihat Laporan Penjualan"),
     LIHAT_LAPORAN_PEMBELIAN("Lihat Laporan Pembelian"),
     LIHAT_LAPORAN_KEUNTUNGAN("Lihat Laporan Keuntungan"),
+    LIHAT_LAPORAN_JURNAL("Lihat Laporan Jurnal"),
+    LIHAT_LAPORAN_BARCODE("Lihat Laporan Barcode"),
+    LIHAT_LAPORAN_GRAFIK("Lihat Laporan Grafik"),
     LIHAT_HUTANG("Lihat Hutang"),
     BAYAR_HUTANG("Bayar Hutang");
     

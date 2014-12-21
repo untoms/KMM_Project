@@ -6,6 +6,7 @@
 
 package com.bustomi.bookstorepos.view.dialog;
 
+import com.bustomi.bookstorepos.entity.User.Grup;
 import com.bustomi.bookstorepos.entity.User.HakAkses;
 import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.service.HakAksesService;
@@ -25,6 +26,7 @@ public class DialogRole extends javax.swing.JDialog {
     private List<HakAkses> roles;
     private final DefaultListModel<HakAkses> defaultListModel;
     private DefaultListModel<HakAkses> defaultListModel2;
+    private Grup grup;
     
     public DialogRole() {
         setModal(true);
@@ -61,18 +63,24 @@ public class DialogRole extends javax.swing.JDialog {
         }
     }
     
-    public DefaultListModel<HakAkses> ubah(DefaultListModel<HakAkses> parameter) {
+    public Grup ubah(Grup parameter) {
         
         jLabelInfo.setText("Atur HakAkses");
         setTitle("Atur HakAkses");
+        if (parameter != null) {            
+            for (HakAkses hakAkses : parameter.getDaftarHakAkses()) {
+                defaultListModel2.addElement(hakAkses);
+            }            
+        } else {
+            parameter =new Grup();
+        }       
         
-        listHakAksespilih.setModel(parameter);
+        grup=parameter;
         
-        defaultListModel2=parameter;
         loadHakAkses();
         setVisible(true);
         
-        return defaultListModel2;
+        return grup;
     }
 
     /**
@@ -279,6 +287,7 @@ public class DialogRole extends javax.swing.JDialog {
             int [] i=listHakAkses.getSelectedIndices();
             for (int j = i.length-1; j >= 0; j--) {
                 defaultListModel2.addElement((HakAkses) listModel.get(i[j]));
+                grup.tambahHakAkses((HakAkses) listModel.get(i[j]));                               
                 listModel.removeElementAt(i[j]);
             }
         }
@@ -290,7 +299,8 @@ public class DialogRole extends javax.swing.JDialog {
             int [] i = listHakAksespilih.getSelectedIndices();
             for (int j = i.length-1 ; j >= 0; j--) {
                 defaultListModel.addElement((HakAkses) listModel.get(i[j]));
-                listModel.removeElementAt(i[j]);
+                grup.hapusHakAkses((HakAkses) listModel.get(i[j]));
+                listModel.removeElementAt(i[j]);                
             }
         }
     }//GEN-LAST:event_buttonMin1ActionPerformed
@@ -316,9 +326,5 @@ public class DialogRole extends javax.swing.JDialog {
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX2;
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX3;
     // End of variables declaration//GEN-END:variables
-    
-    public void display(Window formApp, Object parameter) {
-        setLocationRelativeTo(formApp);
-        setVisible(true);
-    }
+  
 }

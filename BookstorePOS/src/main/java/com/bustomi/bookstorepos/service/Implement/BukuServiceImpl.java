@@ -27,26 +27,67 @@ public class BukuServiceImpl extends AbstractService<Buku, Integer>implements Bu
     
     @Transactional (readOnly = true)
     @Override
-    public List<Buku> findPengarang(String nama){
-        Query query=currentSession().createQuery("select b from Buku b INNER JOIN b.daftarPengarang p with p.nama LIKE :nama");
+    public List<Buku> findPengarang(String nama, Integer pageNumber, Integer rowsPerPage){
+        Query query=currentSession().createQuery(
+                "select b from Buku b INNER JOIN b.daftarPengarang p with p.nama LIKE :nama");
         query.setParameter("nama", "%"+nama+"%");
+        query.setFirstResult(rowsPerPage*(pageNumber-1));
+        query.setMaxResults(rowsPerPage);
         return query.list();
     }
     
     @Transactional (readOnly = true)
     @Override
-    public List<Buku> findPenerbit(String nama){
+    public List<Buku> findPenerbit(String nama, Integer pageNumber, Integer rowsPerPage){
         Query query=currentSession().createQuery("select b from Buku b WHERE b.penerbit.nama LIKE :nama");
         query.setParameter("nama", "%"+nama+"%");
+        query.setFirstResult(rowsPerPage*(pageNumber-1));
+        query.setMaxResults(rowsPerPage);
         return query.list();
     }
     
     @Transactional (readOnly = true)
     @Override
-    public List<Buku> findKategori(String nama){
-        Query query=currentSession().createQuery("select b from Buku b WHERE b.kategoriBuku.nama LIKE :nama");
+    public List<Buku> findKategori(String nama, Integer pageNumber, Integer rowsPerPage){
+        Query query=currentSession().createQuery(""
+                + "select b from Buku b WHERE b.kategoriBuku.nama LIKE :nama");
         query.setParameter("nama", "%"+nama+"%");
+        query.setFirstResult(rowsPerPage*(pageNumber-1));
+        query.setMaxResults(rowsPerPage);
         return query.list();
     }
+    
+    @Transactional (readOnly = true)
+    @Override
+    public Integer countKategori(String nama) {
+        Query query = currentSession().createQuery(""
+                + "select count(*) from Buku b WHERE b.kategoriBuku.nama LIKE :nama");
+        query.setParameter("nama", "%"+nama+"%");
+        Long totalRow=(Long)query.uniqueResult();
         
+        return totalRow.intValue();
+    }
+    
+    @Transactional (readOnly = true)
+    @Override
+    public Integer countPenerbit(String nama) {
+        Query query = currentSession().createQuery(
+                "select count(*) from Buku b WHERE b.penerbit.nama LIKE :nama");
+        query.setParameter("nama", "%"+nama+"%");
+        Long totalRow=(Long)query.uniqueResult();
+        
+        return totalRow.intValue();
+    }
+    
+    @Transactional (readOnly = true)
+    @Override
+    public Integer countPengarang(String nama) {
+        Query query = currentSession().createQuery(
+                "select count(*) from Buku b INNER JOIN b.daftarPengarang p with p.nama LIKE :nama");
+        query.setParameter("nama", "%"+nama+"%");
+        Long totalRow=(Long)query.uniqueResult();
+        
+        return totalRow.intValue();
+    }
+    
 }

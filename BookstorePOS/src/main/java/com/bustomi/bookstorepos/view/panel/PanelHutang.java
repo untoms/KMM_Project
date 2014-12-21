@@ -11,12 +11,21 @@ import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.service.PembelianService;
 import com.bustomi.bookstorepos.view.dialog.DialogBayarHutang;
 import com.bustomi.bookstorepos.view.dialog.DialogDetailPembelian;
+import com.bustomi.bookstorepos.view.dialog.DialogLaporan;
 import com.bustomi.bookstorepos.view.tablemodel.HurufRender;
 import com.bustomi.bookstorepos.view.tablemodel.TabelModelHutangPembelian;
 import static java.awt.Component.CENTER_ALIGNMENT;
+import java.io.InputStream;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 /**
  *
@@ -24,7 +33,10 @@ import javax.swing.JOptionPane;
  */
 public class PanelHutang extends javax.swing.JPanel {
 
-    private final TabelModelHutangPembelian modelPembelian;
+    private final TabelModelHutangPembelian modelPembelian;    
+    private Date mulai;
+    private Date sampai;
+    private boolean filter=false;
     
     public PanelHutang()  {
         
@@ -33,7 +45,6 @@ public class PanelHutang extends javax.swing.JPanel {
         
         TabelPembelian.setModel(modelPembelian);
         
-        loadData();
         TabelPembelian.getColumnModel().getColumn(0).setMaxWidth(50);
         TabelPembelian.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
         TabelPembelian.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
@@ -67,6 +78,7 @@ public class PanelHutang extends javax.swing.JPanel {
         jDateChooserMulai = new com.toedter.calendar.JDateChooser();
         jLabel3 = new javax.swing.JLabel();
         jDateChooserSampai = new com.toedter.calendar.JDateChooser();
+        buttonRed1 = new com.bustomi.bookstorepos.component.ButtonRed();
 
         TabelPembelian.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -167,19 +179,29 @@ public class PanelHutang extends javax.swing.JPanel {
                 .addGap(6, 6, 6))
         );
 
+        buttonRed1.setText("CETAK LAPORAN");
+        buttonRed1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonRed1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(panelX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(panelX2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelX2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonRed1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -192,7 +214,8 @@ public class PanelHutang extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelX1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelX2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelX2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonRed1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(12, 12, 12))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -210,19 +233,26 @@ public class PanelHutang extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonBlue1ActionPerformed
 
     private void buttonMin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin1ActionPerformed
-        loadData();
+        modelPembelian.fireTableDataChanged();
     }//GEN-LAST:event_buttonMin1ActionPerformed
 
     private void buttonMin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin2ActionPerformed
-        Date mulai=jDateChooserMulai.getDate();
-        Date sampai=jDateChooserSampai.getDate();
+        mulai=jDateChooserMulai.getDate();
+        sampai=jDateChooserSampai.getDate();
         
-        PembelianService service=SpringManager.getInstance().getBean(PembelianService.class);
-        List<Pembelian> pembelians=service.findHutangTgl(mulai,sampai);
-        if (pembelians != null) {
-            modelPembelian.load(pembelians);
+        if (mulai == null) {
+            JOptionPane.showMessageDialog(this, "Tanggal 'mulai' belum dipilih!");
+        } else if (sampai == null){
+            JOptionPane.showMessageDialog(this, "Tanggal 'sampai' belum dipilih");            
         } else {
-            JOptionPane.showMessageDialog(this, "Tidak ada transaksi");
+            filter = true;
+            PembelianService service=SpringManager.getInstance().getBean(PembelianService.class);
+            List<Pembelian> pembelians=service.findHutangTgl(mulai,sampai);
+            if (pembelians != null) {
+                modelPembelian.load(pembelians);
+            } else {
+                JOptionPane.showMessageDialog(this, "Tidak ada transaksi");
+            }
         }
         
     }//GEN-LAST:event_buttonMin2ActionPerformed
@@ -245,11 +275,43 @@ public class PanelHutang extends javax.swing.JPanel {
                 service.update(pembelian);
                 
                 JOptionPane.showMessageDialog(this, "Pembayaran hutang berhasil");
-                loadData();
+                modelPembelian.fireTableDataChanged();
+//                loadData();
             }
             
         }
     }//GEN-LAST:event_buttonGreen1ActionPerformed
+
+    private void buttonRed1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRed1ActionPerformed
+        // TODO add your handling code here:
+        if (!filter) {
+            JOptionPane.showMessageDialog(this, "Silahkan filter data Jurnal");
+        }else if (modelPembelian.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Daftar hutang kosong");
+        } else {
+            int pilih=JOptionPane.showConfirmDialog(this, "Apakah anda yakin ingin mencetak dari tanggal "+mulai+
+                    " sampai tanggal "+sampai+" ?", "Pertanyaan?", JOptionPane.YES_NO_OPTION);
+            if (pilih == JOptionPane.YES_OPTION) {
+                
+                try {
+                    InputStream inputStream=PanelHutang.class.getResourceAsStream("/com/bustomi/d3ti/uns/report/hutang2.jasper");
+
+                    JRDataSource dataSource=new JRBeanCollectionDataSource(modelPembelian.getList(), false);
+                    Map<String, Object> map=new HashMap<>();
+                    map.put("FROM", mulai);
+                    map.put("TO", sampai);
+                    map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
+
+                    JasperPrint jasperPrint=JasperFillManager.fillReport(inputStream, map,dataSource);
+                    DialogLaporan dialogLaporan=new DialogLaporan(jasperPrint);
+                    dialogLaporan.setLocationRelativeTo(null);
+                    dialogLaporan.setVisible(true);
+                } catch (JRException ex) {
+                    Logger.getLogger(PanelJurnal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }//GEN-LAST:event_buttonRed1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -258,6 +320,7 @@ public class PanelHutang extends javax.swing.JPanel {
     private com.bustomi.bookstorepos.component.ButtonGreen buttonGreen1;
     private com.bustomi.bookstorepos.component.ButtonMin buttonMin1;
     private com.bustomi.bookstorepos.component.ButtonMin buttonMin2;
+    private com.bustomi.bookstorepos.component.ButtonRed buttonRed1;
     private com.toedter.calendar.JDateChooser jDateChooserMulai;
     private com.toedter.calendar.JDateChooser jDateChooserSampai;
     private javax.swing.JLabel jLabel1;
@@ -269,9 +332,9 @@ public class PanelHutang extends javax.swing.JPanel {
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX1;
     // End of variables declaration//GEN-END:variables
     
-    private void loadData() {
-        PembelianService barangService=SpringManager.getInstance().getBean(PembelianService.class);
-        modelPembelian.load(barangService.findHutang());
-    }
+//    private void loadData() {
+//        PembelianService barangService=SpringManager.getInstance().getBean(PembelianService.class);
+//        modelPembelian.load(barangService.findHutang());
+//    }
 
 }

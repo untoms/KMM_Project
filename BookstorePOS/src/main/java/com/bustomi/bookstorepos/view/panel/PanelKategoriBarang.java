@@ -16,7 +16,10 @@ import com.bustomi.bookstorepos.service.KategoriBarangService;
 import com.bustomi.bookstorepos.view.dialog.DialogKategoriBarang;
 import com.bustomi.bookstorepos.view.tablemodel.HurufRender;
 import com.bustomi.bookstorepos.view.tablemodel.TabelModelKategoriBarang;
+import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -34,7 +37,7 @@ public class PanelKategoriBarang extends javax.swing.JPanel {
         
         TabelKategoriBarang.setModel(modelKategoriBarang);
         
-        loadData();
+//        loadData();
         TabelKategoriBarang.getColumnModel().getColumn(0).setMaxWidth(50);
         TabelKategoriBarang.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
         TabelKategoriBarang.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
@@ -135,6 +138,12 @@ public class PanelKategoriBarang extends javax.swing.JPanel {
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Nama :");
 
+        textFieldXCari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldXCariKeyPressed(evt);
+            }
+        });
+
         buttonMin2.setText("Filter");
         buttonMin2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -213,7 +222,13 @@ public class PanelKategoriBarang extends javax.swing.JPanel {
             
             if (hasil) {
                 KategoriBarangService kategoriBarangService=SpringManager.getInstance().getBean(KategoriBarangService.class);
-                kategoriBarangService.delete(kategoriBarang);
+                try {
+                    kategoriBarangService.delete(kategoriBarang); 
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Data Kategori Barang tidak bisa dihapus!");
+                    Logger.getLogger(PanelKategoriBarang.class.getName()).log(Level.SEVERE, null, e);
+                }
+                              
             }
             
             loadData();
@@ -247,17 +262,7 @@ public class PanelKategoriBarang extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonMin1ActionPerformed
 
     private void buttonMin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin2ActionPerformed
-        String nama=textFieldXCari.getText();
-        
-        KategoriBarangService service=SpringManager.getInstance().getBean(KategoriBarangService.class);
-        List<KategoriBarang> kategoriBarangs=service.findAll(nama);
-        if (kategoriBarangs != null) {
-            modelKategoriBarang.load(kategoriBarangs);
-            textFieldXCari.setText("");
-        } else {
-            JOptionPane.showMessageDialog(this, "Data tidak ada yang cocok");
-        }
-        
+       cari();        
     }//GEN-LAST:event_buttonMin2ActionPerformed
 
     private void buttonGreen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen1ActionPerformed
@@ -271,6 +276,12 @@ public class PanelKategoriBarang extends javax.swing.JPanel {
         }
         loadData();
     }//GEN-LAST:event_buttonGreen1ActionPerformed
+
+    private void textFieldXCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldXCariKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            cari();
+        }
+    }//GEN-LAST:event_textFieldXCariKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -293,5 +304,17 @@ public class PanelKategoriBarang extends javax.swing.JPanel {
         KategoriBarangService kategoriBarangService=SpringManager.getInstance().getBean(KategoriBarangService.class);
         modelKategoriBarang.load(kategoriBarangService.findAll());
     }
-
+    
+    private void cari(){
+         String nama=textFieldXCari.getText();
+        
+        KategoriBarangService service=SpringManager.getInstance().getBean(KategoriBarangService.class);
+        List<KategoriBarang> kategoriBarangs=service.findAll(nama);
+        if (kategoriBarangs != null) {
+            modelKategoriBarang.load(kategoriBarangs);
+            textFieldXCari.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "Data tidak ada yang cocok");
+        }
+    }
 }

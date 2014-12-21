@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="GrafikPenjualan" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="226a8c25-8537-481e-9804-ad85efdce529">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="FROM" class="java.util.Date"/>
+	<parameter name="TO" class="java.util.Date"/>
+	<field name="waktu" class="java.util.Date"/>
+	<field name="jumlah" class="java.lang.Long"/>
+	<field name="totals" class="java.math.BigDecimal"/>
+	<field name="id" class="java.lang.Long"/>
+	<group name="Group1">
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="Group2">
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="Group3">
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="Group4">
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="-22" width="595" height="94" backcolor="#006699" uuid="ecab65cc-a1e5-437d-a737-4b1bb48a1885"/>
+				<staticText>
+					<reportElement x="20" y="20" width="389" height="43" forecolor="#FFFFFF" uuid="5912692b-035f-4274-a576-57820fd6b904"/>
+					<textElement>
+						<font size="34" isBold="true"/>
+					</textElement>
+					<text><![CDATA[GRAFIK PENJUALAN]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="395" y="63" width="180" height="20" forecolor="#FFFFFF" uuid="523229fa-81e5-4ea1-a169-043d92ea0c24"/>
+					<textElement textAlignment="Right">
+						<font size="14" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Add a description here]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="13">
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="13" backcolor="#FFFFFF" uuid="a99cd305-d441-49fa-93c8-11fe71406812"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["Grafik Penjualan dari "+$P{FROM}+" sampai "+$P{TO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="31" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="52b8a40a-e174-47af-b6eb-e9820046a8c7"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="20" width="595" height="1" forecolor="#666666" uuid="2deb4548-dd55-42c0-85db-7264cf899efd"/>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="31" y="0" width="156" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="3ce4be65-2a39-4db3-9b10-861f183b58c3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tanggal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="187" y="0" width="168" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="871aba91-02d1-403f-9e94-b6de2e4f42f0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jumlah Trans]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="355" y="0" width="200" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="7823f58c-5424-4a3a-8c35-aee5e4855bec"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nominal Transaksi]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21">
+			<textField isStretchWithOverflow="true" pattern="dd MMMMM yyyy">
+				<reportElement x="31" y="0" width="156" height="20" uuid="1e733553-6b28-4e2f-b13f-033ccb8d70f9"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{waktu}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="187" y="1" width="168" height="20" uuid="63a7b1a8-9130-4868-bdd2-31b7abdc2f77"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jumlah}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+				<reportElement x="355" y="1" width="200" height="20" uuid="1a4be341-f3d0-438d-85fe-da47d68847a9"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totals}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="20" width="555" height="1" uuid="d21a4670-d152-48f5-bf00-543e30a0e90a"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="31" height="20" uuid="2f958ac3-2408-4f95-af0a-257a04d0dee7"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="3a502227-0b15-4820-8cf2-a47c9d359a7c"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="2408944b-a6e1-4806-aede-aea75f937426"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="0" y="4" width="223" height="13" uuid="25c1a71b-53d1-4cf9-9356-2c5a0f15a4de"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="290">
+			<lineChart>
+				<chart>
+					<reportElement key="$F{waktu}" mode="Opaque" x="0" y="14" width="555" height="276" uuid="0722c405-b219-468c-8ac9-2992b2ce23fd"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["semua"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{waktu}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{jumlah}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<linePlot>
+					<plot/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</linePlot>
+			</lineChart>
+		</band>
+	</summary>
+</jasperReport>

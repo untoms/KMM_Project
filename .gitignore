@@ -52,3 +52,4 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 /BookstorePOS/target/
+/BookstorePOS/lib/.index/

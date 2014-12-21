@@ -15,7 +15,10 @@ import com.bustomi.bookstorepos.service.UserService;
 import com.bustomi.bookstorepos.view.dialog.DialogUser;
 import com.bustomi.bookstorepos.view.tablemodel.HurufRender;
 import com.bustomi.bookstorepos.view.tablemodel.TabelModelUser;
+import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -33,7 +36,6 @@ public class PanelUser extends javax.swing.JPanel {
         
         TabelUser.setModel(modelUser);
         
-        loadData();
         TabelUser.getColumnModel().getColumn(0).setMaxWidth(50);
         TabelUser.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
         TabelUser.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
@@ -152,6 +154,12 @@ public class PanelUser extends javax.swing.JPanel {
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Nama :");
 
+        textFieldXCari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldXCariKeyPressed(evt);
+            }
+        });
+
         buttonMin2.setText("Filter");
         buttonMin2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -243,7 +251,12 @@ public class PanelUser extends javax.swing.JPanel {
             
             if (hasil) {
                 UserService userService=SpringManager.getInstance().getBean(UserService.class);
-                userService.delete(user);
+                try {
+                    userService.delete(user);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Data User tidak bisa dihapus!");
+                    Logger.getLogger(PanelUser.class.getName()).log(Level.SEVERE, null, e);
+                }
             }
             
             loadData();
@@ -276,17 +289,7 @@ public class PanelUser extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonMin1ActionPerformed
 
     private void buttonMin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin2ActionPerformed
-        String nama=textFieldXCari.getText();
-        
-        UserService service=SpringManager.getInstance().getBean(UserService.class);
-        List<User> users=service.findAll(nama);
-        if (users != null) {
-            modelUser.load(users);
-            textFieldXCari.setText("");
-        } else {
-            JOptionPane.showMessageDialog(this, "Data tidak ada yang cocok");
-        }
-        
+        cari();        
     }//GEN-LAST:event_buttonMin2ActionPerformed
 
     private void buttonGreen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen1ActionPerformed
@@ -300,6 +303,12 @@ public class PanelUser extends javax.swing.JPanel {
         }
         loadData();
     }//GEN-LAST:event_buttonGreen1ActionPerformed
+
+    private void textFieldXCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldXCariKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            cari();
+        }
+    }//GEN-LAST:event_textFieldXCariKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -324,4 +333,16 @@ public class PanelUser extends javax.swing.JPanel {
         modelUser.load(userService.findAll());
     }
 
+    private void cari(){
+        String nama=textFieldXCari.getText();
+        
+        UserService service=SpringManager.getInstance().getBean(UserService.class);
+        List<User> users=service.findAll(nama);
+        if (users != null) {
+            modelUser.load(users);
+            textFieldXCari.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "Data tidak ada yang cocok");
+        }
+    }
 }

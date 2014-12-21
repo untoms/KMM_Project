@@ -42,7 +42,7 @@ public class DetailPembelian extends AutoIncreamentEntity{
     @Transient
     private BigDecimal subTotal;    
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "Item_Id", nullable = false)
     private Item item;
 
@@ -65,7 +65,6 @@ public class DetailPembelian extends AutoIncreamentEntity{
     }
 
     public void setItem(Item item) {
-        item.setDetailPembelian(this);
         this.item = item;        
         this.harga = item.getHarga_beli();
     }

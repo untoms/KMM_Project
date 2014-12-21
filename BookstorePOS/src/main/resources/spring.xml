@@ -18,10 +18,10 @@
     <context:component-scan base-package="com.bustomi.bookstorepos.validator.implement"/>
     
     <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource" destroy-method="close">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-        <property name="username" value="root"></property>
-        <property name="password" value=""></property>
-        <property name="url" value="jdbc:mysql://localhost:3306/bookstore_pos"></property>
+        <property name="driverClassName" value="${jdbc.driver}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <property name="url" value="${jdbc.url}"></property>
     </bean>
     
     <bean class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" id="sessionFactory">
@@ -69,7 +69,7 @@
         Error jika diaktifkan dan running dengan netbeans, tapi berjalan bail jika lewat terminal.
         Mboh ngopo, aku yo bingung -_-
     -->
-   <!--
+   
     <bean id="hakService" class="com.bustomi.bookstorepos.service.Implement.HakAksesServiceImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
     </bean>
@@ -129,6 +129,6 @@
     <bean id="keluarSerevice" class="com.bustomi.bookstorepos.service.Implement.PengeluaranServiceImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
     </bean> 
-    -->
+ 
             
 </beans>

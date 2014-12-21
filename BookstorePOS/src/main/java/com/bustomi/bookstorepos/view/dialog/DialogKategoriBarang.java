@@ -144,7 +144,7 @@ public class DialogKategoriBarang extends javax.swing.JDialog {
             }
         });
 
-        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Kategori Barang", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Kategori Barang", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(255, 255, 255)));
         panelX1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -162,8 +162,6 @@ public class DialogKategoriBarang extends javax.swing.JDialog {
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel14.setText("Info :");
 
-        textFieldXIdNama.setForeground(new java.awt.Color(255, 255, 255));
-
         javax.swing.GroupLayout panelX1Layout = new javax.swing.GroupLayout(panelX1);
         panelX1.setLayout(panelX1Layout);
         panelX1Layout.setHorizontalGroup(
@@ -178,7 +176,7 @@ public class DialogKategoriBarang extends javax.swing.JDialog {
                 .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelX1Layout.createSequentialGroup()
                         .addComponent(textFieldXId, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 130, Short.MAX_VALUE))
                     .addGroup(panelX1Layout.createSequentialGroup()
                         .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(textFieldXIdNama, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)

@@ -16,7 +16,10 @@ import com.bustomi.bookstorepos.service.PemasokService;
 import com.bustomi.bookstorepos.view.dialog.DialogPemasok;
 import com.bustomi.bookstorepos.view.tablemodel.HurufRender;
 import com.bustomi.bookstorepos.view.tablemodel.TabelModelPemasok;
+import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -34,7 +37,7 @@ public class PanelPemasok extends javax.swing.JPanel {
         
         TabelPemasok.setModel(modelPemasok);
         
-        loadData();
+//        loadData();
         TabelPemasok.getColumnModel().getColumn(0).setMaxWidth(50);
         TabelPemasok.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
         TabelPemasok.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
@@ -147,6 +150,12 @@ public class PanelPemasok extends javax.swing.JPanel {
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Nama :");
 
+        textFieldXCari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldXCariKeyPressed(evt);
+            }
+        });
+
         buttonMin2.setText("Filter");
         buttonMin2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -238,7 +247,12 @@ public class PanelPemasok extends javax.swing.JPanel {
             
             if (hasil) {
                 PemasokService pemasokService=SpringManager.getInstance().getBean(PemasokService.class);
-                pemasokService.delete(pemasok);
+                try {
+                    pemasokService.delete(pemasok);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Data Pemasok tidak bisa dihapus!");
+                    Logger.getLogger(PanelPemasok.class.getName()).log(Level.SEVERE, null, e);
+                }
             }
             
             loadData();
@@ -271,17 +285,7 @@ public class PanelPemasok extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonMin1ActionPerformed
 
     private void buttonMin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin2ActionPerformed
-        String nama=textFieldXCari.getText();
-        
-        PemasokService service=SpringManager.getInstance().getBean(PemasokService.class);
-        List<Pemasok> pemasoks=service.findAll(nama);
-        if (pemasoks != null) {
-            modelPemasok.load(pemasoks);
-            textFieldXCari.setText("");
-        } else {
-            JOptionPane.showMessageDialog(this, "Data tidak ada yang cocok");
-        }
-        
+        cari();       
     }//GEN-LAST:event_buttonMin2ActionPerformed
 
     private void buttonGreen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen1ActionPerformed
@@ -295,6 +299,12 @@ public class PanelPemasok extends javax.swing.JPanel {
         }
         loadData();
     }//GEN-LAST:event_buttonGreen1ActionPerformed
+
+    private void textFieldXCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldXCariKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            cari();
+        }
+    }//GEN-LAST:event_textFieldXCariKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -317,6 +327,19 @@ public class PanelPemasok extends javax.swing.JPanel {
     private void loadData() {
         PemasokService pemasokService=SpringManager.getInstance().getBean(PemasokService.class);
         modelPemasok.load(pemasokService.findAll());
+    }
+    
+    private void cari(){
+        String nama=textFieldXCari.getText();
+        
+        PemasokService service=SpringManager.getInstance().getBean(PemasokService.class);
+        List<Pemasok> pemasoks=service.findAll(nama);
+        if (pemasoks != null) {
+            modelPemasok.load(pemasoks);
+            textFieldXCari.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "Data tidak ada yang cocok");
+        }
     }
 
 }

@@ -21,5 +21,6 @@ public interface PembelianService {
     List<Pembelian> findAll(Date from, Date to);    
     List<Pembelian> findAll();    
     List<Pembelian> findHutang();
-    List<Pembelian> findHutangTgl(Date from, Date to);;
+    List<Pembelian> findHutangTgl(Date from, Date to);
+    List<Pembelian> grafik(Date from, Date to);
 }

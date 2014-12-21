@@ -17,8 +17,15 @@ import com.bustomi.bookstorepos.service.SaldoService;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StandardBasicTypes;
+import org.hibernate.type.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +48,30 @@ public class PenjualanServiceImpl implements PenjualanService{
     
     protected Session currentSession(){
         return sessionFactory.getCurrentSession();
+    }
+
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    public SaldoService getSaldoService() {
+        return saldoService;
+    }
+
+    public void setSaldoService(SaldoService saldoService) {
+        this.saldoService = saldoService;
+    }
+
+    public JurnalService getJurnalService() {
+        return jurnalService;
+    }
+
+    public void setJurnalService(JurnalService jurnalService) {
+        this.jurnalService = jurnalService;
     }
     
     @Transactional
@@ -83,6 +114,39 @@ public class PenjualanServiceImpl implements PenjualanService{
     @Override
     public List<Penjualan> findAll() {
         return currentSession().createCriteria(Penjualan.class).list();
+    }
+    
+    @Transactional(readOnly = true)
+    @Override
+    public List<Penjualan> grafik(Date from, Date to) {
+        
+//        return currentSession().createSQLQuery("select date(a.waktu_transaksi) as waktu, count(*) as jumlah,"
+//                + " sum(a.total) as total"
+//                + " from Penjualan a where date(a.waktu_transaksi) between date(:from) "
+//                + "and date(:to) group by a.waktu_transaksi").setDate("from", from).setDate("to", to)
+//                .list();     
+        Criteria criteria=currentSession().createCriteria(Penjualan.class);
+        criteria.add(Restrictions.between("waktu_transaksi", from, to));
+        
+        ProjectionList projection=Projections.projectionList();
+        projection.add(Projections.rowCount(), "jumlah");
+        projection.add(Projections.sum("total").as("totals"));
+//        projection.add(Projections.groupProperty("waktu_transaksi"));
+        projection.add(Projections.sqlGroupProjection("date(waktu_transaksi) as waktu", 
+                "waktu", new String[] { "waktu" },
+                new Type[] { StandardBasicTypes.DATE }));
+        
+        criteria.setProjection(projection);
+        criteria.setResultTransformer(new AliasToBeanResultTransformer(Penjualan.class));
+        
+        return criteria.list();
+    }
+    
+    @Transactional(readOnly=true)    
+    @Override
+    public Long hitungtrans(){
+        return (Long) currentSession().createCriteria(Penjualan.class)
+                .setProjection(Projections.rowCount()).uniqueResult();
     }
     
 }

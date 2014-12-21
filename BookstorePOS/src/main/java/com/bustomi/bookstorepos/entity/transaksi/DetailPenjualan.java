@@ -45,7 +45,7 @@ public class DetailPenjualan extends AutoIncreamentEntity{
     @Transient
     private String nama; 
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "Item_Id", nullable = false)
     private Item item;
 

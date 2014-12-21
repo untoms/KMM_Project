@@ -9,14 +9,11 @@ package com.bustomi.bookstorepos.view.panel;
 import com.bustomi.bookstorepos.entity.transaksi.Penjualan;
 import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.service.PenjualanService;
-import com.bustomi.bookstorepos.view.dialog.DialogDetailPenjualan;
 import com.bustomi.bookstorepos.view.dialog.DialogLaporan;
 import com.bustomi.bookstorepos.view.tablemodel.HurufRender;
 import com.bustomi.bookstorepos.view.tablemodel.TabelModelPenjualan;
 import static java.awt.Component.CENTER_ALIGNMENT;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,9 +28,6 @@ import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.jdbc.Work;
 
 /**
  *
@@ -53,7 +47,6 @@ public class PanelPenjualan extends javax.swing.JPanel {
         
         TabelPenjualan.setModel(modelPenjualan);
         
-        loadData();
         TabelPenjualan.getColumnModel().getColumn(0).setMaxWidth(50);
         TabelPenjualan.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
         TabelPenjualan.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
@@ -77,9 +70,6 @@ public class PanelPenjualan extends javax.swing.JPanel {
         viewPortX1 = new com.bustomi.bookstorepos.component.ViewPortX();
         TabelPenjualan = new javax.swing.JTable();
         panelX1 = new com.bustomi.bookstorepos.component.PanelX();
-        buttonBlue1 = new com.bustomi.bookstorepos.component.ButtonBlue();
-        buttonGreen1 = new com.bustomi.bookstorepos.component.ButtonGreen();
-        buttonMin1 = new com.bustomi.bookstorepos.component.ButtonMin();
         jScrollPane1 = new javax.swing.JScrollPane();
         jLabel1 = new javax.swing.JLabel();
         panelX2 = new com.bustomi.bookstorepos.component.PanelX();
@@ -107,30 +97,6 @@ public class PanelPenjualan extends javax.swing.JPanel {
         setOpaque(false);
 
         panelX1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
-
-        buttonBlue1.setText("Detail Pembelian");
-        buttonBlue1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonBlue1ActionPerformed(evt);
-            }
-        });
-        panelX1.add(buttonBlue1);
-
-        buttonGreen1.setText("Tambah Pembelian");
-        buttonGreen1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonGreen1ActionPerformed(evt);
-            }
-        });
-        panelX1.add(buttonGreen1);
-
-        buttonMin1.setText("Refresh");
-        buttonMin1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonMin1ActionPerformed(evt);
-            }
-        });
-        panelX1.add(buttonMin1);
 
         jScrollPane1.setOpaque(false);
         jScrollPane1.setViewport(viewPortX1);
@@ -213,7 +179,7 @@ public class PanelPenjualan extends javax.swing.JPanel {
                         .addComponent(panelX2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(buttonRed1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 96, Short.MAX_VALUE)))
+                        .addGap(0, 397, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -231,22 +197,6 @@ public class PanelPenjualan extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void buttonBlue1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBlue1ActionPerformed
-        if (TabelPenjualan.getSelectedColumn() == -1) {
-            JOptionPane.showMessageDialog(this, "Silahkan pilih data penjualan!");
-        }else {
-            int pilih=TabelPenjualan.convertRowIndexToModel(TabelPenjualan.getSelectedRow());
-            Penjualan penjualan=modelPenjualan.ambilData(pilih);
-            DialogDetailPenjualan dialogDetailPenjualan=new DialogDetailPenjualan(penjualan);
-            dialogDetailPenjualan.setLocationRelativeTo(this);            
-        }
-    }//GEN-LAST:event_buttonBlue1ActionPerformed
-
-    private void buttonMin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin1ActionPerformed
-        loadData();
-        filter = false;
-    }//GEN-LAST:event_buttonMin1ActionPerformed
 
     private void buttonMin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin2ActionPerformed
         mulai=jDateChooserMulai.getDate();
@@ -267,13 +217,7 @@ public class PanelPenjualan extends javax.swing.JPanel {
             }
         }
         
-        
-        
     }//GEN-LAST:event_buttonMin2ActionPerformed
-
-    private void buttonGreen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen1ActionPerformed
-        loadData();
-    }//GEN-LAST:event_buttonGreen1ActionPerformed
 
     private void buttonRed1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRed1ActionPerformed
         if (!filter) {
@@ -284,29 +228,25 @@ public class PanelPenjualan extends javax.swing.JPanel {
             int pilih=JOptionPane.showConfirmDialog(this, "Apakah anda yakin ingin mencetak dari tanggal "+mulai+
                     " sampai tanggal "+sampai+" ?", "Pertanyaan?", JOptionPane.YES_NO_OPTION);
             if (pilih == JOptionPane.YES_OPTION) {
-                SessionFactory sessionFactory=SpringManager.getInstance().getBean(SessionFactory.class);
-                Session session=sessionFactory.openSession();
-                session.doWork(new Work() {
+                
+                try {
+                    InputStream inputStream=getClass().getResourceAsStream("/com/bustomi/d3ti/uns/report/penjualan.jasper");
 
-                    @Override
-                    public void execute(Connection cnctn) throws SQLException {
-                        try {
-                            InputStream inputStream=getClass().getResourceAsStream("/com/bustomi/d3ti/uns/report/penjualan.jasper");
+                    JRDataSource dataSource=new JRBeanCollectionDataSource(modelPenjualan.getList(), false);
+                    Map<String, Object> map=new HashMap<>();
+                    map.put("FROM", mulai);
+                    map.put("TO", sampai);
+                    map.put(JRParameter.REPORT_DATA_SOURCE, dataSource);
+                    map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
 
-                            JRDataSource dataSource=new JRBeanCollectionDataSource(modelPenjualan.getList(), false);
-                            Map<String, Object> map=new HashMap<>();
-                            map.put(JRParameter.REPORT_DATA_SOURCE, dataSource);
-                            map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
-
-                            JasperPrint jasperPrint=JasperFillManager.fillReport(inputStream, map);
-                            DialogLaporan dialogLaporan=new DialogLaporan(jasperPrint);
-                            dialogLaporan.setLocationRelativeTo(null);
-                            dialogLaporan.setVisible(true);
-                        } catch (JRException ex) {
-                            Logger.getLogger(PanelPenjualan.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                });                
+                    JasperPrint jasperPrint=JasperFillManager.fillReport(inputStream, map);
+                    DialogLaporan dialogLaporan=new DialogLaporan(jasperPrint);
+                    dialogLaporan.setLocationRelativeTo(null);
+                    dialogLaporan.setVisible(true);
+                } catch (JRException ex) {
+                    Logger.getLogger(PanelPenjualan.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                                  
             }
             
         }
@@ -315,9 +255,6 @@ public class PanelPenjualan extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TabelPenjualan;
-    private com.bustomi.bookstorepos.component.ButtonBlue buttonBlue1;
-    private com.bustomi.bookstorepos.component.ButtonGreen buttonGreen1;
-    private com.bustomi.bookstorepos.component.ButtonMin buttonMin1;
     private com.bustomi.bookstorepos.component.ButtonMin buttonMin2;
     private com.bustomi.bookstorepos.component.ButtonRed buttonRed1;
     private com.toedter.calendar.JDateChooser jDateChooserMulai;
@@ -331,9 +268,9 @@ public class PanelPenjualan extends javax.swing.JPanel {
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX1;
     // End of variables declaration//GEN-END:variables
     
-    private void loadData() {
-        PenjualanService barangService=SpringManager.getInstance().getBean(PenjualanService.class);
-        modelPenjualan.load(barangService.findAll());
-    }
+//    private void loadData() {
+//        PenjualanService barangService=SpringManager.getInstance().getBean(PenjualanService.class);
+//        modelPenjualan.load(barangService.findAll());
+//    }
 
 }

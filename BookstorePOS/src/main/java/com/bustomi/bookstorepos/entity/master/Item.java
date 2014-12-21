@@ -14,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -41,11 +42,17 @@ public class Item extends Entity<String>{
     @OneToOne (mappedBy = "item")
     private Barang barang;
     
-    @OneToOne (mappedBy = "item")
-    private DetailPembelian detailPembelian;
+//    @OneToOne (mappedBy = "item")
+//    private DetailPembelian detailPembelian;
+//    
+//    @OneToOne (mappedBy = "item")
+//    private DetailPenjualan detailPenjualan;
     
-    @OneToOne (mappedBy = "item")
-    private DetailPenjualan detailPenjualan;
+    @Transient
+    private Boolean pilih;
+    
+    @Transient
+    private Integer jmlhCetak;
     
     @Override
     public String getId() {
@@ -97,20 +104,20 @@ public class Item extends Entity<String>{
         this.barang = barang;
     }
 
-    public DetailPembelian getDetailPembelian() {
-        return detailPembelian;
+    public Integer getJmlhCetak() {
+        return jmlhCetak;
     }
 
-    public void setDetailPembelian(DetailPembelian detailPembelian) {               
-        this.detailPembelian = detailPembelian;
+    public void setJmlhCetak(Integer jmlhCetak) {
+        this.jmlhCetak = jmlhCetak;
     }
 
-    public DetailPenjualan getDetailPenjualan() {
-        return detailPenjualan;
+    public Boolean getPilih() {
+        return pilih;
     }
 
-    public void setDetailPenjualan(DetailPenjualan detailPenjualan) {
-        this.detailPenjualan = detailPenjualan;
+    public void setPilih(Boolean pilih) {
+        this.pilih = pilih;
     }
         
 }

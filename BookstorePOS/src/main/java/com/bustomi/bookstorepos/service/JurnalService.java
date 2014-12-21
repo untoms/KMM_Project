@@ -7,6 +7,7 @@
 package com.bustomi.bookstorepos.service;
 
 import com.bustomi.bookstorepos.entity.laporan.Jurnal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,4 +19,5 @@ public interface JurnalService {
     void save(Jurnal jurnal);
 
     List<Jurnal> findAll();
+    List<Jurnal> findAll(Date from, Date to);
 }

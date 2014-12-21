@@ -7,6 +7,12 @@
 package com.bustomi.bookstorepos.view.dialog;
 
 import java.awt.Dimension;
+import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.swing.JRViewer;
 
@@ -16,18 +22,19 @@ import net.sf.jasperreports.swing.JRViewer;
  */
 public class DialogLaporan extends javax.swing.JDialog {
 
-    /**
-     * Creates new form DialogStruk
-     * @param print
-     */
+    private JasperPrint print;
+    
     public DialogLaporan(JasperPrint print) {
         setModal(true);
         initComponents();
         
+        this.print=print;
+        
         JRViewer viewer=new JRViewer(print);
         setPreferredSize(new Dimension(800, 600));
         setMinimumSize(new Dimension(800, 600));
-        getContentPane().add(viewer);
+//        getContentPane().add(viewer);
+        jPanel1.add(viewer);
     }
 
     /**
@@ -39,14 +46,50 @@ public class DialogLaporan extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFileChooser1 = new javax.swing.JFileChooser();
+        jPanel2 = new javax.swing.JPanel();
+        buttonBlue1 = new com.bustomi.bookstorepos.component.ButtonBlue();
+        jPanel1 = new javax.swing.JPanel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(0, 0));
+
+        buttonBlue1.setText("EXPORT PDF");
+        buttonBlue1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBlue1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(buttonBlue1);
+
+        getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_START);
+
+        jPanel1.setLayout(new java.awt.BorderLayout());
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buttonBlue1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBlue1ActionPerformed
+        // TODO add your handling code here:
+        if (jFileChooser1.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                File file = jFileChooser1.getSelectedFile();
+                if (!file.getName().endsWith(".pdf")) {
+                    file = new File(file.getPath() + ".pdf");
+                }                
+            try {
+                JasperExportManager.exportReportToPdfFile(print, file.getPath());
+            } catch (JRException ex) {
+                Logger.getLogger(DialogLaporan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            }
+    }//GEN-LAST:event_buttonBlue1ActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.bustomi.bookstorepos.component.ButtonBlue buttonBlue1;
+    private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }

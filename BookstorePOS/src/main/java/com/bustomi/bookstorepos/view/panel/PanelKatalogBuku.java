@@ -31,7 +31,7 @@ public class PanelKatalogBuku extends javax.swing.JPanel {
         
         TabelBuku.setModel(modelBuku);
         
-        loadData();
+//        loadData();
         TabelBuku.getColumnModel().getColumn(0).setMaxWidth(50);
         TabelBuku.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
         TabelBuku.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());

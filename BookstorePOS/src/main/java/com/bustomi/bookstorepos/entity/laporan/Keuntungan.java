@@ -37,6 +37,7 @@ public class Keuntungan {
         this.pelanggan = penjualan.getPelanggan();
         this.pemasok = null;
         this.total = penjualan.getTotal();
+        this.keuntungan = penjualan.getKeuntungan();
     }
     
     public Keuntungan(Pembelian pembelian) {
@@ -46,7 +47,8 @@ public class Keuntungan {
         this.user = pembelian.getUser();
         this.pelanggan = null;
         this.pemasok = pembelian.getPemasok();
-        this.total = pembelian.getTotal();
+        this.total = pembelian.getBayar();
+        this.keuntungan = BigDecimal.ZERO;
     }
 
     public Long getId() {

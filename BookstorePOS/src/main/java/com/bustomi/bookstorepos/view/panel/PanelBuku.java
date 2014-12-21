@@ -20,13 +20,17 @@ import com.bustomi.bookstorepos.view.tablemodel.TabelModelBuku;
 import static java.awt.Component.CENTER_ALIGNMENT;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
-import javax.swing.SwingWorker;
+import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -36,15 +40,26 @@ public class PanelBuku extends javax.swing.JPanel implements ItemListener{
 
     private final TabelModelBuku modelBuku;
     
+    // paging utility
+    private Integer totalRows = 0;
+    private Integer pageNumber = 1;
+    private Integer totalPage = 1;
+    private Integer rowsPerPage = 15;
+    
+    private String judul=null;
+    private String pengarang=null;
+    private String penerbit=null;
+    private String kategori=null;
+    
+    private String nama=null;
+    
     public PanelBuku()  {
         
         modelBuku=new TabelModelBuku();
         initComponents();
         
         TabelBuku.setModel(modelBuku);
-        
-        loadData();
-        
+                
         TabelBuku.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
         TabelBuku.getColumnModel().getColumn(0).setMaxWidth(50);
         TabelBuku.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
@@ -66,6 +81,7 @@ public class PanelBuku extends javax.swing.JPanel implements ItemListener{
         jRadioJudul.addItemListener(this);
         jRadioPenerbit.addItemListener(this);
         jRadioPengarang.addItemListener(this);
+        jRadioKategori.addItemListener(this);
                 
     }    
 
@@ -86,7 +102,6 @@ public class PanelBuku extends javax.swing.JPanel implements ItemListener{
         buttonGreen1 = new com.bustomi.bookstorepos.component.ButtonGreen();
         buttonYellow1 = new com.bustomi.bookstorepos.component.ButtonYellow();
         buttonRed1 = new com.bustomi.bookstorepos.component.ButtonRed();
-        buttonMin1 = new com.bustomi.bookstorepos.component.ButtonMin();
         jScrollPane1 = new javax.swing.JScrollPane();
         jLabel1 = new javax.swing.JLabel();
         panelX2 = new com.bustomi.bookstorepos.component.PanelX();
@@ -98,6 +113,17 @@ public class PanelBuku extends javax.swing.JPanel implements ItemListener{
         jRadioPengarang = new javax.swing.JRadioButton();
         jRadioPenerbit = new javax.swing.JRadioButton();
         jRadioKategori = new javax.swing.JRadioButton();
+        panelX3 = new com.bustomi.bookstorepos.component.PanelX();
+        jComboBoxPage = new javax.swing.JComboBox();
+        btnFirst = new com.bustomi.bookstorepos.component.ButtonMin();
+        btnPrevious = new com.bustomi.bookstorepos.component.ButtonMin();
+        jLabel5 = new javax.swing.JLabel();
+        txtPageNumber = new com.bustomi.bookstorepos.component.TextFieldX();
+        lblPageOf = new javax.swing.JLabel();
+        btnNext = new com.bustomi.bookstorepos.component.ButtonMin();
+        btnLast = new com.bustomi.bookstorepos.component.ButtonMin();
+        btnRefresh = new com.bustomi.bookstorepos.component.ButtonMin();
+        lblTotalRecord = new javax.swing.JLabel();
 
         TabelBuku.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -149,14 +175,6 @@ public class PanelBuku extends javax.swing.JPanel implements ItemListener{
         });
         panelX1.add(buttonRed1);
 
-        buttonMin1.setText("Refresh");
-        buttonMin1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonMin1ActionPerformed(evt);
-            }
-        });
-        panelX1.add(buttonMin1);
-
         jScrollPane1.setOpaque(false);
         jScrollPane1.setViewport(viewPortX1);
 
@@ -171,6 +189,12 @@ public class PanelBuku extends javax.swing.JPanel implements ItemListener{
         jLabelCari.setForeground(new java.awt.Color(255, 255, 255));
         jLabelCari.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabelCari.setText("Pencarian :");
+
+        textFieldXCari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldXCariKeyPressed(evt);
+            }
+        });
 
         buttonMin2.setText("Filter");
         buttonMin2.addActionListener(new java.awt.event.ActionListener() {
@@ -247,6 +271,67 @@ public class PanelBuku extends javax.swing.JPanel implements ItemListener{
                 .addContainerGap())
         );
 
+        panelX3.setBorder(new javax.swing.border.LineBorder(java.awt.Color.white, 1, true));
+
+        jComboBoxPage.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10", "15", "20", "25" }));
+        panelX3.add(jComboBoxPage);
+
+        btnFirst.setText("First");
+        btnFirst.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFirstActionPerformed(evt);
+            }
+        });
+        panelX3.add(btnFirst);
+
+        btnPrevious.setText("Previous");
+        btnPrevious.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPreviousActionPerformed(evt);
+            }
+        });
+        panelX3.add(btnPrevious);
+
+        jLabel5.setForeground(java.awt.Color.white);
+        jLabel5.setText("Page");
+        panelX3.add(jLabel5);
+
+        txtPageNumber.setText("0");
+        txtPageNumber.setPreferredSize(new java.awt.Dimension(35, 20));
+        panelX3.add(txtPageNumber);
+
+        lblPageOf.setForeground(java.awt.Color.white);
+        lblPageOf.setText("dari 0.");
+        panelX3.add(lblPageOf);
+
+        btnNext.setText("Next");
+        btnNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextActionPerformed(evt);
+            }
+        });
+        panelX3.add(btnNext);
+
+        btnLast.setText("Last");
+        btnLast.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLastActionPerformed(evt);
+            }
+        });
+        panelX3.add(btnLast);
+
+        btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+        panelX3.add(btnRefresh);
+
+        lblTotalRecord.setForeground(java.awt.Color.white);
+        lblTotalRecord.setText("Pages.");
+        panelX3.add(lblTotalRecord);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -257,7 +342,8 @@ public class PanelBuku extends javax.swing.JPanel implements ItemListener{
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
                     .addComponent(panelX2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelX1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelX1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelX3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -268,7 +354,9 @@ public class PanelBuku extends javax.swing.JPanel implements ItemListener{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelX2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelX3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelX1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12))
@@ -298,14 +386,17 @@ public class PanelBuku extends javax.swing.JPanel implements ItemListener{
             DialogBuku dialogBuku=new DialogBuku();            
             dialogBuku.setLocationRelativeTo(this);
             boolean hasil=dialogBuku.delete(buku);
-            
+                        
             if (hasil) {
                 BukuService bukuService=SpringManager.getInstance().getBean(BukuService.class);
-                bukuService.delete(buku);
+                try {
+                    bukuService.delete(buku);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Data Barang tidak bisa dihapus!");
+                    Logger.getLogger(PanelBuku.class.getName()).log(Level.SEVERE, null, e);
+                }
             }
-            
-            loadData();
-            
+                        
         }
     }//GEN-LAST:event_buttonRed1ActionPerformed
 
@@ -325,106 +416,111 @@ public class PanelBuku extends javax.swing.JPanel implements ItemListener{
                 ItemService itemService=SpringManager.getInstance().getBean(ItemService.class);
                 itemService.update(hasil.getItem());
                 bukuService.update(hasil);                
-            }
-            
-            loadData();
-            
+            }                 
         }
     }//GEN-LAST:event_buttonYellow1ActionPerformed
 
-    private void buttonMin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin1ActionPerformed
-        buttonGroup1.clearSelection();
-        jLabelCari.setText("Pencarian :");
-        loadData();
-    }//GEN-LAST:event_buttonMin1ActionPerformed
-
     private void buttonGreen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen1ActionPerformed
+        BukuService service=SpringManager.getInstance().getBean(BukuService.class);
+        ItemService itemService=SpringManager.getInstance().getBean(ItemService.class);
+        
+        if (service.countRows() >= 50) {
+            JOptionPane.showMessageDialog(this, "JUMLAH BARANG SUDAH MAKSIMAL,"
+                    + "SILAHKAN HUBUNGI ADMINISTRATOR.");
+            return;
+        }
+        
         DialogBuku dialogBuku=new DialogBuku();
         dialogBuku.setLocationRelativeTo(this);
         Buku buku=dialogBuku.tambah();
-        if (buku != null) {
-            BukuService service=SpringManager.getInstance().getBean(BukuService.class);
-            ItemService itemService=SpringManager.getInstance().getBean(ItemService.class);
-            itemService.save(buku.getItem());
-            service.save(buku);
-            loadData();
-        }
         
+        if (buku != null) {           
+            itemService.save(buku.getItem());
+            service.save(buku);            
+        }        
     }//GEN-LAST:event_buttonGreen1ActionPerformed
 
     private void buttonMin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin2ActionPerformed
-        String nama=textFieldXCari.getText();
-
-        BukuService service=SpringManager.getInstance().getBean(BukuService.class);
-
-        if (!jRadioJudul.isSelected() && !jRadioPenerbit.isSelected() 
-                && !jRadioPengarang.isSelected() && !jRadioKategori.isSelected()) {
-            JOptionPane.showMessageDialog(this, "Silahkan pilih kategori pencarian");
-        } else if(jRadioJudul.isSelected()){
-            List<Buku> list=service.findAll(nama);
-            modelBuku.load(list);
-            buttonGroup1.clearSelection();
-        } else if(jRadioPenerbit.isSelected()){
-            List<Buku> list=service.findPenerbit(nama);
-            modelBuku.load(list);
-            buttonGroup1.clearSelection();
-        } else if(jRadioPengarang.isSelected()){
-            List<Buku> list=service.findPengarang(nama);
-            modelBuku.load(list);
-            buttonGroup1.clearSelection();
-        } else if (jRadioKategori.isSelected()){
-            List<Buku> list=service.findKategori(nama);
-            modelBuku.load(list);
-            buttonGroup1.clearSelection();
-        }
-
+        cari();
     }//GEN-LAST:event_buttonMin2ActionPerformed
+
+    private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
+        pageNumber = 1;
+        initDefaultValue(nama);
+    }//GEN-LAST:event_btnFirstActionPerformed
+
+    private void btnPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousActionPerformed
+        if (pageNumber > 1) {
+            pageNumber -= 1;
+            initDefaultValue(nama);
+        }
+    }//GEN-LAST:event_btnPreviousActionPerformed
+
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        if (pageNumber < totalPage) {
+            pageNumber += 1;
+            initDefaultValue(nama);
+        }
+    }//GEN-LAST:event_btnNextActionPerformed
+
+    private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
+        pageNumber = totalPage;
+        initDefaultValue(nama);
+    }//GEN-LAST:event_btnLastActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        judul=null; 
+        pengarang=null;
+        penerbit=null;
+        kategori=null;
+        initDefaultValue(nama);
+        buttonGroup1.clearSelection();
+        jLabelCari.setText("Pencarian :");
+        textFieldXCari.setText("");
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void textFieldXCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldXCariKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            cari();
+        }
+    }//GEN-LAST:event_textFieldXCariKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TabelBuku;
+    private com.bustomi.bookstorepos.component.ButtonMin btnFirst;
+    private com.bustomi.bookstorepos.component.ButtonMin btnLast;
+    private com.bustomi.bookstorepos.component.ButtonMin btnNext;
+    private com.bustomi.bookstorepos.component.ButtonMin btnPrevious;
+    private com.bustomi.bookstorepos.component.ButtonMin btnRefresh;
     private com.bustomi.bookstorepos.component.ButtonBlue buttonBlue1;
     private com.bustomi.bookstorepos.component.ButtonGreen buttonGreen1;
     private javax.swing.ButtonGroup buttonGroup1;
-    private com.bustomi.bookstorepos.component.ButtonMin buttonMin1;
     private com.bustomi.bookstorepos.component.ButtonMin buttonMin2;
     private com.bustomi.bookstorepos.component.ButtonRed buttonRed1;
     private com.bustomi.bookstorepos.component.ButtonYellow buttonYellow1;
+    private javax.swing.JComboBox jComboBoxPage;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelCari;
     private javax.swing.JRadioButton jRadioJudul;
     private javax.swing.JRadioButton jRadioKategori;
     private javax.swing.JRadioButton jRadioPenerbit;
     private javax.swing.JRadioButton jRadioPengarang;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblPageOf;
+    private javax.swing.JLabel lblTotalRecord;
     private com.bustomi.bookstorepos.component.PanelX panelX1;
     private com.bustomi.bookstorepos.component.PanelX panelX2;
+    private com.bustomi.bookstorepos.component.PanelX panelX3;
     private com.bustomi.bookstorepos.component.TextFieldX textFieldXCari;
+    private com.bustomi.bookstorepos.component.TextFieldX txtPageNumber;
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX1;
     // End of variables declaration//GEN-END:variables
     
-    private void loadData() {
-        
-        new SwingWorker<List<Buku>, Object>() {
-
-            @Override
-            protected List<Buku> doInBackground() throws Exception {
-                BukuService barangService=SpringManager.getInstance().getBean(BukuService.class);
-                return barangService.findAll();
-            }
-
-            @Override
-            protected void done() {
-                try {
-                    modelBuku.load(get());
-                } catch (InterruptedException | ExecutionException ex) {
-                    Logger.getLogger(PanelBuku.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }.execute();     
-    }
-    
+   
     @Override
     public void itemStateChanged(ItemEvent e) {
         JRadioButton jrb= (JRadioButton) e.getSource();
@@ -438,5 +534,119 @@ public class PanelBuku extends javax.swing.JPanel implements ItemListener{
             jLabelCari.setText("Kategori buku :");
         }
     }
+        
+    private void initDefaultValue(String nama) {        
+                
+        BukuService service=SpringManager.getInstance().getBean(BukuService.class);                
+        List<Buku> list = new ArrayList<>();
+        rowsPerPage = Integer.valueOf(jComboBoxPage.getSelectedItem().toString());
+        
+        if (judul==null && pengarang==null && penerbit==null && kategori==null) {
+            totalRows = service.countRows();    
+            aturPaging();
+            list = service.findAll(pageNumber, rowsPerPage);
+        } else if (judul != null){
+            totalRows = service.countNama(nama);
+            aturPaging();
+            list=service.findAll(nama, pageNumber, rowsPerPage);
+        } else if (pengarang != null){
+            totalRows = service.countPengarang(nama);
+            aturPaging();
+            list=service.findPengarang(nama, pageNumber, rowsPerPage);
+        } else if (penerbit != null){
+            totalRows = service.countPenerbit(nama);
+            aturPaging();
+            list=service.findPenerbit(nama, pageNumber, rowsPerPage);
+        } else if (kategori != null){
+            totalRows = service.countKategori(nama);
+            aturPaging();
+            list=service.findKategori(nama, pageNumber, rowsPerPage);
+        }
+        
+        modelBuku.load(list);
+        autoResizeColumn(TabelBuku);
+    }
+    
+    private void aturPaging(){
+        Double dblTotPage = Math.ceil(totalRows.doubleValue()/rowsPerPage.doubleValue());
+        totalPage = dblTotPage.intValue();
+        if (pageNumber == 1) {
+            btnFirst.setEnabled(false);
+            btnPrevious.setEnabled(false);
+        } else {
+            btnFirst.setEnabled(true);
+            btnPrevious.setEnabled(true);
+        }
 
+        if (pageNumber.equals(totalPage)) {
+            btnNext.setEnabled(false);
+            btnLast.setEnabled(false);
+        } else {
+            btnNext.setEnabled(true);
+            btnLast.setEnabled(true);
+        }
+
+        txtPageNumber.setText(String.valueOf(pageNumber));
+        lblPageOf.setText(" dari " + totalPage + " ");
+        lblTotalRecord.setText("Total record " + totalRows + " baris.");
+    }
+    
+    private void autoResizeColumn(JTable jTable1) {
+        JTableHeader header = jTable1.getTableHeader();
+        int rowCount = jTable1.getRowCount();
+        
+        final Enumeration columns = jTable1.getColumnModel().getColumns();
+        while(columns.hasMoreElements()){
+            TableColumn column = (TableColumn)columns.nextElement();
+            int col = header.getColumnModel().getColumnIndex(column.getIdentifier());
+            int width = (int)jTable1.getTableHeader().getDefaultRenderer()
+                    .getTableCellRendererComponent(jTable1, column.getIdentifier()
+                            , false, false, -1, col).getPreferredSize().getWidth();
+
+            for(int row = 0; row<rowCount; row++){
+                int preferedWidth = (int)jTable1.getCellRenderer(row, col).getTableCellRendererComponent(jTable1,
+                        jTable1.getValueAt(row, col), false, false, row, col).getPreferredSize().getWidth();
+                width = Math.max(width, preferedWidth);
+            }
+            header.setResizingColumn(column); // this line is very important
+            column.setWidth(width+jTable1.getIntercellSpacing().width);
+        }
+    }
+
+    private void cari(){
+        nama=textFieldXCari.getText();
+
+        if (!jRadioJudul.isSelected() && !jRadioPenerbit.isSelected() 
+                && !jRadioPengarang.isSelected() && !jRadioKategori.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Silahkan pilih kategori pencarian");
+            judul=null; 
+            pengarang=null;
+            penerbit=null;
+            kategori=null;
+        } else if(jRadioJudul.isSelected()){
+            judul=nama; 
+            pengarang=null;
+            penerbit=null;
+            kategori=null;
+            initDefaultValue(nama);
+        } else if(jRadioPenerbit.isSelected()){
+            judul=null; 
+            pengarang=null;
+            penerbit=nama;
+            kategori=null;
+            initDefaultValue(nama);;
+        } else if(jRadioPengarang.isSelected()){
+            judul=null; 
+            pengarang=nama;
+            penerbit=null;
+            kategori=null;
+            initDefaultValue(nama);
+        } else if (jRadioKategori.isSelected()){
+            judul=null; 
+            pengarang=null;
+            penerbit=null;
+            kategori=nama;
+            initDefaultValue(nama);            
+        }
+    }
 }

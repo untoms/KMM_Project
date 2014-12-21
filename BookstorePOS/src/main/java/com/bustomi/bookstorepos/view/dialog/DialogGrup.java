@@ -179,7 +179,7 @@ public class DialogGrup extends javax.swing.JDialog {
             }
         });
 
-        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Grup", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        panelX1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         panelX1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -196,8 +196,6 @@ public class DialogGrup extends javax.swing.JDialog {
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel14.setText("Info :");
-
-        textFieldXIdNama.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -231,12 +229,12 @@ public class DialogGrup extends javax.swing.JDialog {
                             .addComponent(textFieldXIdNama, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPaneInfo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
                             .addComponent(jScrollPane1))
-                        .addContainerGap(38, Short.MAX_VALUE))
+                        .addContainerGap(60, Short.MAX_VALUE))
                     .addGroup(panelX1Layout.createSequentialGroup()
                         .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(buttonBlue1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(textFieldXId, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(0, 124, Short.MAX_VALUE))))
         );
         panelX1Layout.setVerticalGroup(
             panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -259,7 +257,7 @@ public class DialogGrup extends javax.swing.JDialog {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonBlue1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         jLabelInfo.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
@@ -267,6 +265,8 @@ public class DialogGrup extends javax.swing.JDialog {
         jLabelInfo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelInfo.setText("Info Dialog");
         jLabelInfo.setName(""); // NOI18N
+
+        panelX2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
 
         buttonGreen1.setText("Simpan");
         buttonGreen1.addActionListener(new java.awt.event.ActionListener() {
@@ -324,12 +324,12 @@ public class DialogGrup extends javax.swing.JDialog {
             String nama=textFieldXIdNama.getText();
                         
             if (!editMode) {
-                data = new Grup();                
-            }
+                data = new Grup();  
+                for (int i = 0; i < listModel.getSize(); i++) {
+                    data.tambahHakAkses(listModel.get(i));
+                }
+            } 
             
-            for (int i = 0; i < listModel.getSize(); i++) {
-                data.tambahHakAkses(listModel.get(i));
-            }
             data.setInfo(info);
             data.setNama(nama);
             
@@ -356,8 +356,11 @@ public class DialogGrup extends javax.swing.JDialog {
     private void buttonBlue1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBlue1ActionPerformed
         // TODO add your handling code here:
         DialogRole dialogRole=new DialogRole();
-        DefaultListModel<HakAkses> dlm=dialogRole.ubah(listModel);
-        listModel=dlm;
+        Grup grup=dialogRole.ubah(data);
+        for (HakAkses hakAkses : grup.getDaftarHakAkses()) {
+            listModel.addElement(hakAkses);
+        }
+        data=grup;
     }//GEN-LAST:event_buttonBlue1ActionPerformed
 
  

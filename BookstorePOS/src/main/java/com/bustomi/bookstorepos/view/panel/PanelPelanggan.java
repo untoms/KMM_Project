@@ -16,8 +16,15 @@ import com.bustomi.bookstorepos.service.PelangganService;
 import com.bustomi.bookstorepos.view.dialog.DialogPelanggan;
 import com.bustomi.bookstorepos.view.tablemodel.HurufRender;
 import com.bustomi.bookstorepos.view.tablemodel.TabelModelPelanggan;
+import java.awt.event.KeyEvent;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -27,14 +34,23 @@ public class PanelPelanggan extends javax.swing.JPanel {
 
     private final TabelModelPelanggan modelPelanggan;
     
+    // paging utility
+    private Integer totalRows = 0;
+    private Integer pageNumber = 1;
+    private Integer totalPage = 1;
+    private Integer rowsPerPage = 15;
+    
+    private String nama;
+    private boolean cari;
+    
     public PanelPelanggan()  {
         
         modelPelanggan=new TabelModelPelanggan();
         initComponents();
         
         TabelPelanggan.setModel(modelPelanggan);
-        
-        loadData();
+//        
+//        loadData();
         TabelPelanggan.getColumnModel().getColumn(0).setMaxWidth(50);
         TabelPelanggan.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
         TabelPelanggan.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
@@ -70,13 +86,23 @@ public class PanelPelanggan extends javax.swing.JPanel {
         buttonGreen1 = new com.bustomi.bookstorepos.component.ButtonGreen();
         buttonYellow1 = new com.bustomi.bookstorepos.component.ButtonYellow();
         buttonRed1 = new com.bustomi.bookstorepos.component.ButtonRed();
-        buttonMin1 = new com.bustomi.bookstorepos.component.ButtonMin();
         jScrollPane1 = new javax.swing.JScrollPane();
         jLabel1 = new javax.swing.JLabel();
         panelX2 = new com.bustomi.bookstorepos.component.PanelX();
         jLabel2 = new javax.swing.JLabel();
         textFieldXCari = new com.bustomi.bookstorepos.component.TextFieldX();
         buttonMin2 = new com.bustomi.bookstorepos.component.ButtonMin();
+        panelX3 = new com.bustomi.bookstorepos.component.PanelX();
+        jComboBoxPage = new javax.swing.JComboBox();
+        btnFirst = new com.bustomi.bookstorepos.component.ButtonMin();
+        btnPrevious = new com.bustomi.bookstorepos.component.ButtonMin();
+        jLabel5 = new javax.swing.JLabel();
+        txtPageNumber = new com.bustomi.bookstorepos.component.TextFieldX();
+        lblPageOf = new javax.swing.JLabel();
+        btnNext = new com.bustomi.bookstorepos.component.ButtonMin();
+        btnLast = new com.bustomi.bookstorepos.component.ButtonMin();
+        btnRefresh = new com.bustomi.bookstorepos.component.ButtonMin();
+        lblTotalRecord = new javax.swing.JLabel();
 
         TabelPelanggan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -128,14 +154,6 @@ public class PanelPelanggan extends javax.swing.JPanel {
         });
         panelX1.add(buttonRed1);
 
-        buttonMin1.setText("Refresh");
-        buttonMin1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonMin1ActionPerformed(evt);
-            }
-        });
-        panelX1.add(buttonMin1);
-
         jScrollPane1.setOpaque(false);
         jScrollPane1.setViewport(viewPortX1);
 
@@ -148,6 +166,12 @@ public class PanelPelanggan extends javax.swing.JPanel {
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Nama :");
+
+        textFieldXCari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldXCariKeyPressed(evt);
+            }
+        });
 
         buttonMin2.setText("Filter");
         buttonMin2.addActionListener(new java.awt.event.ActionListener() {
@@ -184,19 +208,81 @@ public class PanelPelanggan extends javax.swing.JPanel {
                 .addGap(6, 6, 6))
         );
 
+        panelX3.setBorder(new javax.swing.border.LineBorder(java.awt.Color.white, 1, true));
+
+        jComboBoxPage.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10", "15", "20", "25" }));
+        panelX3.add(jComboBoxPage);
+
+        btnFirst.setText("First");
+        btnFirst.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFirstActionPerformed(evt);
+            }
+        });
+        panelX3.add(btnFirst);
+
+        btnPrevious.setText("Previous");
+        btnPrevious.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPreviousActionPerformed(evt);
+            }
+        });
+        panelX3.add(btnPrevious);
+
+        jLabel5.setForeground(java.awt.Color.white);
+        jLabel5.setText("Page");
+        panelX3.add(jLabel5);
+
+        txtPageNumber.setText("0");
+        txtPageNumber.setPreferredSize(new java.awt.Dimension(35, 20));
+        panelX3.add(txtPageNumber);
+
+        lblPageOf.setForeground(java.awt.Color.white);
+        lblPageOf.setText("dari 0.");
+        panelX3.add(lblPageOf);
+
+        btnNext.setText("Next");
+        btnNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextActionPerformed(evt);
+            }
+        });
+        panelX3.add(btnNext);
+
+        btnLast.setText("Last");
+        btnLast.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLastActionPerformed(evt);
+            }
+        });
+        panelX3.add(btnLast);
+
+        btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+        panelX3.add(btnRefresh);
+
+        lblTotalRecord.setForeground(java.awt.Color.white);
+        lblTotalRecord.setText("Pages.");
+        panelX3.add(lblTotalRecord);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 868, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 868, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(panelX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelX2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(panelX2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelX3, javax.swing.GroupLayout.DEFAULT_SIZE, 868, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -205,7 +291,9 @@ public class PanelPelanggan extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelX3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelX1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -240,10 +328,15 @@ public class PanelPelanggan extends javax.swing.JPanel {
             
             if (hasil) {
                 PelangganService pelangganService=SpringManager.getInstance().getBean(PelangganService.class);
-                pelangganService.delete(pelanggan);
+                try {
+                    pelangganService.delete(pelanggan);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Data Pelanggan tidak bisa dihapus!");
+                    Logger.getLogger(PanelPelanggan.class.getName()).log(Level.SEVERE, null, e);
+                }
             }
             
-            loadData();
+//            loadData();
             
         }
     }//GEN-LAST:event_buttonRed1ActionPerformed
@@ -263,27 +356,12 @@ public class PanelPelanggan extends javax.swing.JPanel {
                 pelangganService.update(hasil);              
             }
             
-            loadData();
             
         }
     }//GEN-LAST:event_buttonYellow1ActionPerformed
 
-    private void buttonMin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin1ActionPerformed
-        loadData();
-    }//GEN-LAST:event_buttonMin1ActionPerformed
-
     private void buttonMin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin2ActionPerformed
-        String nama=textFieldXCari.getText();
-        
-        PelangganService service=SpringManager.getInstance().getBean(PelangganService.class);
-        List<Pelanggan> pelanggans=service.findAll(nama);
-        if (pelanggans != null) {
-            modelPelanggan.load(pelanggans);
-            textFieldXCari.setText("");
-        } else {
-            JOptionPane.showMessageDialog(this, "Data tidak ada yang cocok");
-        }
-        
+        cari();        
     }//GEN-LAST:event_buttonMin2ActionPerformed
 
     private void buttonGreen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen1ActionPerformed
@@ -295,30 +373,145 @@ public class PanelPelanggan extends javax.swing.JPanel {
             PelangganService service=SpringManager.getInstance().getBean(PelangganService.class);
             service.save(pelanggan);
         }
-        loadData();
+//        loadData();
     }//GEN-LAST:event_buttonGreen1ActionPerformed
+
+    private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
+        pageNumber = 1;
+        initDefaultValue(nama);
+    }//GEN-LAST:event_btnFirstActionPerformed
+
+    private void btnPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousActionPerformed
+        if (pageNumber > 1) {
+            pageNumber -= 1;
+            initDefaultValue(nama);
+        }
+    }//GEN-LAST:event_btnPreviousActionPerformed
+
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        if (pageNumber < totalPage) {
+            pageNumber += 1;
+            initDefaultValue(nama);
+        }
+    }//GEN-LAST:event_btnNextActionPerformed
+
+    private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
+        pageNumber = totalPage;
+        initDefaultValue(nama);
+    }//GEN-LAST:event_btnLastActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        cari=false;
+        initDefaultValue(nama);
+        textFieldXCari.setText("");
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void textFieldXCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldXCariKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            cari();
+        }
+    }//GEN-LAST:event_textFieldXCariKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TabelPelanggan;
+    private com.bustomi.bookstorepos.component.ButtonMin btnFirst;
+    private com.bustomi.bookstorepos.component.ButtonMin btnLast;
+    private com.bustomi.bookstorepos.component.ButtonMin btnNext;
+    private com.bustomi.bookstorepos.component.ButtonMin btnPrevious;
+    private com.bustomi.bookstorepos.component.ButtonMin btnRefresh;
     private com.bustomi.bookstorepos.component.ButtonBlue buttonBlue1;
     private com.bustomi.bookstorepos.component.ButtonGreen buttonGreen1;
-    private com.bustomi.bookstorepos.component.ButtonMin buttonMin1;
     private com.bustomi.bookstorepos.component.ButtonMin buttonMin2;
     private com.bustomi.bookstorepos.component.ButtonRed buttonRed1;
     private com.bustomi.bookstorepos.component.ButtonYellow buttonYellow1;
+    private javax.swing.JComboBox jComboBoxPage;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblPageOf;
+    private javax.swing.JLabel lblTotalRecord;
     private com.bustomi.bookstorepos.component.PanelX panelX1;
     private com.bustomi.bookstorepos.component.PanelX panelX2;
+    private com.bustomi.bookstorepos.component.PanelX panelX3;
     private com.bustomi.bookstorepos.component.TextFieldX textFieldXCari;
+    private com.bustomi.bookstorepos.component.TextFieldX txtPageNumber;
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX1;
     // End of variables declaration//GEN-END:variables
+
     
-    private void loadData() {
-        PelangganService pelangganService=SpringManager.getInstance().getBean(PelangganService.class);
-        modelPelanggan.load(pelangganService.findAll());
+    private void initDefaultValue(String nama) {
+        
+        PelangganService service=SpringManager.getInstance().getBean(PelangganService.class);                
+        List<Pelanggan> list;
+        rowsPerPage = Integer.valueOf(jComboBoxPage.getSelectedItem().toString());
+        totalRows = service.countRows();
+        
+        if (cari) {
+            totalRows = service.countNama(nama);
+            aturPaging();
+            list = service.findAll(nama,pageNumber, rowsPerPage);
+        }else{
+            totalRows = service.countRows();
+            aturPaging();
+            list = service.findAll(pageNumber, rowsPerPage);
+        }
+        
+        modelPelanggan.load(list);
+        autoResizeColumn(TabelPelanggan);
+    }
+    
+    private void aturPaging(){
+        Double dblTotPage = Math.ceil(totalRows.doubleValue()/rowsPerPage.doubleValue());
+        totalPage = dblTotPage.intValue();
+        if (pageNumber == 1) {
+            btnFirst.setEnabled(false);
+            btnPrevious.setEnabled(false);
+        } else {
+            btnFirst.setEnabled(true);
+            btnPrevious.setEnabled(true);
+        }
+
+        if (pageNumber.equals(totalPage)) {
+            btnNext.setEnabled(false);
+            btnLast.setEnabled(false);
+        } else {
+            btnNext.setEnabled(true);
+            btnLast.setEnabled(true);
+        }
+
+        txtPageNumber.setText(String.valueOf(pageNumber));
+        lblPageOf.setText(" of " + totalPage + " ");
+        lblTotalRecord.setText("Total Record " + totalRows + " rows.");
+    }
+    
+    private void autoResizeColumn(JTable jTable1) {
+        JTableHeader header = jTable1.getTableHeader();
+        int rowCount = jTable1.getRowCount();
+        
+        final Enumeration columns = jTable1.getColumnModel().getColumns();
+        while(columns.hasMoreElements()){
+            TableColumn column = (TableColumn)columns.nextElement();
+            int col = header.getColumnModel().getColumnIndex(column.getIdentifier());
+            int width = (int)jTable1.getTableHeader().getDefaultRenderer()
+                    .getTableCellRendererComponent(jTable1, column.getIdentifier()
+                            , false, false, -1, col).getPreferredSize().getWidth();
+
+            for(int row = 0; row<rowCount; row++){
+                int preferedWidth = (int)jTable1.getCellRenderer(row, col).getTableCellRendererComponent(jTable1,
+                        jTable1.getValueAt(row, col), false, false, row, col).getPreferredSize().getWidth();
+                width = Math.max(width, preferedWidth);
+            }
+            header.setResizingColumn(column); // this line is very important
+            column.setWidth(width+jTable1.getIntercellSpacing().width);
+        }
+    }
+    
+    private void cari(){
+        cari=true;
+        nama=textFieldXCari.getText();
+        initDefaultValue(nama);        
     }
 
 }

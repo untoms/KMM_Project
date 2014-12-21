@@ -8,6 +8,19 @@ package com.bustomi.bookstorepos.validator;
 
 import com.bustomi.bookstorepos.entity.Entity;
 import com.bustomi.bookstorepos.entity.SimpleEntity;
+import com.bustomi.bookstorepos.entity.User.Grup;
+import com.bustomi.bookstorepos.entity.master.KategoriBarang;
+import com.bustomi.bookstorepos.entity.master.KategoriBuku;
+import com.bustomi.bookstorepos.entity.master.Penerbit;
+import com.bustomi.bookstorepos.entity.master.Pengarang;
+import com.bustomi.bookstorepos.entity.master.Satuan;
+import com.bustomi.bookstorepos.manager.SpringManager;
+import com.bustomi.bookstorepos.service.GrupService;
+import com.bustomi.bookstorepos.service.KategoriBarangService;
+import com.bustomi.bookstorepos.service.KategoriBukuService;
+import com.bustomi.bookstorepos.service.PenerbitService;
+import com.bustomi.bookstorepos.service.PengarangService;
+import com.bustomi.bookstorepos.service.SatuanService;
 
 /**
  *
@@ -56,6 +69,56 @@ public abstract class AbstractValidator<T> implements Validator<T>{
             throwValidatorException("Karakter nama terlalu panjang");
         } else if (entity.getInfo().length() > 255){
             throwValidatorException("Karakter info terlalu panjang");
+        }
+        
+        if (entity instanceof Grup) {
+            GrupService service=SpringManager.getInstance().getBean(GrupService.class);
+            if (service.find(entity.getNama()) != null) {
+                Grup hasil=service.find(entity.getNama());
+                if (!entity.equals(hasil)) {
+                    throwValidatorException("Nama '"+entity.getNama()+"' sudah digunakan! Silahkan gunakan nama lain.");
+                }
+            }
+        } else if (entity instanceof KategoriBarang) {
+            KategoriBarangService service=SpringManager.getInstance().getBean(KategoriBarangService.class);
+            if (service.find(entity.getNama()) != null) {
+                KategoriBarang hasil=service.find(entity.getNama());
+                if (!entity.equals(hasil)) {
+                    throwValidatorException("Nama '"+entity.getNama()+"' sudah digunakan! Silahkan gunakan nama lain.");
+                }
+            }
+        } else if (entity instanceof KategoriBuku) {
+            KategoriBukuService service=SpringManager.getInstance().getBean(KategoriBukuService.class);
+            if (service.find(entity.getNama()) != null) {
+                KategoriBuku hasil=service.find(entity.getNama());
+                if (!entity.equals(hasil)) {
+                    throwValidatorException("Nama '"+entity.getNama()+"' sudah digunakan! Silahkan gunakan nama lain.");
+                }
+            }
+        } else if (entity instanceof Penerbit) {
+            PenerbitService service=SpringManager.getInstance().getBean(PenerbitService.class);
+            if (service.find(entity.getNama()) != null) {
+                Penerbit hasil=service.find(entity.getNama());
+                if (!entity.equals(hasil)) {
+                    throwValidatorException("Nama '"+entity.getNama()+"' sudah digunakan! Silahkan gunakan nama lain.");
+                }
+            }
+        } else if (entity instanceof Pengarang) {
+            PengarangService service=SpringManager.getInstance().getBean(PengarangService.class);
+            if (service.find(entity.getNama()) != null) {
+                Pengarang hasil=service.find(entity.getNama());
+                if (!entity.equals(hasil)) {
+                    throwValidatorException("Nama '"+entity.getNama()+"' sudah digunakan! Silahkan gunakan nama lain.");
+                }
+            }
+        } else if (entity instanceof Satuan) {
+            SatuanService service=SpringManager.getInstance().getBean(SatuanService.class);
+            if (service.find(entity.getNama()) != null) {
+                Satuan hasil=service.find(entity.getNama());
+                if (!entity.equals(hasil)) {
+                    throwValidatorException("Nama '"+entity.getNama()+"' sudah digunakan! Silahkan gunakan nama lain.");
+                }
+            }
         }
     }
 

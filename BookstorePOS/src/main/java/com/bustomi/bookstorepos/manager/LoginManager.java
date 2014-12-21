@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 public class LoginManager {
     
     private static LoginManager INSTANCE;
-
+    
     public static LoginManager getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new LoginManager();
@@ -65,7 +65,7 @@ public class LoginManager {
         return SpringManager.getInstance().getBean(UserService.class);
     }
     
-    private String sandi(String pass){
+    public String sandi(String pass){
         // Create MessageDigest instance for MD5
         MessageDigest md = null;
         
@@ -90,5 +90,5 @@ public class LoginManager {
 
         return generatedPassword;
     }
-    
+        
 }

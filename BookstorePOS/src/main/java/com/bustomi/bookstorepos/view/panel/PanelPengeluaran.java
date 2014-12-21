@@ -16,6 +16,7 @@ import com.bustomi.bookstorepos.service.PengeluaranService;
 import com.bustomi.bookstorepos.view.dialog.DialogPengeluaran;
 import com.bustomi.bookstorepos.view.tablemodel.HurufRender;
 import com.bustomi.bookstorepos.view.tablemodel.TabelModelPengeluaran;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -34,7 +35,7 @@ public class PanelPengeluaran extends javax.swing.JPanel {
         
         TabelPengeluaran.setModel(modelPengeluaran);
         
-        loadData();
+//        loadData();
         TabelPengeluaran.getColumnModel().getColumn(0).setMaxWidth(50);
         TabelPengeluaran.getColumnModel().getColumn(0).setCellRenderer(new HurufRender());
         TabelPengeluaran.getColumnModel().getColumn(1).setCellRenderer(new HurufRender());
@@ -62,13 +63,14 @@ public class PanelPengeluaran extends javax.swing.JPanel {
         panelX1 = new com.bustomi.bookstorepos.component.PanelX();
         buttonBlue1 = new com.bustomi.bookstorepos.component.ButtonBlue();
         buttonGreen1 = new com.bustomi.bookstorepos.component.ButtonGreen();
-        buttonMin1 = new com.bustomi.bookstorepos.component.ButtonMin();
         jScrollPane1 = new javax.swing.JScrollPane();
         jLabel1 = new javax.swing.JLabel();
         panelX2 = new com.bustomi.bookstorepos.component.PanelX();
         jLabel2 = new javax.swing.JLabel();
-        textFieldXCari = new com.bustomi.bookstorepos.component.TextFieldX();
         buttonMin2 = new com.bustomi.bookstorepos.component.ButtonMin();
+        jDateChooserMulai = new com.toedter.calendar.JDateChooser();
+        jLabel3 = new javax.swing.JLabel();
+        jDateChooserSampai = new com.toedter.calendar.JDateChooser();
 
         TabelPengeluaran.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -104,14 +106,6 @@ public class PanelPengeluaran extends javax.swing.JPanel {
         });
         panelX1.add(buttonGreen1);
 
-        buttonMin1.setText("Refresh");
-        buttonMin1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonMin1ActionPerformed(evt);
-            }
-        });
-        panelX1.add(buttonMin1);
-
         jScrollPane1.setOpaque(false);
         jScrollPane1.setViewport(viewPortX1);
 
@@ -123,7 +117,7 @@ public class PanelPengeluaran extends javax.swing.JPanel {
         panelX2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Nama :");
+        jLabel2.setText("Mulai :");
 
         buttonMin2.setText("Filter");
         buttonMin2.addActionListener(new java.awt.event.ActionListener() {
@@ -132,16 +126,23 @@ public class PanelPengeluaran extends javax.swing.JPanel {
             }
         });
 
+        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Sampai :");
+
         javax.swing.GroupLayout panelX2Layout = new javax.swing.GroupLayout(panelX2);
         panelX2.setLayout(panelX2Layout);
         panelX2Layout.setHorizontalGroup(
             panelX2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelX2Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addGap(5, 5, 5)
-                .addComponent(textFieldXCari, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jDateChooserMulai, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jDateChooserSampai, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonMin2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -150,13 +151,15 @@ public class PanelPengeluaran extends javax.swing.JPanel {
             .addGroup(panelX2Layout.createSequentialGroup()
                 .addGroup(panelX2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelX2Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel2))
-                    .addGroup(panelX2Layout.createSequentialGroup()
                         .addGap(5, 5, 5)
-                        .addGroup(panelX2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(textFieldXCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buttonMin2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(buttonMin2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelX2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(panelX2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3)
+                            .addComponent(jDateChooserSampai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jDateChooserMulai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))))
                 .addGap(6, 6, 6))
         );
 
@@ -171,8 +174,9 @@ public class PanelPengeluaran extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 868, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(panelX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelX2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(panelX2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -181,32 +185,14 @@ public class PanelPengeluaran extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelX1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelX2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(12, 12, 12))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(panelX1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelX2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(4, 4, 4))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void buttonMin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin1ActionPerformed
-        loadData();
-    }//GEN-LAST:event_buttonMin1ActionPerformed
-
-    private void buttonMin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin2ActionPerformed
-        String nama=textFieldXCari.getText();
-        
-        PengeluaranService service=SpringManager.getInstance().getBean(PengeluaranService.class);
-        List<Pengeluaran> pengeluarans=service.findAll(nama);
-        if (pengeluarans != null) {
-            modelPengeluaran.load(pengeluarans);
-            textFieldXCari.setText("");
-        } else {
-            JOptionPane.showMessageDialog(this, "Data tidak ada yang cocok");
-        }
-        
-    }//GEN-LAST:event_buttonMin2ActionPerformed
 
     private void buttonGreen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGreen1ActionPerformed
         DialogPengeluaran dialogPengeluaran=new DialogPengeluaran();
@@ -217,7 +203,7 @@ public class PanelPengeluaran extends javax.swing.JPanel {
             PengeluaranService service=SpringManager.getInstance().getBean(PengeluaranService.class);
             service.save(pengeluaran);
         }
-        loadData();
+        modelPengeluaran.fireTableDataChanged();
     }//GEN-LAST:event_buttonGreen1ActionPerformed
 
     private void buttonBlue1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBlue1ActionPerformed
@@ -233,25 +219,34 @@ public class PanelPengeluaran extends javax.swing.JPanel {
         }   
     }//GEN-LAST:event_buttonBlue1ActionPerformed
 
+    private void buttonMin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin2ActionPerformed
+        Date mulai = jDateChooserMulai.getDate();
+        Date sampai = jDateChooserSampai.getDate();
+
+        PengeluaranService service = SpringManager.getInstance().getBean(PengeluaranService.class);
+        List<Pengeluaran> pengeluarans = service.findAll(mulai, sampai);
+        if (pengeluarans != null) {
+            modelPengeluaran.load(pengeluarans);
+        } else {
+            JOptionPane.showMessageDialog(this, "Tidak ada transaksi");
+        }
+    }//GEN-LAST:event_buttonMin2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TabelPengeluaran;
     private com.bustomi.bookstorepos.component.ButtonBlue buttonBlue1;
     private com.bustomi.bookstorepos.component.ButtonGreen buttonGreen1;
-    private com.bustomi.bookstorepos.component.ButtonMin buttonMin1;
     private com.bustomi.bookstorepos.component.ButtonMin buttonMin2;
+    private com.toedter.calendar.JDateChooser jDateChooserMulai;
+    private com.toedter.calendar.JDateChooser jDateChooserSampai;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private com.bustomi.bookstorepos.component.PanelX panelX1;
     private com.bustomi.bookstorepos.component.PanelX panelX2;
-    private com.bustomi.bookstorepos.component.TextFieldX textFieldXCari;
     private com.bustomi.bookstorepos.component.ViewPortX viewPortX1;
     // End of variables declaration//GEN-END:variables
-    
-    private void loadData() {
-        PengeluaranService pengeluaranService=SpringManager.getInstance().getBean(PengeluaranService.class);
-        modelPengeluaran.load(pengeluaranService.findAll());
-    }
-
+   
 }

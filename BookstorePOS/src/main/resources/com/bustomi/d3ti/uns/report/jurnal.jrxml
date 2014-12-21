@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jurnal" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="00262f01-0df4-4e1e-bd04-27f35e246854">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="FROM" class="java.util.Date"/>
+	<parameter name="TO" class="java.util.Date"/>
+	<field name="id" class="java.lang.Long"/>
+	<field name="kredit" class="java.math.BigDecimal"/>
+	<field name="debit" class="java.math.BigDecimal"/>
+	<field name="waktu" class="java.util.Date"/>
+	<field name="saldo" class="java.math.BigDecimal"/>
+	<field name="saldoSebelumnya" class="java.math.BigDecimal"/>
+	<field name="nama" class="java.lang.String"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#006699" uuid="2786ee34-9acf-4961-bbc8-d680df1a2d32"/>
+				<staticText>
+					<reportElement x="20" y="20" width="261" height="43" forecolor="#FFFFFF" uuid="17ca891f-8880-41a2-8596-30c476a1b1b6"/>
+					<textElement>
+						<font size="34" isBold="true"/>
+					</textElement>
+					<text><![CDATA[JURNAL UMUM]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="395" y="43" width="180" height="20" forecolor="#FFFFFF" uuid="e40fbfb8-b1ca-4bf2-9d14-50a720a7dddd"/>
+					<textElement textAlignment="Right">
+						<font size="14" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Prosdev]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="13">
+			<textField>
+				<reportElement mode="Opaque" x="239" y="0" width="72" height="13" backcolor="#FFFFFF" uuid="12a3556e-a618-4679-8161-43c5a8a26b24"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{TO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="1" y="0" width="119" height="13" backcolor="#FFFFFF" uuid="7208a879-a480-4387-927c-7a8ab40e6594"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["Laporan jurnal dari "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="120" y="0" width="76" height="13" backcolor="#FFFFFF" uuid="f101edc2-32e6-45cd-9ef7-9295b192c833"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{FROM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="196" y="0" width="40" height="13" backcolor="#FFFFFF" uuid="9d1a7163-4da3-4cfd-9fff-0e2bd5485912"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" sampai "]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21">
+			<line>
+				<reportElement x="-20" y="20" width="595" height="1" forecolor="#666666" uuid="039ace83-2d8b-4615-adc0-c1e61994ef34"/>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="31" y="1" width="69" height="18" forecolor="#006699" backcolor="#E6E6E6" uuid="f4d506cf-4993-4ff6-8f80-9a8bf374fc49"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tanggal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="384" y="1" width="82" height="18" forecolor="#006699" backcolor="#E6E6E6" uuid="c4cf48bd-8195-4d92-a4d7-3ea17f6d2f76"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo Sblm]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="100" y="1" width="114" height="18" forecolor="#006699" backcolor="#E6E6E6" uuid="372aa87d-ec68-48ff-99df-6c831f12ed08"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Deskripsi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="466" y="1" width="89" height="18" forecolor="#006699" backcolor="#E6E6E6" uuid="933b347f-3e52-4445-bf1c-caaeba841e2c"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo Skrng]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="214" y="1" width="85" height="18" forecolor="#006699" backcolor="#E6E6E6" uuid="b1720690-f243-43bd-a9e3-01494f99b13b"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Debit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="1" width="31" height="18" forecolor="#006699" backcolor="#E6E6E6" uuid="09aaa5c8-b82c-4f76-ba1f-d84920d93e66"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="299" y="1" width="85" height="18" forecolor="#006699" backcolor="#E6E6E6" uuid="57f1e3bc-fb8b-4dbf-ba3a-f5cb337d12c0"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kredit]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField isStretchWithOverflow="true" pattern="d/M/yyyy">
+				<reportElement x="31" y="0" width="69" height="20" uuid="4110194e-063e-481e-9d31-1ae8f9334652"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{waktu}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="19" width="555" height="1" uuid="10f9d9da-48ec-41a9-bd1e-9d56f19f747c"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="31" height="20" uuid="b96d0a8c-44b4-4ed8-a551-a47e334a8562"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="d/M/yyyy">
+				<reportElement x="100" y="0" width="114" height="20" uuid="94ab1c95-28be-484c-a0f1-1a83ffa4fd8a"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement x="214" y="0" width="85" height="20" uuid="3a9af2c5-6a80-4ef9-93b9-462a953bf0d2"/>
+				<textElement textAlignment="Right">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{debit}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement x="299" y="0" width="85" height="20" uuid="e928b314-11f2-476c-b84b-f90e52948829"/>
+				<textElement textAlignment="Right">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{kredit}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement x="384" y="0" width="82" height="20" uuid="e91d658f-eb89-4619-860f-02e5b99caa03"/>
+				<textElement textAlignment="Right">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldoSebelumnya}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement x="466" y="0" width="89" height="20" uuid="54ca59eb-7d65-402e-b5ac-9ebe84acd514"/>
+				<textElement textAlignment="Right">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="f4d344a3-a44f-4f80-8634-b4cfd9a05bee"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="159bb48e-de63-4a71-8024-969e168b7a70"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="0" y="4" width="100" height="13" uuid="304b311c-4e7f-4f44-a557-ff6ee2412913"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

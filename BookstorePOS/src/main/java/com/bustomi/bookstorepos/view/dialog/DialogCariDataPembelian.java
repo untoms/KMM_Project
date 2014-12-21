@@ -16,9 +16,14 @@ import com.bustomi.bookstorepos.service.BukuService;
 import com.bustomi.bookstorepos.service.ItemService;
 import com.bustomi.bookstorepos.view.tablemodel.HurufRender;
 import com.bustomi.bookstorepos.view.tablemodel.TabelModelItem;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 
 /**
  *
@@ -43,7 +48,6 @@ public class DialogCariDataPembelian extends javax.swing.JDialog {
         jTable1.getColumnModel().getColumn(3).setCellRenderer(new HurufRender());  
         jTable1.getColumnModel().getColumn(4).setCellRenderer(new HurufRender()); 
         
-        load();
     }
     
     public Item pilih(){
@@ -71,15 +75,11 @@ public class DialogCariDataPembelian extends javax.swing.JDialog {
 
         viewPortX1 = new com.bustomi.bookstorepos.component.ViewPortX();
         jTable1 = new javax.swing.JTable();
-        buttonGroup1 = new javax.swing.ButtonGroup();
         panelXBack1 = new com.bustomi.bookstorepos.component.PanelXBack();
         panelX1 = new com.bustomi.bookstorepos.component.PanelX();
         jLabel1 = new javax.swing.JLabel();
         textFieldXNama = new com.bustomi.bookstorepos.component.TextFieldX();
         buttonMin1 = new com.bustomi.bookstorepos.component.ButtonMin();
-        jLabel2 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
         jLabelInfo = new javax.swing.JLabel();
         panelX2 = new com.bustomi.bookstorepos.component.PanelX();
         buttonYellow1 = new com.bustomi.bookstorepos.component.ButtonYellow();
@@ -110,12 +110,18 @@ public class DialogCariDataPembelian extends javax.swing.JDialog {
             }
         });
 
-        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Filter Pelanggan", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        panelX1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Filter Pelanggan", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(255, 255, 255)));
         panelX1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Nama/Judul :");
+
+        textFieldXNama.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldXNamaKeyPressed(evt);
+            }
+        });
 
         buttonMin1.setText("Filter");
         buttonMin1.addActionListener(new java.awt.event.ActionListener() {
@@ -124,51 +130,27 @@ public class DialogCariDataPembelian extends javax.swing.JDialog {
             }
         });
 
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("Jenis :");
-
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setText("Buku");
-        jRadioButton1.setOpaque(false);
-
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("Bukan Buku");
-        jRadioButton2.setOpaque(false);
-
         javax.swing.GroupLayout panelX1Layout = new javax.swing.GroupLayout(panelX1);
         panelX1.setLayout(panelX1Layout);
         panelX1Layout.setHorizontalGroup(
             panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelX1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelX1Layout.createSequentialGroup()
-                        .addComponent(jRadioButton1)
-                        .addGap(23, 23, 23)
-                        .addComponent(jRadioButton2))
-                    .addGroup(panelX1Layout.createSequentialGroup()
-                        .addComponent(textFieldXNama, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(buttonMin1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(textFieldXNama, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(buttonMin1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelX1Layout.setVerticalGroup(
             panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelX1Layout.createSequentialGroup()
                 .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelX1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(textFieldXNama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(buttonMin1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(buttonMin1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 2, Short.MAX_VALUE))
         );
 
         jLabelInfo.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
@@ -236,7 +218,7 @@ public class DialogCariDataPembelian extends javax.swing.JDialog {
                     .addComponent(jScrollPaneDaftar1)
                     .addGroup(panelXBack1Layout.createSequentialGroup()
                         .addComponent(panelX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 120, Short.MAX_VALUE))
+                        .addGap(0, 130, Short.MAX_VALUE))
                     .addGroup(panelXBack1Layout.createSequentialGroup()
                         .addComponent(panelX4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -251,7 +233,7 @@ public class DialogCariDataPembelian extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelX1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneDaftar1, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                .addComponent(jScrollPaneDaftar1, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelXBack1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelX4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -270,30 +252,7 @@ public class DialogCariDataPembelian extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowClosing
 
     private void buttonMin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMin1ActionPerformed
-        String nama=textFieldXNama.getText();
-        
-        if (!jRadioButton1.isSelected() && !jRadioButton2.isSelected()) {
-            JOptionPane.showMessageDialog(this, "Silahkah pilih jenis Barang");
-        }else if (nama.trim().equals("")) {
-            JOptionPane.showMessageDialog(this, "Masukan nama pencarian");
-        }else {
-            List<Item> list=new ArrayList<>();
-            if (jRadioButton1.isSelected()) {
-                BukuService bukuService=SpringManager.getInstance().getBean(BukuService.class);
-                List<Buku> bukus=bukuService.findAll(nama);
-                for (Buku buku : bukus) {
-                    list.add(buku.getItem());
-                }
-            }else if(jRadioButton2.isSelected()){
-                BarangService barangService=SpringManager.getInstance().getBean(BarangService.class);
-                List<Barang> barangs=barangService.findAll(nama);
-                for (Barang barang : barangs) {
-                    list.add(barang.getItem());
-                }
-            }            
-            modelItem.load(list);
-        }
-        
+        cari();       
         
     }//GEN-LAST:event_buttonMin1ActionPerformed
 
@@ -327,18 +286,20 @@ public class DialogCariDataPembelian extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_buttonRed1ActionPerformed
 
+    private void textFieldXNamaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldXNamaKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            cari();
+        }
+    }//GEN-LAST:event_textFieldXNamaKeyPressed
+
  
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
     private com.bustomi.bookstorepos.component.ButtonMin buttonMin1;
     private com.bustomi.bookstorepos.component.ButtonRed buttonRed1;
     private com.bustomi.bookstorepos.component.ButtonYellow buttonYellow1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabelInfo;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPaneDaftar1;
     private javax.swing.JTable jTable1;
     private com.bustomi.bookstorepos.component.PanelX panelX1;
@@ -354,5 +315,43 @@ public class DialogCariDataPembelian extends javax.swing.JDialog {
         ItemService service=SpringManager.getInstance().getBean(ItemService.class);
         List<Item> list=service.findAll();
         modelItem.load(list);
+    }
+    
+   private void cari(){
+        final String nama=textFieldXNama.getText();
+        
+        if (nama.trim().equals("")) {
+            JOptionPane.showMessageDialog(this, "Masukan nama pencarian");
+        }else {                       
+            buttonMin1.setEnabled(false);
+            buttonYellow1.setEnabled(false);
+                        
+            new SwingWorker<List<Item>, Object>() {
+
+                @Override
+                protected List<Item> doInBackground() throws Exception {
+                    ItemService itemService=SpringManager.getInstance().getBean(ItemService.class);
+                    List<Item> items=itemService.findAll(nama); 
+                    return items;
+                }
+
+                @Override
+                protected void done() {
+                    try {
+                        if (get().size() < 1) {
+                            JOptionPane.showMessageDialog(null, "Pencarian dengan kata kunci '"+nama+"' tidak ditemukan");
+                        }else{
+                            for (Item item : get()) {
+                                modelItem.tambah(item);
+                            }
+                        }
+                        buttonMin1.setEnabled(true);
+                        buttonYellow1.setEnabled(true);
+                    } catch (                InterruptedException | ExecutionException ex) {
+                        Logger.getLogger(DialogCariDataPenjualan.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }       
+            }.execute();            
+        }
     }
 }

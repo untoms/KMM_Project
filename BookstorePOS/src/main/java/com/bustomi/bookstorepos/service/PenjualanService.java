@@ -18,6 +18,8 @@ public interface PenjualanService {
 
     void save(Penjualan penjualan);
 
-    public List<Penjualan> findAll(Date from, Date to);
-    public List<Penjualan> findAll();
+    List<Penjualan> findAll(Date from, Date to);
+    List<Penjualan> findAll();
+    List<Penjualan> grafik(Date from, Date to);
+    Long hitungtrans();
 }

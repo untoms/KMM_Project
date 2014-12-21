@@ -25,9 +25,10 @@ public class TabelModelPengeluaran extends ParentTableModel<Pengeluaran>{
         switch(columnIndex){
             case 0 : return rowIndex + 1;
             case 1 : return getList().get(rowIndex).getId();
-            case 2 : return getList().get(rowIndex).getNama();                
-            case 3 : return getList().get(rowIndex).getJumlah();
-            case 4 : return getList().get(rowIndex).getInfo();
+            case 2 : return getList().get(rowIndex).getWaktuDibuat();
+            case 3 : return getList().get(rowIndex).getNama();                
+            case 4 : return getList().get(rowIndex).getJumlah();
+            case 5 : return getList().get(rowIndex).getUser();
                 default: return null;
         }
     }
@@ -37,9 +38,10 @@ public class TabelModelPengeluaran extends ParentTableModel<Pengeluaran>{
         switch(i){
             case 0 : return "No.";
             case 1 : return "Kode";
-            case 2 : return "Nama";
-            case 3 : return "Jumlah";
-            case 4 : return "Informasi";
+            case 2 : return "Tanggal";
+            case 3 : return "Nama";
+            case 4 : return "Jumlah";
+            case 5 : return "Pengguna";
                 default: return null;
         }
     } 

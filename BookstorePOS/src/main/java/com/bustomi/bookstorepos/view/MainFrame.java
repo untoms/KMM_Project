@@ -19,27 +19,11 @@ import com.bustomi.bookstorepos.entity.User.User;
 import com.bustomi.bookstorepos.manager.LoginManager;
 import com.bustomi.bookstorepos.manager.SpringManager;
 import com.bustomi.bookstorepos.service.UserService;
+import com.bustomi.bookstorepos.view.dialog.DialogApaLakukan;
+import com.bustomi.bookstorepos.view.dialog.DialogCetakBarcode;
+import com.bustomi.bookstorepos.view.dialog.DialogGrafik;
 import com.bustomi.bookstorepos.view.dialog.DialogLogin;
-import com.bustomi.bookstorepos.view.panel.PanelBarang;
-import com.bustomi.bookstorepos.view.panel.PanelBuku;
-import com.bustomi.bookstorepos.view.panel.PanelGrup;
-import com.bustomi.bookstorepos.view.panel.PanelHutang;
-import com.bustomi.bookstorepos.view.panel.PanelKatalogBuku;
-import com.bustomi.bookstorepos.view.panel.PanelKategoriBarang;
-import com.bustomi.bookstorepos.view.panel.PanelKategoriBuku;
-import com.bustomi.bookstorepos.view.panel.PanelPelanggan;
-import com.bustomi.bookstorepos.view.panel.PanelPemasok;
-import com.bustomi.bookstorepos.view.panel.PanelPemasukan;
-import com.bustomi.bookstorepos.view.panel.PanelPembelian;
-import com.bustomi.bookstorepos.view.panel.PanelPenerbit;
-import com.bustomi.bookstorepos.view.panel.PanelPengarang;
-import com.bustomi.bookstorepos.view.panel.PanelPengeluaran;
-import com.bustomi.bookstorepos.view.panel.PanelPenjualan;
-import com.bustomi.bookstorepos.view.panel.PanelSatuan;
-import com.bustomi.bookstorepos.view.panel.PanelTransPembelian;
-import com.bustomi.bookstorepos.view.panel.PanelTransPenjualan;
-import com.bustomi.bookstorepos.view.panel.PanelUser;
-import com.bustomi.bookstorepos.view.panel.PanelWelcome;
+import com.bustomi.bookstorepos.view.panel.*;
 import java.awt.CardLayout;
 import java.awt.EventQueue;
 import java.util.Date;
@@ -74,6 +58,9 @@ public class MainFrame extends javax.swing.JFrame {
     private final PanelHutang panelHutang;
     private final PanelPengeluaran panelPengeluaran;
     private final PanelPemasukan panelPemasukan;
+    private final PanelKeuntungan panelKeuntungan;
+    private final PanelJurnal panelJurnal;
+    private final PanelAbout panelAbout;
     
     public MainFrame()  {
         initComponents();
@@ -138,6 +125,15 @@ public class MainFrame extends javax.swing.JFrame {
         panelPemasukan = new PanelPemasukan();
         PanelCard.add(panelPemasukan, "pemasukan");
         
+        panelKeuntungan = new PanelKeuntungan();
+        PanelCard.add(panelKeuntungan, "keuntungan");
+        
+        panelJurnal = new PanelJurnal();
+        PanelCard.add(panelJurnal, "jurnal");
+        
+        panelAbout = new PanelAbout();
+        PanelCard.add(panelAbout, "tentang");
+        
         LabelUser.setText(LoginManager.getInstance().getUser().getNama());
         
     }
@@ -151,14 +147,16 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem1 = new javax.swing.JMenuItem();
         panelXBack1 = new com.bustomi.bookstorepos.component.PanelXBack();
         PanelCard = new javax.swing.JPanel();
         panelXFoot1 = new com.bustomi.bookstorepos.component.PanelXFoot();
         jLabel1 = new javax.swing.JLabel();
         LabelUser = new javax.swing.JLabel();
-        LabelWaktu = new javax.swing.JLabel();
+        digitalClock1 = new com.bustomi.bookstorepos.component.DigitalClock();
         jMenuBarApp = new javax.swing.JMenuBar();
         jMenuHome = new javax.swing.JMenu();
+        jMenuItemHome = new javax.swing.JMenuItem();
         jMenuAplikasi = new javax.swing.JMenu();
         jMenuItemKeluarAplikasi = new javax.swing.JMenuItem();
         jMenuItemTutupAplikasi = new javax.swing.JMenuItem();
@@ -174,31 +172,32 @@ public class MainFrame extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItemPemasok = new javax.swing.JMenuItem();
         jMenuItemPelanggan = new javax.swing.JMenuItem();
-        jMenuItemPenjual = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        jMenuItemJabatan = new javax.swing.JMenuItem();
-        jMenuItemKaryawan = new javax.swing.JMenuItem();
         jMenuTransaksi = new javax.swing.JMenu();
         jMenuItemPenjualan = new javax.swing.JMenuItem();
         jMenuItemPembelian = new javax.swing.JMenuItem();
         jMenuOperasional = new javax.swing.JMenu();
         jMenuItemPemasukkan = new javax.swing.JMenuItem();
         jMenuItemPengeluaran = new javax.swing.JMenuItem();
-        jMenuDaftarTrans = new javax.swing.JMenu();
-        jMenuItemDaftarPenjualan = new javax.swing.JMenuItem();
-        jMenuItemDaftarPembelian = new javax.swing.JMenuItem();
-        jMenuItemDaftarUtang = new javax.swing.JMenuItem();
         jMenuHakAkses = new javax.swing.JMenu();
         jMenuItemGrup = new javax.swing.JMenuItem();
         jMenuItemPengguna = new javax.swing.JMenuItem();
         jMenuLaporan = new javax.swing.JMenu();
         jMenuItemLapPenjualan = new javax.swing.JMenuItem();
         jMenuItemLapPembelian = new javax.swing.JMenuItem();
-        jMenuItemLapJurnal = new javax.swing.JMenuItem();
+        jMenuItemLapKeuntungan = new javax.swing.JMenuItem();
+        jMenuItemJurnal = new javax.swing.JMenuItem();
+        jMenuItemBarcode = new javax.swing.JMenuItem();
+        jMenuItemGrafik = new javax.swing.JMenuItem();
+        jMenuItemHutang = new javax.swing.JMenuItem();
         jMenuTentang = new javax.swing.JMenu();
+        jMenuItemTentang = new javax.swing.JMenuItem();
+
+        jMenuItem1.setText("jMenuItem1");
+        jMenuItem1.setName("jMenuItem1"); // NOI18N
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Bookstore POS");
+        setTitle("Simpenan (Sistem Informasi Manajemen Penjualan)");
 
         panelXBack1.setName("panelXBack1"); // NOI18N
 
@@ -209,22 +208,18 @@ public class MainFrame extends javax.swing.JFrame {
         panelXFoot1.setName("panelXFoot1"); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("User :");
         jLabel1.setName("jLabel1"); // NOI18N
 
         LabelUser.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        LabelUser.setForeground(new java.awt.Color(0, 0, 0));
         LabelUser.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         LabelUser.setText("User :");
         LabelUser.setName("LabelUser"); // NOI18N
 
-        LabelWaktu.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        LabelWaktu.setForeground(new java.awt.Color(204, 0, 51));
-        LabelWaktu.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        LabelWaktu.setText("jLabel3");
-        LabelWaktu.setName("LabelWaktu"); // NOI18N
+        digitalClock1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        digitalClock1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        digitalClock1.setName("digitalClock1"); // NOI18N
 
         javax.swing.GroupLayout panelXFoot1Layout = new javax.swing.GroupLayout(panelXFoot1);
         panelXFoot1.setLayout(panelXFoot1Layout);
@@ -234,15 +229,16 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(LabelUser, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(LabelWaktu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(digitalClock1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         panelXFoot1Layout.setVerticalGroup(
             panelXFoot1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelXFoot1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(LabelUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(LabelWaktu, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(digitalClock1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelXBack1Layout = new javax.swing.GroupLayout(panelXBack1);
@@ -250,7 +246,7 @@ public class MainFrame extends javax.swing.JFrame {
         panelXBack1Layout.setHorizontalGroup(
             panelXBack1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(PanelCard, javax.swing.GroupLayout.DEFAULT_SIZE, 808, Short.MAX_VALUE)
-            .addComponent(panelXFoot1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelXFoot1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelXBack1Layout.setVerticalGroup(
             panelXBack1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,9 +266,19 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuHome.setName("jMenuHome"); // NOI18N
         jMenuHome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuHomeActionPerformed(evt);
+            }
+        });
+
+        jMenuItemHome.setText("Home");
+        jMenuItemHome.setName("jMenuItemHome"); // NOI18N
+        jMenuItemHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 actionMenuItem(evt);
             }
         });
+        jMenuHome.add(jMenuItemHome);
+
         jMenuBarApp.add(jMenuHome);
 
         jMenuAplikasi.setText("Aplikasi");
@@ -395,38 +401,8 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenuDataMaster.add(jMenuItemPelanggan);
 
-        jMenuItemPenjual.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemPenjual.setText("Penjual");
-        jMenuItemPenjual.setName("jMenuItemPenjual"); // NOI18N
-        jMenuItemPenjual.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                actionMenuItem(evt);
-            }
-        });
-        jMenuDataMaster.add(jMenuItemPenjual);
-
         jSeparator2.setName("jSeparator2"); // NOI18N
         jMenuDataMaster.add(jSeparator2);
-
-        jMenuItemJabatan.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemJabatan.setText("Jabatan");
-        jMenuItemJabatan.setName("jMenuItemJabatan"); // NOI18N
-        jMenuItemJabatan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                actionMenuItem(evt);
-            }
-        });
-        jMenuDataMaster.add(jMenuItemJabatan);
-
-        jMenuItemKaryawan.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemKaryawan.setText("Karyawan");
-        jMenuItemKaryawan.setName("jMenuItemKaryawan"); // NOI18N
-        jMenuItemKaryawan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                actionMenuItem(evt);
-            }
-        });
-        jMenuDataMaster.add(jMenuItemKaryawan);
 
         jMenuBarApp.add(jMenuDataMaster);
 
@@ -475,38 +451,6 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuOperasional.add(jMenuItemPengeluaran);
 
         jMenuTransaksi.add(jMenuOperasional);
-
-        jMenuDaftarTrans.setText("Daftar Transaksi");
-        jMenuDaftarTrans.setName("jMenuDaftarTrans"); // NOI18N
-
-        jMenuItemDaftarPenjualan.setText("Penjualan");
-        jMenuItemDaftarPenjualan.setName("jMenuItemDaftarPenjualan"); // NOI18N
-        jMenuItemDaftarPenjualan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                actionMenuItem(evt);
-            }
-        });
-        jMenuDaftarTrans.add(jMenuItemDaftarPenjualan);
-
-        jMenuItemDaftarPembelian.setText("Pembelian");
-        jMenuItemDaftarPembelian.setName("jMenuItemDaftarPembelian"); // NOI18N
-        jMenuItemDaftarPembelian.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                actionMenuItem(evt);
-            }
-        });
-        jMenuDaftarTrans.add(jMenuItemDaftarPembelian);
-
-        jMenuItemDaftarUtang.setText("Hutang");
-        jMenuItemDaftarUtang.setName("jMenuItemDaftarUtang"); // NOI18N
-        jMenuItemDaftarUtang.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                actionMenuItem(evt);
-            }
-        });
-        jMenuDaftarTrans.add(jMenuItemDaftarUtang);
-
-        jMenuTransaksi.add(jMenuDaftarTrans);
 
         jMenuBarApp.add(jMenuTransaksi);
 
@@ -558,31 +502,80 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenuLaporan.add(jMenuItemLapPembelian);
 
-        jMenuItemLapJurnal.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemLapJurnal.setText("Jurnal");
-        jMenuItemLapJurnal.setName("jMenuItemLapJurnal"); // NOI18N
-        jMenuItemLapJurnal.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemLapKeuntungan.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemLapKeuntungan.setText("Keuntungan");
+        jMenuItemLapKeuntungan.setName("jMenuItemLapKeuntungan"); // NOI18N
+        jMenuItemLapKeuntungan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 actionMenuItem(evt);
             }
         });
-        jMenuLaporan.add(jMenuItemLapJurnal);
+        jMenuLaporan.add(jMenuItemLapKeuntungan);
+
+        jMenuItemJurnal.setText("Jurnal");
+        jMenuItemJurnal.setName("jMenuItemJurnal"); // NOI18N
+        jMenuItemJurnal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionMenuItem(evt);
+            }
+        });
+        jMenuLaporan.add(jMenuItemJurnal);
+
+        jMenuItemBarcode.setText("Barcode");
+        jMenuItemBarcode.setName("jMenuItemBarcode"); // NOI18N
+        jMenuItemBarcode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionMenuItem(evt);
+            }
+        });
+        jMenuLaporan.add(jMenuItemBarcode);
+
+        jMenuItemGrafik.setText("Grafik");
+        jMenuItemGrafik.setName("jMenuItemGrafik"); // NOI18N
+        jMenuItemGrafik.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionMenuItem(evt);
+            }
+        });
+        jMenuLaporan.add(jMenuItemGrafik);
+
+        jMenuItemHutang.setText("Hutang");
+        jMenuItemHutang.setName("jMenuItemHutang"); // NOI18N
+        jMenuItemHutang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionMenuItem(evt);
+            }
+        });
+        jMenuLaporan.add(jMenuItemHutang);
 
         jMenuBarApp.add(jMenuLaporan);
 
         jMenuTentang.setText("Tentang");
         jMenuTentang.setName("jMenuTentang"); // NOI18N
+
+        jMenuItemTentang.setText("Tentang Kami");
+        jMenuItemTentang.setName("jMenuItemTentang"); // NOI18N
+        jMenuItemTentang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionMenuItem(evt);
+            }
+        });
+        jMenuTentang.add(jMenuItemTentang);
+
         jMenuBarApp.add(jMenuTentang);
 
         setJMenuBar(jMenuBarApp);
 
-        setSize(new java.awt.Dimension(824, 616));
-        setLocationRelativeTo(null);
+        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        setBounds((screenSize.width-824)/2, (screenSize.height-616)/2, 824, 616);
     }// </editor-fold>//GEN-END:initComponents
 
     private void actionMenuItem(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionMenuItem
         Object source = evt.getSource();
-        if (source == jMenuItemBarang) {
+        if(source == jMenuItemHome){
+            CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
+            cardLayout.show(PanelCard, "welcome");  
+        }else if (source == jMenuItemBarang) {
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
             cardLayout.show(PanelCard, "barang");
         } else if (source == jMenuItemKategoriBuku){
@@ -594,16 +587,19 @@ public class MainFrame extends javax.swing.JFrame {
         } else if (source == jMenuItemPengarang){
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
             cardLayout.show(PanelCard, "pengarang");
+        } else if (source == jMenuItemBuku){
+            CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
+            cardLayout.show(PanelCard, "buku");
         } else if (source == jMenuHome) {
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
             cardLayout.show(PanelCard, "welcome");            
         } else if (source == jMenuItemGrup) {
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
             cardLayout.show(PanelCard, "grup"); 
-        } else if (source == jMenuItemJabatan) {
-            
-        } else if (source == jMenuItemKaryawan) {
-            
+//        } else if (source == jMenuItemJabatan) {
+//            
+//        } else if (source == jMenuItemKaryawan) {
+//            
         } else if (source == jMenuItemKategori) {
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
             cardLayout.show(PanelCard, "kategoriBarang");
@@ -627,8 +623,9 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             });
             
-        } else if (source == jMenuItemLapJurnal) {
-            
+        } else if (source == jMenuItemLapKeuntungan) {
+            CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
+            cardLayout.show(PanelCard, "keuntungan");            
         } else if (source == jMenuItemPelanggan) {
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
             cardLayout.show(PanelCard, "pelanggan");
@@ -636,16 +633,25 @@ public class MainFrame extends javax.swing.JFrame {
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
             cardLayout.show(PanelCard, "pemasok");
         } else if (source == jMenuItemLapPenjualan) {
-            
+            CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
+            cardLayout.show(PanelCard, "penjualan");            
         } else if (source == jMenuItemPembelian) {
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
             cardLayout.show(PanelCard, "transPembelian");
         } else if (source == jMenuItemLapPembelian) {
-            
-        } else if (source == jMenuItemPengguna) {
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
-            cardLayout.show(PanelCard, "user"); 
-        } else if (source == jMenuItemPenjual) {
+            cardLayout.show(PanelCard, "pembelian");
+        } else if (source == jMenuItemPengguna) {
+            if (LoginManager.getInstance().getUser().getId().equals("admin")) {
+                CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
+                cardLayout.show(PanelCard, "user");
+            }else{
+                DialogApaLakukan dal=new DialogApaLakukan();
+                dal.setLocationRelativeTo(this);
+                dal.setVisible(true);
+            }
+             
+//        } else if (source == jMenuItemPenjual) {
             
         } else if (source == jMenuItemPenjualan) {
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
@@ -661,49 +667,59 @@ public class MainFrame extends javax.swing.JFrame {
         } else if (source == jMenuItemPengeluaran) {
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
             cardLayout.show(PanelCard, "pengeluaran");
-        } else if (source == jMenuItemBuku){
-            CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
-            cardLayout.show(PanelCard, "buku");
-        } else if (source == jMenuItemDaftarPembelian) {
-            CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
-            cardLayout.show(PanelCard, "pembelian");
-        } else if (source == jMenuItemDaftarPenjualan){
-            CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
-            cardLayout.show(PanelCard, "penjualan");
         } else if (source == jMenuHome){
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
             cardLayout.show(PanelCard, "welcome");
         } else if(source == jMenuTentang){
             
-        } else if(source == jMenuItemDaftarUtang){
+        } else if(source == jMenuItemHutang){
             CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
             cardLayout.show(PanelCard, "hutang");
-        }                 
+        } else if(source == jMenuItemBarcode){
+            DialogCetakBarcode barcode=new DialogCetakBarcode();
+            barcode.setLocationRelativeTo(this);
+            barcode.setVisible(true);            
+        } else if(source == jMenuItemGrafik){
+            DialogGrafik grafik=new DialogGrafik();
+            grafik.setLocationRelativeTo(this);
+            grafik.setVisible(true);            
+        } else if (source == jMenuItemJurnal){
+            CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
+            cardLayout.show(PanelCard, "jurnal");
+        } else if (source == jMenuItemTentang){
+            CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
+            cardLayout.show(PanelCard, "tentang");
+        }             
     }//GEN-LAST:event_actionMenuItem
+
+    private void jMenuHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuHomeActionPerformed
+        CardLayout cardLayout=(CardLayout) PanelCard.getLayout();
+        cardLayout.show(PanelCard, "welcome");  
+    }//GEN-LAST:event_jMenuHomeActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LabelUser;
-    private javax.swing.JLabel LabelWaktu;
     private javax.swing.JPanel PanelCard;
+    private com.bustomi.bookstorepos.component.DigitalClock digitalClock1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenuAplikasi;
     private javax.swing.JMenuBar jMenuBarApp;
-    private javax.swing.JMenu jMenuDaftarTrans;
     private javax.swing.JMenu jMenuDataMaster;
     private javax.swing.JMenu jMenuHakAkses;
     private javax.swing.JMenu jMenuHome;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItemBarang;
+    private javax.swing.JMenuItem jMenuItemBarcode;
     private javax.swing.JMenuItem jMenuItemBuku;
-    private javax.swing.JMenuItem jMenuItemDaftarPembelian;
-    private javax.swing.JMenuItem jMenuItemDaftarPenjualan;
-    private javax.swing.JMenuItem jMenuItemDaftarUtang;
+    private javax.swing.JMenuItem jMenuItemGrafik;
     private javax.swing.JMenuItem jMenuItemGrup;
-    private javax.swing.JMenuItem jMenuItemJabatan;
-    private javax.swing.JMenuItem jMenuItemKaryawan;
+    private javax.swing.JMenuItem jMenuItemHome;
+    private javax.swing.JMenuItem jMenuItemHutang;
+    private javax.swing.JMenuItem jMenuItemJurnal;
     private javax.swing.JMenuItem jMenuItemKategori;
     private javax.swing.JMenuItem jMenuItemKategoriBuku;
     private javax.swing.JMenuItem jMenuItemKeluarAplikasi;
-    private javax.swing.JMenuItem jMenuItemLapJurnal;
+    private javax.swing.JMenuItem jMenuItemLapKeuntungan;
     private javax.swing.JMenuItem jMenuItemLapPembelian;
     private javax.swing.JMenuItem jMenuItemLapPenjualan;
     private javax.swing.JMenuItem jMenuItemPelanggan;
@@ -714,9 +730,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemPengarang;
     private javax.swing.JMenuItem jMenuItemPengeluaran;
     private javax.swing.JMenuItem jMenuItemPengguna;
-    private javax.swing.JMenuItem jMenuItemPenjual;
     private javax.swing.JMenuItem jMenuItemPenjualan;
     private javax.swing.JMenuItem jMenuItemSatuan;
+    private javax.swing.JMenuItem jMenuItemTentang;
     private javax.swing.JMenuItem jMenuItemTutupAplikasi;
     private javax.swing.JMenu jMenuLaporan;
     private javax.swing.JMenu jMenuOperasional;
@@ -733,28 +749,33 @@ public class MainFrame extends javax.swing.JFrame {
     public void renderHakAkses() {
         User user = LoginManager.getInstance().getUser();
         user.setTerakhir_login(new Date());
-        SpringManager.getInstance().getBean(UserService.class).update(user);
+        UserService service=SpringManager.getInstance().getBean(UserService.class);
+        service.update(user);
         Grup grup = user.getGrup();
 
         jMenuItemBarang.setEnabled(grup.mengandungHakAkses(Role.LIHAT_BARANG));
         jMenuItemGrup.setEnabled(grup.mengandungHakAkses(Role.LIHAT_GRUP));
-        jMenuItemJabatan.setEnabled(grup.mengandungHakAkses(Role.LIHAT_JABATAN));
-        jMenuItemKaryawan.setEnabled(grup.mengandungHakAkses(Role.LIHAT_KARYAWAN));
+//        jMenuItemJabatan.setEnabled(grup.mengandungHakAkses(Role.LIHAT_JABATAN));
+//        jMenuItemKaryawan.setEnabled(grup.mengandungHakAkses(Role.LIHAT_KARYAWAN));
         jMenuItemKategori.setEnabled(grup.mengandungHakAkses(Role.LIHAT_KATEGORI_BARANG));
-        jMenuItemLapJurnal.setEnabled(grup.mengandungHakAkses(Role.LIHAT_LAPORAN_KEUNTUNGAN));
+        jMenuItemLapKeuntungan.setEnabled(grup.mengandungHakAkses(Role.LIHAT_LAPORAN_KEUNTUNGAN));
         jMenuItemPelanggan.setEnabled(grup.mengandungHakAkses(Role.LIHAT_PELANGGAN));
         jMenuItemPemasok.setEnabled(grup.mengandungHakAkses(Role.LIHAT_PEMASOK));
         jMenuItemLapPenjualan.setEnabled(grup.mengandungHakAkses(Role.LIHAT_LAPORAN_PENJUALAN));
         jMenuItemPembelian.setEnabled(grup.mengandungHakAkses(Role.TRANSAKSI_PEMBELIAN));
         jMenuItemLapPembelian.setEnabled(grup.mengandungHakAkses(Role.LIHAT_LAPORAN_PEMBELIAN));
         jMenuItemPengguna.setEnabled(grup.mengandungHakAkses(Role.LIHAT_PENGGUNA));
-        jMenuItemPenjual.setEnabled(grup.mengandungHakAkses(Role.LIHAT_PENJUAL));
+//        jMenuItemPenjual.setEnabled(grup.mengandungHakAkses(Role.LIHAT_PENJUAL));
         jMenuItemPenjualan.setEnabled(grup.mengandungHakAkses(Role.TRANSAKSI_PENJUALAN));
         jMenuItemSatuan.setEnabled(grup.mengandungHakAkses(Role.LIHAT_SATUAN));
         jMenuItemKategoriBuku.setEnabled(grup.mengandungHakAkses(Role.LIHAT_KATEGORI_BUKU));
         jMenuItemPenerbit.setEnabled(grup.mengandungHakAkses(Role.LIHAT_PENERBIT));
         jMenuItemPengarang.setEnabled(grup.mengandungHakAkses(Role.LIHAT_PENGARANG));
         jMenuItemBuku.setEnabled(grup.mengandungHakAkses(Role.LIHAT_BUKU));
+        jMenuItemJurnal.setEnabled(grup.mengandungHakAkses(Role.LIHAT_LAPORAN_JURNAL));
+        jMenuItemBarcode.setEnabled(grup.mengandungHakAkses(Role.LIHAT_LAPORAN_BARCODE));
+        jMenuItemGrafik.setEnabled(grup.mengandungHakAkses(Role.LIHAT_LAPORAN_GRAFIK));
+        jMenuItemHutang.setEnabled(grup.mengandungHakAkses(Role.LIHAT_HUTANG));
 
     }
 }

@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,6 +81,54 @@ public abstract class AbstractService<T extends Entity<?>, Id extends Serializab
     public List<T> findAll(String nama) {
         return currentSession().createCriteria(clazz).add(
                 Restrictions.like("nama", "%"+nama+"%")).list();
+    }
+    
+    @Transactional(readOnly = true)
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<T> findAll(Integer pageNumber, Integer rowsPerPage) {
+        return currentSession()
+                .createCriteria(clazz)
+                .setFirstResult(rowsPerPage*(pageNumber-1))
+                .setMaxResults(rowsPerPage)
+                .list();
+    }
+    
+    @Transactional(readOnly = true)
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<T> findAll(String nama, Integer pageNumber, Integer rowsPerPage) {
+        return currentSession()
+                .createCriteria(clazz)
+                .add(Restrictions.like("nama", "%"+nama+"%"))
+                .setFirstResult(rowsPerPage*(pageNumber-1))
+                .setMaxResults(rowsPerPage)
+                .list();
+    }
+    
+    @Transactional(readOnly = true)
+    @SuppressWarnings("unchecked")
+    @Override
+    public Integer countRows() {
+        Long totalRow = (Long) currentSession()
+                .createCriteria(clazz)
+                .setProjection(Projections.rowCount())
+                .uniqueResult();
+
+        return totalRow.intValue();
+    }
+    
+    @Transactional(readOnly = true)
+    @SuppressWarnings("unchecked")
+    @Override
+    public Integer countNama(String nama) {
+        Long totalRow = (Long) currentSession()
+                .createCriteria(clazz)
+                .add(Restrictions.like("nama", "%"+nama+"%"))
+                .setProjection(Projections.rowCount())
+                .uniqueResult();
+
+        return totalRow.intValue();
     }
     
 }

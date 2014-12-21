@@ -8,8 +8,10 @@ package com.bustomi.bookstorepos.service.Implement;
 
 import com.bustomi.bookstorepos.entity.laporan.Jurnal;
 import com.bustomi.bookstorepos.service.JurnalService;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,5 +45,11 @@ public class JurnalServiceImpl implements JurnalService{
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-    
+
+    @Override
+    @Transactional (readOnly=true)
+    public List<Jurnal> findAll(Date from, Date to) {
+        return sessionFactory.getCurrentSession().createCriteria(Jurnal.class).
+                add(Restrictions.between("waktu", from, to)).list();
+    }
 }
