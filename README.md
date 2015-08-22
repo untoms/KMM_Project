@@ -4,7 +4,7 @@ aplikasi toko buku, masih dikembangkan :D
 Point of Sale Application.
 
 Developed using Spring and Hibernate Framework and Maven, you can open this project using netbeans.
-Ensure you've internet connection while build project using maven.
+Make sure you are connected to the Internet while build project using maven.
 
 bustomiraharjo@gmail.com
 twitter.com/untoms 
